@@ -1,0 +1,31 @@
+# Kıyas survival ledger — the skill's own claim, made measurable.
+#
+# SKILL.md states the honest success metric: the survival rate of
+# Kıyas-generated [H-aday] seeds in a Mizan registry, compared against free
+# brainstorming. This file is where that record accumulates. Until it has
+# entries, that claim is [S] — and saying so is the point.
+#
+# Append-only, like a Mizan registry: a seed that gets refuted STAYS, with
+# final_tier R. Deleting losses is how a 50% hit rate becomes a 100% one.
+#
+# final_tier: K | H | R | KKE | Y | "" (empty = not yet decided)
+# control: true marks a seed generated WITHOUT the Kıyas discipline
+#          (free brainstorm on the same problem, scored by the same
+#          registry). Without such entries the rate stays descriptive.
+#
+#   python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
+
+ledger:
+  project: ""
+  started: "2026-07-23"
+  registry: "path/URL of the Mizan registry that scores these seeds"
+
+seeds: []
+  # - id: "KS-001"
+  #   batch: "examples/kiyas-seed.example.yaml"
+  #   problem: "one-line restatement, so arms can be matched by problem"
+  #   operator: "O3"
+  #   registered_as: "H-014"        # the Mizan hypothesis id
+  #   final_tier: ""                # filled when the registry decides
+  #   control: false
+  #   date: "2026-07-23"

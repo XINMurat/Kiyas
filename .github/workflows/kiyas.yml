@@ -1,0 +1,150 @@
+name: CI
+
+# Runs the LLM-free G1–G6 seed validator and checks that the shipped
+# kiyas.skill stays in sync with skill/kiyas/. Static checks only: this
+# pipeline is a `runtime` arbiter for CONTRACT COMPLETENESS, never for idea
+# quality — see SKILL.md §"The runtime arbiter".
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate-seeds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r tools/requirements.txt
+
+      - name: Validate every seed batch (G1–G6)
+        run: |
+          set -e
+          found=0
+          while IFS= read -r f; do
+            found=1
+            echo "::group::$f"
+            python tools/kiyas_validate.py "$f"
+            echo "::endgroup::"
+          done < <(find examples ledger -name '*kiyas-seed*.y*ml' -print 2>/dev/null)
+          if [ "$found" -eq 0 ]; then
+            echo "No seed batches found to validate." >&2
+            exit 1
+          fi
+
+      - name: Self-test — the unfilled template must be REJECTED
+        run: |
+          set -e
+          # The schema doubles as the template, so it still carries
+          # placeholder prose. A validator that passes it would pass any
+          # batch that was formatted but never filled in.
+          if python tools/kiyas_validate.py skill/kiyas/schemas/kiyas-seed.yaml; then
+            echo "FAIL: validator accepted the unfilled schema template" >&2
+            exit 1
+          fi
+          echo "OK: validator rejected the unfilled template."
+
+      - name: Self-test — G1/G5 must reject an illet-less, arbiter-less seed
+        run: |
+          set -e
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "p", symmetry_check: "s", operators_used: [O1, O2, O3]}
+          seeds:
+            - id: KS-1
+              tier: H-aday
+              operator: O1
+              claim: "something"
+              illet: ""
+              breaking_point: ""
+          YAML
+          if python tools/kiyas_validate.py "$tmp"; then
+            echo "FAIL: validator passed a seed with no illet and no arbiter" >&2
+            exit 1
+          fi
+          echo "OK: G1/G2/G5/G6 correctly rejected the empty seed."
+
+      - name: Self-test — AD4 must flag a relative of a refuted pattern
+        run: |
+          set -e
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "p", symmetry_check: "s", operators_used: [O1, O2, O3]}
+          seeds:
+            - id: KS-1
+              tier: H-aday
+              operator: O1
+              claim: "Phase synchronization as a selective alignment mechanism."
+              illet: "structural"
+              breaking_point: "here"
+              cheapest_refutation: {test: "t", adds_capacity: false}
+              arbiter: {class: runtime, who: "pytest"}
+              prior_art: {searched: true}
+              claims_superiority: false
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          YAML
+          if python tools/kiyas_validate.py --refuted examples/refuted-patterns.example.yaml "$tmp"; then
+            echo "FAIL: AD4 did not flag a known-refuted relative" >&2
+            exit 1
+          fi
+          echo "OK: AD4 feedback loop is wired."
+
+      - name: Ledger reporter must run
+        run: python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
+
+      - name: templates/ copy must match the schema
+        run: |
+          # The template is a convenience copy of the schema. Nothing stops
+          # the two from drifting except this check — and a drifted template
+          # hands users a contract the validator does not enforce.
+          diff -u skill/kiyas/schemas/kiyas-seed.yaml templates/kiyas-seed.yaml \
+            || { echo "templates/kiyas-seed.yaml has drifted from the schema." >&2; exit 1; }
+
+  skill-package-in-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: kiyas.skill must match skill/kiyas/ contents
+        run: |
+          python - <<'PY'
+          import zipfile, os, sys
+          def norm(b): return b.replace(b"\r\n", b"\n")
+          z = zipfile.ZipFile("kiyas.skill")
+          names = set(z.namelist())
+          bad = []
+          # every packaged file must match its source
+          for name in names:
+              src = os.path.join("skill", name)   # arcname is kiyas/... ; source is skill/kiyas/...
+              if not os.path.exists(src):
+                  bad.append(f"{name}: packaged but missing from source"); continue
+              if norm(z.read(name)) != norm(open(src, "rb").read()):
+                  bad.append(f"{name}: content differs from skill/{name}")
+          # every source file must be packaged
+          for root, _, files in os.walk("skill/kiyas"):
+              for f in files:
+                  rel = os.path.relpath(os.path.join(root, f), "skill").replace(os.sep, "/")
+                  if rel not in names:
+                      bad.append(f"{rel}: in source but not packaged")
+          if bad:
+              print("kiyas.skill is OUT OF SYNC with skill/kiyas/:")
+              for b in bad: print("  -", b)
+              print("\nRebuild it (see CONTRIBUTING.md) and commit.")
+              sys.exit(1)
+          print("kiyas.skill is in sync with skill/kiyas/.")
+          PY

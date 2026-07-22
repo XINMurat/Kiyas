@@ -1,0 +1,37 @@
+# Sample negative-constraint export, committed so CI can exercise the AD4
+# feedback loop. Generate your own from a real registry:
+#
+#   python ../Mizan22/tools/mizan_export_refuted.py registry.yaml \
+#     -o refuted-patterns.yaml
+#
+# A keyword match is a prompt to check relatedness, never an automatic
+# rejection — the consumer flags, the human decides.
+refuted_patterns:
+  - id: "HG28"
+    title: "Input-dependent phase"
+    tier: "R"
+    block: "hypotheses"
+    claim: >
+      Making the phase input-dependent adds a selective alignment mechanism
+      that improves language modeling.
+    why_closed: >
+      Gain was generic capacity: the same extra projection spent on amplitude
+      gained +16.4% against phase's +6.75%. Refuted by the matched-budget arm.
+    keywords: ["phase", "input-dependent", "alignment", "selective", "synchronization", "projection"]
+    source_registry: "SpectralLM"
+  - id: "HG31"
+    title: "State carries distant-token identity"
+    tier: "R"
+    block: "hypotheses"
+    claim: >
+      The recurrent state acts as a retriever, carrying the identity of
+      distant tokens forward.
+    why_closed: >
+      Probes recover near-horizon content only; distant-token identity is not
+      linearly recoverable at any depth tested.
+    keywords: ["state", "retriever", "distant", "token", "identity", "carries"]
+    source_registry: "SpectralLM"
+exported_from: "SpectralLM"
+note: >
+  Negative constraints for Kıyas generation (AD4/[GB]). A match is a prompt to
+  check relatedness, never an automatic rejection.

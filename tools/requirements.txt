@@ -1,0 +1,2 @@
+# Kıyas tooling dependencies
+PyYAML>=6.0

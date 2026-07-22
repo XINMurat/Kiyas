@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Kıyas pre-commit hook — runs the G1–G6 validator on staged seed files.
+# Kıyas pre-commit kancası — hazırlanmış tohum dosyalarını G1–G6 denetler.
+#
+# Install / Kurulum:
+#   cp tools/hooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+# or / veya:
+#   git config core.hooksPath tools/hooks
+#
+# It validates any staged file matching *kiyas-seed*.yaml (and .yml), except
+# the schema and template copies — those carry placeholder text on purpose and
+# are supposed to fail the filled-in check.
+set -euo pipefail
+
+LANG_OPT="${KIYAS_LANG:-en}"   # export KIYAS_LANG=tr for Turkish messages
+PYTHON="${PYTHON:-python}"
+here="$(git rev-parse --show-toplevel)"
+validator="$here/tools/kiyas_validate.py"
+
+# Staged seed files. The schema and template copies are excluded: they carry
+# placeholder text on purpose and are supposed to fail the filled-in check.
+mapfile -t files < <(git diff --cached --name-only --diff-filter=ACM \
+  | grep -Ei 'kiyas-seed.*\.ya?ml$' \
+  | grep -Ev '^(skill|templates)/' || true)
+
+if [ "${#files[@]}" -eq 0 ]; then
+  exit 0
+fi
+
+fail=0
+for f in "${files[@]}"; do
+  [ -f "$here/$f" ] || continue
+  echo "kiyas: validating $f"
+  # If the project keeps an exported refuted-patterns file, use it so the
+  # AD4 negative-constraint check runs at commit time too.
+  refuted="$here/refuted-patterns.yaml"
+  if [ -f "$refuted" ]; then
+    "$PYTHON" "$validator" --lang "$LANG_OPT" --refuted "$refuted" "$here/$f" || fail=1
+  else
+    "$PYTHON" "$validator" --lang "$LANG_OPT" "$here/$f" || fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "kiyas: commit blocked — seed batch violates a hard rule (G1–G6)."
+  echo "kiyas: commit engellendi — tohum partisi bir sert kuralı (G1–G6) ihlal ediyor."
+  echo "       Fix the entry or, if this is a deliberate exception, document it."
+  exit 1
+fi
+exit 0

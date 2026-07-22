@@ -1,0 +1,316 @@
+# Worked Kıyas generation batch — one full round, machine-checkable.
+#
+# This file is validated in CI: a schema change that breaks the contract
+# breaks the build. Content is drawn from the SpectralLM/GS-SSM project so
+# the operators have a concrete feel; the point is the SHAPE of a batch,
+# not a re-assertion of those results.
+#
+# Note what the batch demonstrates deliberately:
+#   - three distinct operators (diversity comes from operator choice)
+#   - one seed that BREAKS the current thesis (symmetry, AD3)
+#   - one seed honestly stuck at [S] because its arbiter is the author
+#   - one seed pinned at [NK] by its own notation-coincidence flag
+# A batch where everything lands at H-aday is a batch that skipped the sweep.
+#
+# Flags are not all blockers, and the two seeds below show both behaviours:
+# AD1/AD2/AD4 FORCE a tier (NK / S / GB), while AD5 and AD6 leave the tier
+# alone and instead demand a caveat travel with the seed. Making every flag
+# a blocker would just teach authors to leave the sweep silent.
+
+batch:
+  problem: >
+    State-space coupling is capped at |c| <= ~0.03 by the Gershgorin
+    stability constraint, which makes the coupling mechanism decorative:
+    the model cannot be given enough coupling for the hypothesis to be
+    tested at all.
+  date: "2026-07-23"
+  operators_used: ["O3", "O2", "O7"]
+  symmetry_check: >
+    KS-003 breaks the current thesis: it proposes that the coupling
+    mechanism is irrelevant at any strength, and that the observed gains
+    come from selective damping alone.
+  refuted_patterns_source: "refuted-patterns.yaml (exported 2026-07-23)"
+
+seeds:
+  # -------------------------------------------------------------------
+  - id: "KS-001"
+    tier: "H-aday"
+    claim: >
+      Guaranteeing stability through unitary mixing instead of Gershgorin
+      bounds lifts the coupling cap without losing rho <= 1, making
+      full-strength coupling testable.
+    operator: "O3"
+
+    illet: >
+      The constraint and the mechanism it limits are enforced at the same
+      place only by construction, not by necessity — stability is a
+      property of the spectrum, while the cap is a property of one
+      sufficient bound. Swap the bound and the mechanism is freed without
+      touching the property.
+    breaking_point: >
+      Unitary mixing preserves the spectral radius but constrains the
+      parametrization: transforms expressible under Gershgorin but not
+      under unitarity are lost. If the useful coupling lives exactly
+      there, the relaxation buys nothing and the analogy breaks.
+
+    cheapest_refutation:
+      test: >
+        Train matched runs at |c| in {0.03, 0.15, 0.5} under unitary
+        parametrization; if perplexity is flat in |c|, coupling is
+        decorative at every strength, not just weak ones.
+      adds_capacity: true
+      matched_budget_control: >
+        Symmetric arm: give the same extra parameters to the diagonal
+        (amplitude) channel with coupling fixed at 0.03. Promotion rule:
+        Delta(coupled) - Delta(diagonal-matched) >= threshold. Without this
+        arm a gain is attributable to generic capacity (lesson: HG28-b,
+        where input-dependent phase gained +6.75% while the same budget
+        spent on amplitude gained +16.4%).
+
+    arbiter:
+      class: "runtime"
+      who: "eval/ppl_eval.py on the held-out split, fixed seed set"
+      independent_of_author: true
+      latency: "hours"
+      calibration: >
+        Threshold derived from this harness's own seed-to-seed spread on
+        the unchanged baseline (measured, not inherited from the probe-R^2
+        or MI-nat instruments used elsewhere in the project).
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Arjovsky et al. 2016 — unitary RNNs for stable long-range dynamics"
+        - "Gu et al. 2022 — S4 diagonal-plus-low-rank stable parametrization"
+      strongest_relative: >
+        Gu et al. 2022 (S4): already achieves stability with expressive
+        parametrization, so the claim is not 'stability without cost'.
+      discrimination_test: >
+        Run the same coupling sweep under the S4 parametrization. If S4
+        already permits |c| >> 0.03 with equal perplexity, the unitary
+        route has no distinct contribution and the seed collapses to a
+        reimplementation.
+    claims_superiority: true
+
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear — the illet names a specific structural swap"
+      AD3_confirmation_bias: "clear — batch carries KS-003 as the breaking seed"
+      AD4_refuted_relative: "clear — no match in refuted-patterns.yaml"
+      AD5_scale_leak: "flagged: sweep runs at seq256; the main regime is seq1024"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Claim is scoped to seq256. Whether the cap relaxation still pays at
+      seq1024 is a separate seed (O5, scale transfer) and must not be
+      folded into this one.
+    trace_base_rate: ""
+
+    threshold_proposal: >
+      Delta-PPL <= -3% relative to the capacity-matched arm supports;
+      >= -1% refutes; between is underpowered, one rerun.
+    cost: "~2 GPU-days"
+    preregistered_prediction: >
+      Author expects a real but small effect (~2%), below the support
+      threshold — i.e. expects to be refuted.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # -------------------------------------------------------------------
+  # KS-001 carried an AD5 flag and stayed H-aday by writing its scope
+  # caveat. KS-002 shows the other behaviour: an AD1 flag forces NK, and no
+  # amount of caveat writing promotes it until the sweep clears.
+  - id: "KS-002"
+    tier: "NK"
+    claim: >
+      The coupling cap coincides with the reciprocal of the layer count,
+      suggesting the bound is really a depth-normalization in disguise.
+    operator: "O2"
+
+    illet: >
+      Claimed: both quantities are per-layer budgets on the same spectral
+      mass, so the cap would be depth-derived rather than stability-derived.
+    breaking_point: >
+      The coincidence holds only for the current depth; under a depth
+      change the two quantities move independently unless the illet is real.
+
+    cheapest_refutation:
+      test: >
+        Vary depth in {6, 12, 24} and re-measure the empirical cap. If the
+        cap does not track 1/depth, the equivalence is numerology.
+      adds_capacity: false
+      matched_budget_control: "not applicable"
+
+    arbiter:
+      class: "runtime"
+      who: "scripts/stability_scan.py — reports the empirical cap per depth"
+      independent_of_author: true
+      latency: "hours"
+      calibration: >
+        The cap's null is the scan's own resolution (grid step 0.005);
+        differences below that are not readable.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Gershgorin 1931 — the bound itself"
+      strongest_relative: ""
+      discrimination_test: ""
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: >
+        flagged: the equivalence is numeric and holds in one parametrization;
+        it must survive a change of units/basis before promotion
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: "clear"
+      AD4_refuted_relative: "clear"
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: "clear"
+    trace_base_rate: ""
+
+    threshold_proposal: >
+      Cap tracks 1/depth within +/-15% across all three depths -> supported;
+      no monotone relation -> refuted.
+    cost: "~4 GPU-hours"
+    preregistered_prediction: >
+      Author expects numerology (the golden-angle/1-over-alpha lesson).
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # -------------------------------------------------------------------
+  # The symmetry seed: it attacks the thesis the other two serve.
+  - id: "KS-003"
+    tier: "H-aday"
+    claim: >
+      Coupling contributes nothing at any strength; the entire measured
+      benefit comes from selective damping, which is already present in
+      the uncoupled model.
+    operator: "O7"
+
+    illet: >
+      Function held fixed (context-dependent contraction), substrate
+      swapped: if the same function is already delivered by the damping
+      channel, the coupling substrate is redundant rather than weak.
+    breaking_point: >
+      Redundancy and weakness are indistinguishable when both channels are
+      capped; the substitution argument only holds once KS-001 has lifted
+      the cap, so this seed depends on that one.
+
+    cheapest_refutation:
+      test: >
+        Ablate coupling entirely (c = 0) while leaving the damping channel
+        at full strength. If perplexity is unchanged, coupling is redundant.
+      adds_capacity: false
+      matched_budget_control: "not applicable"
+
+    arbiter:
+      class: "runtime"
+      who: "eval/ppl_eval.py, same harness and seeds as KS-001"
+      independent_of_author: true
+      latency: "hours"
+      calibration: >
+        Same measured seed-spread null as KS-001; shared harness, so the
+        threshold transfers within this instrument only.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Gu & Dao 2023 — selective state spaces; selectivity as the load-bearing part"
+      strongest_relative: ""
+      discrimination_test: ""
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: "clear — this IS the batch's symmetry seed"
+      AD4_refuted_relative: "clear"
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: >
+        flagged: this joins the coupling trace, 7/7 negative so far
+    trace_base_rate: >
+      Base rate ~0/7 on the coupling trace, written into the prediction.
+      Two-sided scope note: those 7 were all norm-preserving/weak-coupling
+      runs, and this ablation samples the same cell — so unlike a
+      norm-breaking seed, the low base rate IS in-distribution here and
+      does anchor the prior.
+
+    threshold_proposal: >
+      |Delta-PPL| < 1% between c=0 and c=0.03 -> coupling redundant
+      (supports); >= 3% -> refuted.
+    cost: "~6 GPU-hours"
+    preregistered_prediction: >
+      Author expects redundancy to be confirmed, consistent with the trace.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # -------------------------------------------------------------------
+  # Honest [S]: a seed whose only judge is the author. It is not a bad
+  # idea; it just cannot be promoted, and the schema makes that visible
+  # instead of letting a plausible number imply an oracle.
+  - id: "KS-004"
+    tier: "S"
+    claim: >
+      The coupling cap is why the architecture reads as 'elegant' to
+      reviewers: the constrained version is easier to explain, so the
+      constraint survives for rhetorical rather than technical reasons.
+    operator: "O2"
+
+    illet: >
+      Selection pressure on published architectures runs through
+      explainability, not only through performance — so a constraint can
+      persist because it simplifies the story it is embedded in.
+    breaking_point: >
+      This explains persistence, not origin, and it is unfalsifiable with
+      the instruments available here: no measurement in this project
+      distinguishes 'kept because explainable' from 'kept because it works'.
+
+    cheapest_refutation:
+      test: >
+        None designed. A real test would need an external reviewer cohort
+        rating variants blind to performance — outside this project's means.
+      adds_capacity: false
+      matched_budget_control: "not applicable"
+
+    arbiter:
+      class: "author"
+      who: "the author's own judgment of what reads as elegant"
+      independent_of_author: false
+      latency: "never"
+      calibration: "unknown — no instrument exists for this claim here"
+
+    prior_art:
+      searched: false
+      relatives: []
+      strongest_relative: ""
+      discrimination_test: ""
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear — the illet is nameable even though untestable"
+      AD3_confirmation_bias: "clear"
+      AD4_refuted_relative: "clear"
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: "clear"
+    trace_base_rate: ""
+
+    threshold_proposal: >
+      None. Proposing a number here would be threshold theatre: the
+      arbiter is the author, so no threshold can be adjudicated.
+    cost: "n/a"
+    preregistered_prediction: ""
+
+    handoff:
+      status: "declined"
+      mizan_hypothesis_id: ""
+      registry: "stays at [S]; recorded so it is not regenerated as new"

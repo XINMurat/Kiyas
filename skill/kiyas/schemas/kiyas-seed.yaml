@@ -1,0 +1,137 @@
+# =====================================================================
+# Kıyas Seed Schema v1.0  (kiyas-seed.yaml)
+# =====================================================================
+# Machine-readable form of the Kıyas output contract. A "seed" is one
+# generated idea, carrying everything Mizan needs to preregister it.
+#
+# Why this file exists: the output contract (illet / breaking point /
+# cheapest refutation / prior art / tier) was prose, and prose cannot be
+# enforced. This schema turns the contract into data so tools/kiyas_validate.py
+# can act as a RUNTIME arbiter for contract completeness.
+#
+# What the validator can and cannot judge — state this honestly wherever
+# the tool is described: it checks that the illet field is FILLED, never
+# that the illet is TRUE. Contract integrity is machine-checkable; idea
+# quality is not. Dressing the second in the clothes of the first is
+# exactly the failure Mizan R8 exists to prevent.
+#
+# HARD RULES (tools/kiyas_validate.py enforces these):
+#   G1. illet MUST be non-empty. An idea whose illet cannot be named was
+#       not generated — it is discarded, not called "decorative".
+#   G2. breaking_point MUST be non-empty for tier H-aday. An analogy with
+#       no stated limit is ornament.
+#   G3. If the seed makes a superiority/originality claim
+#       (claims_superiority: true) and prior_art.searched is false, the
+#       tier is forced to S. The strongest relative must also appear in
+#       prior_art.strongest_relative and in the discrimination test.
+#   G4. If cheapest_refutation.adds_capacity is true, a matched-budget
+#       control arm is MANDATORY; without it a positive result cannot be
+#       attributed to the targeted mechanism (project lesson HG28-b).
+#   G5. arbiter is MANDATORY and uses the SAME five classes as Mizan R8.
+#       This is the typed handoff: a seed leaves Kıyas already carrying
+#       the judge that Mizan's registry will demand.
+#   G6. Anti-pattern sweep flags (AD1..AD6) MUST be recorded — including
+#       explicit "clear". Silence is not the same as a clean sweep.
+#
+# Tiers: S (speculative) | H-aday (hypothesis candidate, Mizan-ready)
+#        NK (notation-suspect) | GB (fed-back from a refuted pattern)
+# =====================================================================
+
+batch:
+  problem: >
+    The blocked problem in ONE sentence: what is stuck, which constraint
+    hurts. Every seed in this batch answers this.
+  date: "2026-07-23"
+  operators_used: ["O1", "O3", "O6"]   # at least 3 distinct (diversity rule)
+  symmetry_check: >
+    Which seed in this batch BREAKS the current thesis rather than
+    flattering it? Name its id. If none, the batch has confirmation bias.
+  refuted_patterns_source: >
+    Path to the negative-constraint export consulted before generating
+    (e.g. refuted-patterns.yaml produced by mizan_export_refuted.py).
+    "not consulted" is allowed and honest — it just means AD4 flags in
+    this batch are unverified.
+
+seeds:
+  - id: "KS-001"
+    tier: "H-aday"                  # S | H-aday | NK | GB
+    claim: >
+      One sentence, refutable. Not a topic — a claim that can be wrong.
+    operator: "O1"                  # O1..O7 (see references/operators.md)
+
+    # --- G1: the load-bearing structural equivalence -----------------
+    illet: >
+      The STRUCTURAL equivalence that carries the analogy — not surface
+      resemblance. "What maps to what, and why does it bear load?"
+      If this cannot be written in one sentence, discard the seed.
+
+    # --- G2: where the analogy stops ---------------------------------
+    breaking_point: >
+      Where the analogy/relation breaks down. Mandatory for H-aday.
+
+    # --- G4: the smallest test that could kill it --------------------
+    cheapest_refutation:
+      test: >
+        The smallest experiment that kills this seed. This is the Mizan
+        preregistration seed.
+      adds_capacity: false          # true if the test adds parameters/capacity
+      matched_budget_control: >
+        MANDATORY when adds_capacity is true: the symmetric arm giving the
+        SAME extra budget to a generic channel (amplitude / diagonal /
+        hidden dim). Promotion rule: Δ(target) − Δ(generic) ≥ threshold.
+        Write "not applicable" only when adds_capacity is false.
+
+    # --- G5: who returns the verdict (mirrors Mizan R8) --------------
+    arbiter:
+      class: "instrument"           # runtime | instrument | third_party | author | none
+      who: "the concrete judge — script path, person/role, system, cohort"
+      independent_of_author: true
+      latency: "seconds | days | quarters | never"
+      calibration: >
+        Where the proposed threshold's null comes from. Derived from THIS
+        instrument's own null distribution — never inherited across
+        instruments (AD1/A3). "unknown" is an honest answer.
+
+    # --- G3: named lineage -------------------------------------------
+    prior_art:
+      searched: true                # false + claims_superiority => forced to S
+      relatives:
+        - "Author Year — what it already does"
+      strongest_relative: >
+        The real competitor. If it is not in the comparison set, the seed
+        is incomplete regardless of tier.
+      discrimination_test: >
+        How the claimed distinction gets tested AGAINST that strongest
+        relative. "Ours is more principled" is not a test.
+    claims_superiority: true        # does this seed claim to beat prior art?
+
+    # --- G6: anti-pattern sweep (references/operators.md §3) ---------
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"   # clear | flagged: <why>
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: "clear"      # batch-level, restated per seed
+      AD4_refuted_relative: "clear"       # unverified if no refuted-patterns source
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      MANDATORY when AD5 is flagged: the regime this prediction is scoped
+      to. A finding at reduced scale does not become a main-regime claim by
+      being restated.
+    trace_base_rate: >
+      When this seed joins a research trace with N consistent negatives:
+      the honest base rate (~hits/N) written INTO the preregistered
+      prediction, plus the two-sided scope note — "base ≈0/N BUT the trace
+      never sampled this cell" is out-of-distribution and does NOT
+      guarantee a strong null prior.
+
+    threshold_proposal: >
+      Suggested numeric decision rule. Mizan locks it; Kıyas only proposes.
+    cost: "rough effort estimate"
+    preregistered_prediction: >
+      Optional: what the author expects, written before any result.
+
+    # --- handoff ------------------------------------------------------
+    handoff:
+      status: "pending"             # pending | registered | declined
+      mizan_hypothesis_id: ""       # filled when it enters a Mizan registry
+      registry: ""                  # path/URL of that registry
