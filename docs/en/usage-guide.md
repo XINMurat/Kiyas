@@ -75,7 +75,7 @@ refutes, and exports refuted patterns back. Concretely:
 
 ```bash
 # before generating: know what is already dead
-python ../mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
+python ../Mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
 
 # after generating: check the batch against those constraints
 python tools/kiyas_validate.py --refuted refuted-patterns.yaml seeds.yaml

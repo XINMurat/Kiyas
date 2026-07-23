@@ -91,7 +91,7 @@ behaviour and the shipped behaviour disagree.
 
 Kıyas generates; it does not adjudicate. Proposals that move tier promotion,
 result recording, or evidence weighing into this repo belong in
-[Mizan](https://github.com/XINMurat/mizan) instead. Keeping the generator and
+[Mizan](https://github.com/XINMurat/Mizan) instead. Keeping the generator and
 the judge in separate tools is not an accident of packaging — it is the
 producer/auditor separation the methodology requires.
 
@@ -143,6 +143,6 @@ bir `kiyas.skill` belgelenen davranışla dağıtılan davranışın çelişmesi
 ### Kapsam disiplini
 
 Kıyas üretir, hüküm vermez. Tier terfisini, sonuç kaydını veya kanıt tartmayı bu
-depoya taşıyan öneriler [Mizan](https://github.com/XINMurat/mizan)'a aittir.
+depoya taşıyan öneriler [Mizan](https://github.com/XINMurat/Mizan)'a aittir.
 Üreticiyle hakemi ayrı araçlarda tutmak paketleme kazası değil, metodolojinin
 gerektirdiği üretici/denetçi ayrımıdır.

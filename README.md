@@ -16,7 +16,7 @@ An idea whose illet cannot be named is discarded, not softened. An idea whose
 only judge is its own author stays speculative, however plausible it sounds.
 
 Kıyas is the generative upstream partner of
-[**Mizan**](https://github.com/XINMurat/mizan): Mizan weighs and refutes, Kıyas
+[**Mizan**](https://github.com/XINMurat/Mizan): Mizan weighs and refutes, Kıyas
 produces what gets weighed — already shaped for that audit. Refuted patterns
 flow back as negative constraints, which closes the loop.
 
@@ -66,7 +66,7 @@ python tools/kiyas_validate.py examples/kiyas-seed.example.yaml
 With the negative-constraint feedback loop wired in:
 
 ```bash
-python ../mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
+python ../Mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
 python tools/kiyas_validate.py --refuted refuted-patterns.yaml seeds.yaml
 ```
 
@@ -123,7 +123,7 @@ beğenilmek yerine denetlenebilmesi için.
 İlleti isimlendirilemeyen fikir yumuşatılmaz, atılır. Tek hakemi kendi yazarı
 olan fikir, ne kadar makul görünürse görünsün spekülatif kalır.
 
-Kıyas, [**Mizan**](https://github.com/XINMurat/mizan)'ın üretici üst-kolu:
+Kıyas, [**Mizan**](https://github.com/XINMurat/Mizan)'ın üretici üst-kolu:
 Mizan tartar ve çürütür, Kıyas tartılacak olanı üretir — ama o denetime hazır
 biçimde. Çürütülen desenler negatif-kısıt olarak geri akar; döngü böyle kapanır.
 
@@ -171,7 +171,7 @@ python tools/kiyas_validate.py --lang tr examples/kiyas-seed.example.yaml
 Geri-besleme döngüsü bağlıyken:
 
 ```bash
-python ../mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
+python ../Mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
 python tools/kiyas_validate.py --lang tr --refuted refuted-patterns.yaml seeds.yaml
 ```
 

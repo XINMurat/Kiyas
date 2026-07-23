@@ -40,7 +40,7 @@ a recorded anti-pattern sweep. See `docs/en/usage-guide.md`.
 ### 4. Close the loop with Mizan
 
 ```bash
-python ../mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
+python ../Mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
 python tools/kiyas_validate.py --refuted refuted-patterns.yaml seeds.yaml
 ```
 
@@ -98,7 +98,7 @@ taraması. Bkz. `docs/tr/kullanim-kilavuzu.md`.
 ### 4. Mizan ile döngüyü kapat
 
 ```bash
-python ../mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
+python ../Mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
 python tools/kiyas_validate.py --lang tr --refuted refuted-patterns.yaml tohumlar.yaml
 ```
 

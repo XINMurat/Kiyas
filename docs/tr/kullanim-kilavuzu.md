@@ -74,7 +74,7 @@ veya çürütür, çürütülen desenleri geri verir. Somut olarak:
 
 ```bash
 # üretmeden önce: neyin zaten öldüğünü bil
-python ../mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
+python ../Mizan/tools/mizan_export_refuted.py registry.yaml -o refuted-patterns.yaml
 
 # ürettikten sonra: partiyi bu kısıtlara karşı denetle
 python tools/kiyas_validate.py --lang tr --refuted refuted-patterns.yaml tohumlar.yaml
