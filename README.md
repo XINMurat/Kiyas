@@ -20,6 +20,15 @@ Kıyas is the generative upstream partner of
 produces what gets weighed — already shaped for that audit. Refuted patterns
 flow back as negative constraints, which closes the loop.
 
+The third verb is [**İskele**](https://github.com/XINMurat/Iskele), which builds
+the structure the other two operate on — domain model, gated roadmap, atomic
+backlog, tracked progress:
+
+> **İskele builds · Mizan weighs · Kıyas generates**
+
+A surviving seed is not a plan. When ideas clear the audit, İskele is where they
+become phases, tasks, and acceptance criteria you can actually execute.
+
 ## Why a generator needs a discipline at all
 
 The verification loop that makes coding tasks tractable is not powered by the
@@ -126,6 +135,16 @@ olan fikir, ne kadar makul görünürse görünsün spekülatif kalır.
 Kıyas, [**Mizan**](https://github.com/XINMurat/Mizan)'ın üretici üst-kolu:
 Mizan tartar ve çürütür, Kıyas tartılacak olanı üretir — ama o denetime hazır
 biçimde. Çürütülen desenler negatif-kısıt olarak geri akar; döngü böyle kapanır.
+
+Üçüncü fiil [**İskele**](https://github.com/XINMurat/Iskele): diğer ikisinin
+üzerinde çalıştığı yapıyı kurar — alan modeli, kapılı yol haritası, atomik
+backlog, izlenen ilerleme:
+
+> **İskele kurar · Mizan tartar · Kıyas üretir**
+
+Sağ kalan bir tohum henüz plan değildir. Fikirler denetimden geçtiğinde, onları
+fiilen yürütebileceğin fazlara, görevlere ve kabul kriterlerine çeviren yer
+İskele'dir.
 
 ## Bir üreticiye neden disiplin gerekir
 
