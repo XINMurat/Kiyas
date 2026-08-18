@@ -221,6 +221,37 @@ developed.
   commitment 5): exhaust the notation-coincidence and surface-resonance
   alternatives first.
 
+## Operating assumptions (this skill runs inside someone else's setup)
+
+Kıyas is loaded into a host with its own instructions — a project's
+`CLAUDE.md`, org policy, other skills — and those take precedence. The
+failure that follows is quiet: generation still *happens*, it just stops
+being disciplined, and a list of plausible ideas looks the same whether
+or not anything was ruled out.
+
+- **Name the conflict; do not silently comply.** Say which host
+  instruction disables which step and what the output can no longer
+  claim. Two collisions matter most here: a **brevity cap** (the
+  refutation condition and the cheapest test are the parts that get cut
+  first, and they are the parts that make a candidate auditable rather
+  than merely interesting) and an instruction to **stay positive or
+  agreeable** (this skill's discipline is discarding, and a generator
+  that discards nothing is a brainstorm with tier tags on it).
+- **A pinned output language overrides "write in the user's language."**
+  Comply, but keep the tier tags bilingual — they are labels, not prose.
+- **Never assume a tool exists.** Subagents, file writing and shell
+  access vary by host. If seeds cannot be written to a file, say so
+  before generating rather than after — the context economy rule above
+  assumes a file, and without one a long run needs a different shape
+  (shorter rounds, earlier cuts).
+- **Load `references/operators.md` on demand**, not at the start.
+- **What travels is the shape, not the persuasion.** A candidate that
+  ships with a threshold and a refutation condition can be checked by
+  anyone, in any host, with or without this skill loaded. A candidate
+  that ships as an argument depends on the reader — and the host's
+  instructions decide how that reader behaves. Put the discipline in the
+  entry, not in the pitch.
+
 ## Anti-patterns (refuse these politely)
 
 - Generating an idea with no illet to fill a quota.
