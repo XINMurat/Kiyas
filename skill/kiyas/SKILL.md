@@ -182,6 +182,28 @@ back to Kıyas as negative constraints.** In practice:
   permanent `[KKE]` saying so until such an arm exists. This claim about Kıyas
   is itself `[S]` until the ledger has entries, and should be reported that way.
 
+## Context economy (ideation inflates transcripts fastest)
+
+Generation produces volume by design: many candidates, most of them
+discarded. Left in the conversation, that volume is re-sent on every
+subsequent turn — you pay for the rejected ideas for the rest of the
+session, at exactly the moment the surviving ones need room to be
+developed.
+
+- **Candidates land in the seed file, not in prose.** Write them to the
+  YAML as they are generated. The transcript carries the shortlist and
+  the reasoning behind the cut; the file carries everything.
+- **Rejected candidates are not deleted, they are recorded** — the
+  refuted-patterns ledger exists for this. Rejection is information, but
+  it is *file* information, not conversation information.
+- **Distillation can start fresh.** Once seeds are on disk, the
+  distillation pass needs the file and the problem statement, not the
+  generation session's history. Say so at the handoff.
+- **A long generation run is a phased run.** If a session produces
+  candidates across several rounds, treat each round as a phase: write,
+  cut, hand off. This is the same shape as Mizan's phased audit and
+  İskele's per-phase handoff.
+
 ## Tone and framing rules
 
 - Never present a generated idea as a finding. "This might be interesting" ≠
