@@ -98,6 +98,33 @@ better than free brainstorming. That claim is currently `[S]` — speculative.
 until a control arm exists. It will be reported when there is a record, wins
 and losses both.
 
+## No setup required — and a disclosed confound
+
+**You do not need to configure your assistant for this skill to work.** No
+custom instructions, no system prompt, no house style. If it only behaves
+when your `CLAUDE.md` is arranged a particular way, that is a **defect in the
+skill**, not a missing step in your setup — please open an issue.
+
+Honest tier on that claim here: **`[H]`**, not `[K]`. It was tested for
+Mizan, this project's sibling, under a `CLAUDE.md` written to fight the
+method and again under none at all
+([the runs](https://github.com/XINMurat/Mizan/blob/main/examples/portability-across-hosts.md)).
+The equivalent runs have **not** been done for Kıyas. The two skills share
+their tone rules and their tier vocabulary, which is the basis for expecting
+the result to carry — and an expectation is not a measurement.
+
+**Disclosed confound:** this project's author keeps an always-on personal
+instruction set that overlaps these rules at several points. Their own
+sessions are therefore a maximally reinforcing host, and *"it works well for
+me"* from that setup is confounded by construction. That instruction set is
+deliberately **not** shipped as a recommendation: installing it would erase
+the neutral-host case from the user population — the only case that can
+produce field evidence — and it would put the same rules in two places under
+separate maintenance, where a user's copy silently overrides the skill.
+
+If a rule must survive an unknown setup, it belongs in the validator, not in
+a paragraph asking users to reconfigure their assistant.
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) — the ground rules are the ones the
