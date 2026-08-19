@@ -14,18 +14,98 @@
 #          registry). Without such entries the rate stays descriptive.
 #
 #   python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
+#
+# ---------------------------------------------------------------------
+# STATUS 2026-08-19 — read this before reading any number below.
+#
+# First real entries: the six seeds of examples/kiyas-seed.jspace.example.yaml.
+# NONE of them has been registered or scored yet, so every final_tier is
+# empty and the survival rate is currently UNDEFINED, not zero. What the
+# ledger buys today is a commitment: the ids exist, the problems are named,
+# and later outcomes can no longer be selected after the fact.
+#
+# Two limits that do not go away by adding more entries:
+#   1. There is still NO control arm. Until the same problem is attacked by
+#      free brainstorming and scored by the same registry, any rate printed
+#      here is descriptive. The tool prints a permanent [KKE] saying so.
+#   2. All six seeds share one problem and one generating session, so they
+#      are not independent trials. A rate over them would be a rate over one
+#      draw. Independence needs entries from unrelated problems.
+#
+# KS-J006 is deliberately in the ledger although it was declined at
+# generation. A generator that records only the ideas it kept cannot report
+# an honest hit rate.
+# ---------------------------------------------------------------------
 
 ledger:
-  project: ""
+  project: "J-space / workspace-subspace transfer (external target)"
   started: "2026-07-23"
-  registry: "path/URL of the Mizan registry that scores these seeds"
+  registry: >
+    none yet — these seeds have not entered a Mizan registry. When they do,
+    put its path or URL here and fill registered_as/final_tier. Leaving this
+    field honest is why the rate is undefined rather than flattering.
 
-seeds: []
-  # - id: "KS-001"
-  #   batch: "examples/kiyas-seed.example.yaml"
-  #   problem: "one-line restatement, so arms can be matched by problem"
-  #   operator: "O3"
-  #   registered_as: "H-014"        # the Mizan hypothesis id
-  #   final_tier: ""                # filled when the registry decides
-  #   control: false
-  #   date: "2026-07-23"
+seeds:
+  - id: "KS-J006"
+    batch: "examples/kiyas-seed.jspace.example.yaml"
+    problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"
+    operator: "O1"
+    registered_as: ""
+    final_tier: ""                  # declined at generation; never registered
+    control: false
+    date: "2026-08-19"
+    note: >
+      Declined in the batch itself (tier S, AD2 flagged): the illet did not
+      carry. Recorded because the discard rate is part of the record.
+
+  - id: "KS-J001"
+    batch: "examples/kiyas-seed.jspace.example.yaml"
+    problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"
+    operator: "O1"
+    registered_as: ""
+    final_tier: ""
+    control: false
+    date: "2026-08-19"
+
+  - id: "KS-J002"
+    batch: "examples/kiyas-seed.jspace.example.yaml"
+    problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"
+    operator: "O4"
+    registered_as: ""
+    final_tier: ""
+    control: false
+    date: "2026-08-19"
+
+  - id: "KS-J003"
+    batch: "examples/kiyas-seed.jspace.example.yaml"
+    problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"
+    operator: "O2"
+    registered_as: ""
+    final_tier: ""
+    control: false
+    date: "2026-08-19"
+
+  - id: "KS-J004"
+    batch: "examples/kiyas-seed.jspace.example.yaml"
+    problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"
+    operator: "O1"
+    registered_as: ""
+    final_tier: ""                  # tier NK at generation; blocked pending AD1
+    control: false
+    date: "2026-08-19"
+    note: >
+      Pinned NK by its own instrument-artifact flag. Cannot be registered
+      until the algorithm-baseline null clears AD1.
+
+  - id: "KS-J005"
+    batch: "examples/kiyas-seed.jspace.example.yaml"
+    problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"
+    operator: "O7"
+    registered_as: ""
+    final_tier: ""
+    control: false
+    date: "2026-08-19"
+    note: >
+      The batch's symmetry seed — it cuts against the thesis that generated
+      the batch. If the ledger ever shows symmetry seeds surviving at a
+      different rate from thesis-flattering ones, that deserves its own look.
