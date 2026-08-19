@@ -28,7 +28,7 @@ more analogies.
 the same contract, tiered, flagged, and ordered by criticality ×
 (information value / cost).
 
-## 3. Hard rules (summary — G1–G9 in the schema)
+## 3. Hard rules (summary — G1–G11 in the schema)
 
 1. Illet non-empty. An idea whose illet cannot be named was not generated.
 2. Breaking point present before an idea can be a hypothesis candidate.
@@ -48,6 +48,11 @@ the same contract, tiered, flagged, and ordered by criticality ×
    it. If no test can be designed, the idea stays speculative.
 9. A hypothesis candidate has had its **prior art searched**. "Not searched"
    is honest, but it caps the idea at speculative.
+
+10. The arbiter block does not contradict itself: a self-judged or
+    unjudged arbiter cannot also be independent of the author.
+11. The batch names the **refuted-patterns export** it consulted. "Not
+    consulted" is honest; silence makes every AD4 line unverifiable.
 
 Four further checks **warn without blocking** (`--strict` makes them fail): a
 numeric threshold with no judge behind it, a batch where every seed is a

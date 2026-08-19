@@ -6,7 +6,7 @@ Kıyas is a methodology project, so it holds itself to its own discipline.
 Contributions are welcome but must respect the rules the tool applies to
 everyone.
 
-### Ground rules (the same G1–G9 the tool enforces)
+### Ground rules (the same G1–G11 the tool enforces)
 
 1. **Name the illet.** Any claim about why a change helps states the
    structural reason it bears load — not that it "feels cleaner". A PR whose
@@ -32,7 +32,12 @@ everyone.
 ### Before opening a PR
 
 ```bash
-# 1. seed batches must pass G1–G9, warnings included (CI runs --strict):
+# 0. the workflow that runs every other check must itself parse. It broke
+#    once, silently, on a printf whose escape was consumed by the generator
+#    that wrote it -- and nothing checked the checker:
+python -c "import yaml,sys; yaml.safe_load(open('.github/workflows/kiyas.yml',encoding='utf-8')); print('workflow ok')"
+
+# 1. seed batches must pass G1–G11, warnings included (CI runs --strict):
 python tools/kiyas_validate.py --strict examples/kiyas-seed.example.yaml
 python tools/kiyas_validate.py --strict --lang tr examples/kiyas-seed.example.yaml
 python tools/kiyas_validate.py --strict examples/kiyas-seed.jspace.example.yaml
@@ -85,7 +90,7 @@ behaviour and the shipped behaviour disagree.
 ### What lives where
 
 - `skill/kiyas/` — the skill (CC-BY-4.0 for prose, MIT for the schema).
-- `tools/` — the G1–G9 validator, the ledger reporter, the git hook (MIT).
+- `tools/` — the G1–G11 validator, the ledger reporter, the git hook (MIT).
 - `examples/`, `templates/`, `ledger/` — worked material and starting points.
 - `docs/` — bilingual guides (CC-BY-4.0).
 
@@ -107,7 +112,7 @@ Kıyas bir metodoloji projesidir; bu yüzden kendi disiplinine kendisi de uyar.
 Katkılar memnuniyetle karşılanır ama aracın herkese uyguladığı kurallara saygı
 göstermek zorundadır.
 
-### Temel kurallar (aracın uyguladığı G1–G9'un aynısı)
+### Temel kurallar (aracın uyguladığı G1–G11'un aynısı)
 
 1. **İlleti isimlendir.** Bir değişikliğin neden işe yaradığına dair her iddia,
    yükü taşıyan yapısal sebebi yazar — "daha temiz duruyor" değil. Gerekçesi

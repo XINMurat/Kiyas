@@ -1,5 +1,5 @@
 # =====================================================================
-# Kıyas Seed Schema v1.2  (kiyas-seed.yaml)
+# Kıyas Seed Schema v1.3  (kiyas-seed.yaml)
 # =====================================================================
 # Machine-readable form of the Kıyas output contract. A "seed" is one
 # generated idea, carrying everything Mizan needs to preregister it.
@@ -32,6 +32,14 @@
 #       the judge that Mizan's registry will demand.
 #   G6. Anti-pattern sweep flags (AD1..AD6) MUST be recorded — including
 #       explicit "clear". Silence is not the same as a clean sweep.
+#   G10. arbiter.independent_of_author MUST NOT be true for class author or
+#        none — those classes are by definition not independent. A
+#        contradiction inside the arbiter block undoes the one field the
+#        whole handoff to Mizan rests on. Ported from the sibling Mizan
+#        validator, which has caught this since R8 shipped.
+#   G11. batch.refuted_patterns_source MUST be non-empty. "not consulted" is
+#        an honest answer; an absent field is not an answer at all, and it
+#        makes every AD4 line in the batch unverifiable. Same shape as G6.
 #   G7. The `discards` block MUST be present, even when empty. SKILL.md
 #       makes the discard list part of the deliverable; until v1.1 the
 #       contract had no slot for it, so the one section a host instruction
@@ -57,6 +65,10 @@
 # These have legitimate exceptions, so the right response is to look, not to
 # be stopped. Making every flag blocking would teach authors to write batches
 # that avoid triggering rules — the same failure G6's design note describes.
+#
+# MIGRATION v1.2 -> v1.3: G10 and G11 close the last two findings of
+# PROSE-SCHEMA-AUDIT.md. Both shipped batches passed unchanged; a batch that
+# fails G11 was not consulting a refuted-patterns export and not saying so.
 #
 # MIGRATION v1.1 -> v1.2: G8 and G9 close two places where the schema allowed
 # what the prose forbids outright (see PROSE-SCHEMA-AUDIT.md). A batch whose
@@ -84,7 +96,8 @@ batch:
     Which seed in this batch BREAKS the current thesis rather than
     flattering it? Name its id. If none, the batch has confirmation bias.
   refuted_patterns_source: >
-    Path to the negative-constraint export consulted before generating
+    MANDATORY, non-empty (G11). Path to the negative-constraint export
+    consulted before generating
     (e.g. refuted-patterns.yaml produced by mizan_export_refuted.py).
     "not consulted" is allowed and honest — it just means AD4 flags in
     this batch are unverified.
@@ -126,7 +139,8 @@ seeds:
     arbiter:
       class: "instrument"           # runtime | instrument | third_party | author | none
       who: "the concrete judge — script path, person/role, system, cohort"
-      independent_of_author: true
+      independent_of_author: true   # false is the only coherent value for
+                                    # class author / none (G10)
       latency: "seconds | days | quarters | never"
       calibration: >
         Where the proposed threshold's null comes from. Derived from THIS

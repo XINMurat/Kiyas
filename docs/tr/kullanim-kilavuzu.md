@@ -27,7 +27,7 @@ seçiminden gelir, daha çok analoji istemekten değil.
 geçer, tier'lanır, bayraklanır ve kriticklik × (bilgi-değeri / maliyet)
 sırasına dizilir.
 
-## 3. Sert kurallar (özet — şemadaki G1–G9)
+## 3. Sert kurallar (özet — şemadaki G1–G11)
 
 1. İllet boş olamaz. İlleti isimlendirilemeyen fikir üretilmiş sayılmaz.
 2. Bir fikir hipotez adayı olmadan önce kırılma noktası yazılmış olmalı.
@@ -47,6 +47,11 @@ sırasına dizilir.
    bir test yoksa fikir spekülatif kalır.
 9. Hipotez adayının **prior art'ı aranmıştır**. "Aranmadı" dürüsttür ama fikri
    spekülatif seviyede tavanlar.
+
+10. Hakem bloğu kendisiyle çelişmez: kendi kendini yargılayan ya da
+    hakemsiz bir girdi aynı anda yazardan bağımsız olamaz.
+11. Parti, baktığı **çürütülmüş-desen ihracını** adlandırır. "Bakılmadı"
+    dürüsttür; sessizlik her AD4 satırını doğrulanamaz kılar.
 
 Dört kontrol daha **bloke etmeden uyarır** (`--strict` ile düşerler): hakemi
 olmayan sayısal eşik, her tohumu hipotez adayı olan parti, hiçbir tohumu

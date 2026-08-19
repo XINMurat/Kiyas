@@ -12,6 +12,12 @@ description: Disciplined ideation and analogical inference for research that is 
 > (A4) trace base-rate prior (AD6). The analogical core did not change; what
 > changed is the hygiene a candidate passes before entering Mizan.
 
+> **[Revised 2026-08-20 — G10/G11]** The last two findings of
+> `PROSE-SCHEMA-AUDIT.md`. G10 came from the sibling Mizan validator, which
+> had caught the arbiter self-contradiction since R8 shipped — the two repos
+> had each solved something the other had not, and comparing them was worth
+> more than either audit alone.
+
 > **[Revised 2026-08-19 — G8/G9 + warnings]** A systematic pass over this
 > file against the schema (`PROSE-SCHEMA-AUDIT.md`) found two places where the
 > data contract permitted what the prose forbids outright: an `[H-aday]` with
@@ -161,7 +167,7 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G9). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G11). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
@@ -171,7 +177,10 @@ whenever the test adds capacity (G4); an arbiter block using Mizan's five R8
 classes (G5); a recorded AD1–AD6 sweep, where AD1/AD2/AD4 force a tier
 while AD5/AD6 demand that a caveat travel with the seed (G6); and a `discards`
 block, required even when empty (G7); a cheapest refutation on every
-`[H-aday]` (G8); and a prior-art search on every `[H-aday]` (G9).
+`[H-aday]` (G8); a prior-art search on every `[H-aday]` (G9); an arbiter
+block that does not contradict itself (G10); and a stated
+`refuted_patterns_source`, where "not consulted" is the honest answer and
+silence is not an answer at all (G11).
 
 **Two channels, and the reason there are two.** G1–G9 block. W1–W4 do not:
 a numeric threshold with an author/none arbiter, a batch where every seed
@@ -333,6 +342,6 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G9 and
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G11 and
   warnings W1–W4), with
   the arbiter block shared with Mizan R8.

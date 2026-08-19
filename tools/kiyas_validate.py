@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G9.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G11.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -19,7 +19,7 @@ question. The same logic applies to this tool. A single blocking channel
 pushes authors to write batches that do not trigger rules, which is not the
 same as writing better batches. So:
 
-  * VIOLATIONS (G1–G9) block. They mark a contract that is incomplete in a way
+  * VIOLATIONS (G1–G11) block. They mark a contract that is incomplete in a way
     the prose forbids outright.
   * WARNINGS (W1–W4) do not block by default. They mark shapes that are
     usually wrong but have legitimate exceptions, so the right response is to
@@ -222,6 +222,22 @@ MSG = {
         "G9: {id} tohumu H-aday ama prior_art.searched false — \"aranmadı\" dürüst bir cevaptır, "
         "ama o zaman fikir H-aday olamaz.",
     ),
+    "G10_independence_contradiction": (
+        "G10: seed {id} declares arbiter.class '{cls}' with independent_of_author: true — that "
+        "class is by definition not independent, and a contradiction inside the arbiter block "
+        "undoes the one field the whole handoff rests on.",
+        "G10: {id} tohumu arbiter.class '{cls}' ile independent_of_author: true beyan ediyor — bu "
+        "sınıf tanımı gereği bağımsız değildir; hakem bloğunun içindeki çelişki, tüm devrin "
+        "dayandığı tek alanı geçersiz kılar.",
+    ),
+    "G11_no_refuted_source": (
+        "G11: batch has no refuted_patterns_source — say which negative-constraint export was "
+        "consulted, or write \"not consulted\". Silence is not a clean sweep, and it makes every "
+        "AD4 line in the batch unverifiable.",
+        "G11: partide refuted_patterns_source yok — hangi çürütülmüş-desen ihracına bakıldığını "
+        "yaz ya da \"not consulted\" de. Sessizlik temiz tarama değildir ve partideki her AD4 "
+        "satırını doğrulanamaz kılar.",
+    ),
     "W1_threshold_without_judge": (
         "W1: seed {id} proposes a numeric threshold but its arbiter class is '{cls}' — the form "
         "of a verification loop without its judge is not rigor. Drop the number or name a judge.",
@@ -247,8 +263,8 @@ MSG = {
         "bulgu, yeniden ifade edilerek başka bir rejim hakkında iddiaya dönüşmez.",
     ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G9 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G9 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G11 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G11 ihlali yok.",
     ),
     "warn_header": (
         "{n} warning(s) — not blocking; re-run with --strict to treat them as failures.",
@@ -316,6 +332,13 @@ def check(data: dict, lang: str,
         errs.append(m("batch_no_problem", lang))
     if not _s(batch.get("symmetry_check")):
         errs.append(m("batch_no_symmetry", lang))
+
+    # G11 — the schema describes this field as required and the validator
+    # never read it, so a batch could claim AD4 "clear" on every seed with
+    # nothing behind it. Same shape as G6: an explicit "not consulted" is an
+    # honest answer, an absent field is not an answer at all.
+    if not _s(batch.get("refuted_patterns_source")):
+        errs.append(m("G11_no_refuted_source", lang))
 
     ops = {_s(s.get("operator")).upper() for s in seeds if _s(s.get("operator"))}
     declared = {_s(o).upper() for o in (batch.get("operators_used") or [])}
@@ -479,6 +502,11 @@ def _check_arbiter(s: dict, sid: Any, tier: str, lang: str) -> list[str]:
         errs.append(m("G5_none_leaves_S", lang, id=sid, tier=tier))
     if cls in {"instrument", "third_party"} and not _s(arb.get("calibration")):
         errs.append(m("G5_no_calibration", lang, id=sid, cls=cls))
+    # G10 — ported from the sibling Mizan validator, which has caught this
+    # since R8 shipped. The two repos had each solved something the other
+    # had not; this was Kiyas' side of that gap.
+    if cls in {"author", "none"} and arb.get("independent_of_author") is True:
+        errs.append(m("G10_independence_contradiction", lang, id=sid, cls=cls))
     return errs
 
 
