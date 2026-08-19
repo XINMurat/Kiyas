@@ -105,13 +105,17 @@ custom instructions, no system prompt, no house style. If it only behaves
 when your `CLAUDE.md` is arranged a particular way, that is a **defect in the
 skill**, not a missing step in your setup — please open an issue.
 
-Honest tier on that claim here: **`[H]`**, not `[K]`. It was tested for
-Mizan, this project's sibling, under a `CLAUDE.md` written to fight the
-method and again under none at all
-([the runs](https://github.com/XINMurat/Mizan/blob/main/examples/portability-across-hosts.md)).
-The equivalent runs have **not** been done for Kıyas. The two skills share
-their tone rules and their tier vocabulary, which is the basis for expecting
-the result to carry — and an expectation is not a measurement.
+Honest tier on that claim: **`[K]` for the neutral host**, `[H]` for the
+hostile one. Kıyas was run against a stuck research problem with no
+conflicting *and no reinforcing* host instructions, and held all five
+discipline criteria — five distinct operators, three recorded discards, a
+symmetry candidate cutting against the user's own thesis, and every surviving
+seed carrying its refutation condition: see
+[`examples/portability-neutral-host.md`](examples/portability-neutral-host.md).
+The **hostile**-host case was tested for the sibling project Mizan
+([those runs](https://github.com/XINMurat/Mizan/blob/main/examples/portability-across-hosts.md))
+but **not** for Kıyas; that evidence does not transfer, and borrowing it would
+be the tier drift this project's own table calls a finding.
 
 **Disclosed confound:** this project's author keeps an always-on personal
 instruction set that overlaps these rules at several points. Their own
