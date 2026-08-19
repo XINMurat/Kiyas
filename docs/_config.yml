@@ -1,0 +1,6 @@
+title: "Kıyas — Disciplined Ideation and Analogical Inference"
+description: "A Claude skill for research that is stuck. Every generated idea ships with its illet, breaking point, cheapest refutation, named prior art and arbiter. Bilingual TR/EN."
+theme: jekyll-theme-minimal
+lang: en
+# jekyll-relative-links is enabled by default on GitHub Pages, so links to
+# .md files below resolve on both github.com and the published site.
