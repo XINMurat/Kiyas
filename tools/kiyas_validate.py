@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G7.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G9.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -12,10 +12,25 @@ to prevent — an arbiter-less domain wearing an arbiter-ed domain's clothes.
 
 Bilingual: messages are emitted in the requested language (--lang tr|en).
 
+TWO CHANNELS, and the reason there are two: G6's own design note says that if
+every flag blocked promotion, authors would learn to leave the sweep silent —
+a flagged seed that states its scope beats a clean-looking one that dodged the
+question. The same logic applies to this tool. A single blocking channel
+pushes authors to write batches that do not trigger rules, which is not the
+same as writing better batches. So:
+
+  * VIOLATIONS (G1–G9) block. They mark a contract that is incomplete in a way
+    the prose forbids outright.
+  * WARNINGS (W1–W4) do not block by default. They mark shapes that are
+    usually wrong but have legitimate exceptions, so the right response is to
+    look, not to be stopped. `--strict` promotes them to violations; CI runs
+    strict, local runs do not.
+
 Usage:
     python tools/kiyas_validate.py path/to/kiyas-seed.yaml
     python tools/kiyas_validate.py --lang tr seeds.yaml
     python tools/kiyas_validate.py --refuted refuted-patterns.yaml seeds.yaml
+    python tools/kiyas_validate.py --strict seeds.yaml     # warnings fail too
 
 Exit code 0 = clean, 1 = violations found, 2 = usage/parse error.
 
@@ -24,6 +39,7 @@ Dependency: PyYAML  (pip install pyyaml)
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from typing import Any
 
@@ -35,6 +51,14 @@ except ImportError:  # pragma: no cover
         "HATA: PyYAML gerekli. Kurulum: pip install pyyaml\n"
     )
     sys.exit(2)
+
+# W1 — "a precise-looking threshold" in the anti-pattern list. Deliberately
+# conservative: a comparison operator or a percentage next to a number. Prose
+# that merely says "none, a number here would be decorative" contains no
+# digits and is not flagged.
+NUMERIC_THRESHOLD = re.compile(
+    r"(>=|<=|[<>]|±)\s*\.?\d|\d+(?:[.,]\d+)?\s*%"
+)
 
 VALID_TIERS = {"S", "H-aday", "NK", "GB"}
 ARBITER_CLASSES = {"runtime", "instrument", "third_party", "author", "none"}
@@ -184,9 +208,55 @@ MSG = {
         "G7: {i}. reddedilen girdide {field} eksik — bir reddetme hem neyin reddedildiğini hem "
         "nedenini ister (anti-deseni ya da onu doyuran prior art'ı adlandır).",
     ),
+    "G8_no_test": (
+        "G8: seed {id} is tier H-aday with no cheapest_refutation.test — an idea for which no "
+        "test could be designed stays S. The refutation condition is what makes a candidate "
+        "auditable rather than merely interesting.",
+        "G8: {id} tohumu H-aday ama cheapest_refutation.test yok — tasarlanabilir bir testi "
+        "olmayan fikir S'de kalır. Bir adayı sadece ilginç olmaktan çıkarıp denetlenebilir "
+        "yapan şey çürütme koşuludur.",
+    ),
+    "G9_no_prior_art_search": (
+        "G9: seed {id} is tier H-aday with prior_art.searched false — \"not searched\" is an "
+        "honest answer, but then the idea cannot be H-aday.",
+        "G9: {id} tohumu H-aday ama prior_art.searched false — \"aranmadı\" dürüst bir cevaptır, "
+        "ama o zaman fikir H-aday olamaz.",
+    ),
+    "W1_threshold_without_judge": (
+        "W1: seed {id} proposes a numeric threshold but its arbiter class is '{cls}' — the form "
+        "of a verification loop without its judge is not rigor. Drop the number or name a judge.",
+        "W1: {id} tohumu sayısal eşik öneriyor ama hakem sınıfı '{cls}' — hakemi olmayan bir "
+        "doğrulama döngüsünün biçimi titizlik değildir. Sayıyı kaldır ya da hakem adlandır.",
+    ),
+    "W2_all_haday": (
+        "W2: all {n} seeds in this batch are H-aday — a batch where everything lands at H-aday "
+        "is usually a batch that skipped the sweep. Legitimate, but worth a second look.",
+        "W2: bu partideki {n} tohumun hepsi H-aday — her tohumu H-aday'e inen parti genellikle "
+        "taramayı atlamış partidir. Meşru olabilir, ama bir kez daha bakmaya değer.",
+    ),
+    "W3_symmetry_id_unknown": (
+        "W3: batch.symmetry_check names no seed id from this batch — the schema asks it to name "
+        "the seed that breaks the current thesis, so the claim can be checked against a seed.",
+        "W3: batch.symmetry_check bu partideki hiçbir tohum id'sini anmıyor — şema, mevcut tezi "
+        "kesen tohumun adlandırılmasını ister ki iddia bir tohuma karşı kontrol edilebilsin.",
+    ),
+    "W4_O5_no_scope": (
+        "W4: seed {id} uses operator O5 (scale transfer) without a scope_caveat — a finding at "
+        "one regime does not become a claim about another by being restated.",
+        "W4: {id} tohumu O5 (ölçek transferi) kullanıyor ama scope_caveat yok — bir rejimdeki "
+        "bulgu, yeniden ifade edilerek başka bir rejim hakkında iddiaya dönüşmez.",
+    ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G7 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G7 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G9 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G9 ihlali yok.",
+    ),
+    "warn_header": (
+        "{n} warning(s) — not blocking; re-run with --strict to treat them as failures.",
+        "{n} uyarı — bloke etmiyor; hata saymak için --strict ile yeniden koş.",
+    ),
+    "warn_strict": (
+        "{n} warning(s) promoted to violations by --strict.",
+        "{n} uyarı --strict ile ihlale yükseltildi.",
     ),
     "found": (
         "{n} violation(s) found.",
@@ -233,8 +303,11 @@ def _flagged(value: str) -> bool:
     return _s(value).lower().startswith("flagged")
 
 
-def check(data: dict, lang: str, refuted: list[dict] | None = None) -> list[str]:
+def check(data: dict, lang: str,
+          refuted: list[dict] | None = None) -> tuple[list[str], list[str]]:
+    """Return (violations, warnings). See the module docstring for why two."""
     errs: list[str] = []
+    warns: list[str] = []
     batch = data.get("batch") or {}
     seeds = [s for s in (data.get("seeds") or []) if isinstance(s, dict)]
 
@@ -250,6 +323,20 @@ def check(data: dict, lang: str, refuted: list[dict] | None = None) -> list[str]
     if seeds and len(all_ops) < 3:
         errs.append(m("batch_few_operators", lang, n=len(all_ops),
                       ops=", ".join(sorted(all_ops)) or "-"))
+
+    # W3 — the schema asks symmetry_check to NAME the seed that breaks the
+    # thesis. A non-empty field satisfies the letter of that; naming a seed
+    # that exists is what makes the claim checkable against something.
+    sym = _s(batch.get("symmetry_check"))
+    ids = [_s(s0.get("id")) for s0 in seeds if _s(s0.get("id"))]
+    if sym and ids and not any(i in sym for i in ids):
+        warns.append(m("W3_symmetry_id_unknown", lang))
+
+    # W2 — not an error: a one-seed batch, or a genuinely clean sweep, can
+    # legitimately be all H-aday. It is a shape worth a second look.
+    tiers = [_s(s0.get("tier")) for s0 in seeds]
+    if len(seeds) >= 2 and all(t == "H-aday" for t in tiers):
+        warns.append(m("W2_all_haday", lang, n=len(seeds)))
 
     # --- seed-level ------------------------------------------------------
     for s in seeds:
@@ -274,6 +361,31 @@ def check(data: dict, lang: str, refuted: list[dict] | None = None) -> list[str]
         if tier == "H-aday" and not _s(s.get("breaking_point")):
             errs.append(m("G2_no_breaking_point", lang, id=sid))
 
+        # G8 — the refutation condition. Constraint 3 of SKILL.md: "if no test
+        # can be designed, the idea stays [S]". Until now the schema required
+        # the breaking point but not the test that kills the idea.
+        test = _s((s.get("cheapest_refutation") or {}).get("test"))
+        if tier == "H-aday" and (not test or _is_placeholder(test)):
+            errs.append(m("G8_no_test", lang, id=sid))
+
+        # G9 — constraint 4 is UNCONDITIONAL: "not searched" is honest, but
+        # then the idea cannot be H-aday. G3 covers only the narrower
+        # superiority-claim gate, which left this open.
+        if tier == "H-aday" and not (s.get("prior_art") or {}).get("searched"):
+            errs.append(m("G9_no_prior_art_search", lang, id=sid))
+
+        # W1 — a precise-looking threshold with no judge behind it.
+        arb_cls = _s(((s.get("arbiter") or {}) if isinstance(s.get("arbiter"), dict)
+                      else {}).get("class")).lower()
+        if arb_cls in {"author", "none"} and NUMERIC_THRESHOLD.search(
+                _s(s.get("threshold_proposal"))):
+            warns.append(m("W1_threshold_without_judge", lang, id=sid, cls=arb_cls))
+
+        # W4 — O5 changes regime by definition; the scope caveat is the part
+        # that stops a reduced-scale finding becoming a main-regime claim.
+        if op == "O5" and not _s(s.get("scope_caveat")):
+            warns.append(m("W4_O5_no_scope", lang, id=sid))
+
         errs += _check_prior_art(s, sid, tier, lang)
         errs += _check_refutation(s, sid, lang)
         errs += _check_arbiter(s, sid, tier, lang)
@@ -283,7 +395,7 @@ def check(data: dict, lang: str, refuted: list[dict] | None = None) -> list[str]
     errs += _check_discards(data, batch, lang)
 
     check.n_seeds = len(seeds)  # type: ignore[attr-defined]
-    return errs
+    return errs, warns
 
 
 def _check_discards(data: dict, batch: dict, lang: str) -> list[str]:
@@ -432,6 +544,8 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
     ap.add_argument("--refuted", metavar="PATH",
                     help="refuted-patterns.yaml exported from a Mizan registry (AD4 check)")
+    ap.add_argument("--strict", action="store_true",
+                    help="treat W1-W4 warnings as violations (CI runs strict; local runs do not)")
     args = ap.parse_args(argv)
 
     # The catalog carries Turkish text and a ✗ glyph; ensure UTF-8 output even
@@ -448,15 +562,31 @@ def main(argv: list[str]) -> int:
         sys.stderr.write(f"parse error: {exc}\n")
         return 2
 
-    errs = check(data, args.lang, load_refuted(args.refuted))
+    errs, warns = check(data, args.lang, load_refuted(args.refuted))
     n = getattr(check, "n_seeds", 0)
+
+    if args.strict and warns:
+        errs = errs + warns
 
     if errs:
         for e in errs:
             print("  ✗ " + e)
+        # Warnings are shown next to violations too. Hiding them until the
+        # blocking problems are fixed would make a second run reveal issues
+        # that were already known, which is how a warning gets ignored.
+        if not args.strict:
+            for w in warns:
+                print("  ! " + w)
         print(m("found", args.lang, n=len(errs)))
+        if args.strict and warns:
+            print(m("warn_strict", args.lang, n=len(warns)))
         return 1
+
     print(m("clean", args.lang, n=n))
+    if warns:
+        for w in warns:
+            print("  ! " + w)
+        print(m("warn_header", args.lang, n=len(warns)))
     return 0
 
 

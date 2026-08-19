@@ -28,7 +28,7 @@ more analogies.
 the same contract, tiered, flagged, and ordered by criticality ×
 (information value / cost).
 
-## 3. Hard rules (summary — G1–G7 in the schema)
+## 3. Hard rules (summary — G1–G9 in the schema)
 
 1. Illet non-empty. An idea whose illet cannot be named was not generated.
 2. Breaking point present before an idea can be a hypothesis candidate.
@@ -44,6 +44,16 @@ the same contract, tiered, flagged, and ordered by criticality ×
 7. The batch records its **discards** — what was weighed and refused, and why.
    Required even when empty, in which case the batch says what it considered.
    A list of survivors alone cannot show that anything was weighed.
+8. A hypothesis candidate carries the **cheapest refutation** that would kill
+   it. If no test can be designed, the idea stays speculative.
+9. A hypothesis candidate has had its **prior art searched**. "Not searched"
+   is honest, but it caps the idea at speculative.
+
+Four further checks **warn without blocking** (`--strict` makes them fail): a
+numeric threshold with no judge behind it, a batch where every seed is a
+hypothesis candidate, a symmetry check naming no seed, and a scale transfer
+with no scope caveat. Each has legitimate exceptions, so the tool says look,
+not halt — a single blocking channel teaches you to write around the rules.
 
 ## 4. Reading the tiers
 

@@ -1,5 +1,5 @@
 # =====================================================================
-# Kıyas Seed Schema v1.1  (kiyas-seed.yaml)
+# Kıyas Seed Schema v1.2  (kiyas-seed.yaml)
 # =====================================================================
 # Machine-readable form of the Kıyas output contract. A "seed" is one
 # generated idea, carrying everything Mizan needs to preregister it.
@@ -39,6 +39,29 @@
 #       could not notice was missing. An empty list is legal but must be
 #       accompanied by batch.discards_note naming what was considered —
 #       "state the discards, or state that there were none".
+#   G8. cheapest_refutation.test MUST be non-empty for tier H-aday. SKILL.md
+#       constraint 3: "if no test can be designed, the idea stays [S]". Until
+#       v1.2 the schema demanded the breaking point but not the test that
+#       kills the idea — the one field that makes a candidate auditable
+#       rather than merely interesting.
+#   G9. prior_art.searched MUST be true for tier H-aday. Constraint 4 is
+#       unconditional; G3 only ever covered the narrower superiority-claim
+#       gate, so a seed declaring claims_superiority: false could reach
+#       H-aday having searched nothing.
+#
+# WARNINGS (W1..W4) — checked but NOT blocking, unless --strict:
+#   W1. a numeric threshold_proposal on a seed whose arbiter is author/none.
+#   W2. every seed in a batch of 2+ landing at H-aday.
+#   W3. batch.symmetry_check naming no seed id from the batch.
+#   W4. operator O5 (scale transfer) with no scope_caveat.
+# These have legitimate exceptions, so the right response is to look, not to
+# be stopped. Making every flag blocking would teach authors to write batches
+# that avoid triggering rules — the same failure G6's design note describes.
+#
+# MIGRATION v1.1 -> v1.2: G8 and G9 close two places where the schema allowed
+# what the prose forbids outright (see PROSE-SCHEMA-AUDIT.md). A batch whose
+# H-aday seeds already carry a test and a prior-art search is unaffected; both
+# shipped examples passed unchanged.
 #
 # MIGRATION v1.0 -> v1.1: batches written against v1.0 now fail G7. The fix
 # is two lines (`discards: []` plus a discards_note) and the failure is the

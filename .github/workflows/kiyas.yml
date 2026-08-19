@@ -1,6 +1,7 @@
 name: CI
 
-# Runs the LLM-free G1–G7 seed validator and checks that the shipped
+# Runs the LLM-free G1–G9 seed validator (in --strict mode, so W1–W4
+# warnings fail the build too) and checks that the shipped
 # kiyas.skill stays in sync with skill/kiyas/. Static checks only: this
 # pipeline is a `runtime` arbiter for CONTRACT COMPLETENESS, never for idea
 # quality — see SKILL.md §"The runtime arbiter".
@@ -24,14 +25,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r tools/requirements.txt
 
-      - name: Validate every seed batch (G1–G7)
+      - name: Validate every seed batch (G1–G9, --strict)
         run: |
           set -e
           found=0
           while IFS= read -r f; do
             found=1
             echo "::group::$f"
-            python tools/kiyas_validate.py "$f"
+            python tools/kiyas_validate.py --strict "$f"
             echo "::endgroup::"
           done < <(find examples ledger -name '*kiyas-seed*.y*ml' -print 2>/dev/null)
           if [ "$found" -eq 0 ]; then
@@ -147,6 +148,81 @@ jobs:
           sed -i 's/symmetry_check: "s"/symmetry_check: "s", discards_note: "nothing refused; the two obvious reframings were considered"/' "$tmp"
           python tools/kiyas_validate.py "$tmp"
           echo "OK: an explicitly empty discard list with a note is accepted."
+
+      - name: Self-test — G8/G9 must reject an H-aday with no test and no prior art
+        run: |
+          set -e
+          # These two were legal for the whole of v1.0-v1.1 while the prose
+          # forbade them outright. If this step ever stops failing, the data
+          # contract has drifted below the written one again.
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], discards_note: "nothing refused"}
+          seeds:
+            - id: KS-1
+              tier: H-aday
+              operator: O1
+              claim: "a claim"
+              illet: "a structural equivalence"
+              breaking_point: "here"
+              cheapest_refutation: {test: "", adds_capacity: false}
+              arbiter: {class: runtime, who: "pytest"}
+              prior_art: {searched: false}
+              claims_superiority: false
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          discards: []
+          YAML
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "G8:" || { echo "FAIL: G8 did not fire" >&2; exit 1; }
+          echo "$out" | grep -q "G9:" || { echo "FAIL: G9 did not fire" >&2; exit 1; }
+          echo "OK: G8 and G9 both fired."
+
+      - name: Self-test — the warning channel warns without blocking
+        run: |
+          set -e
+          # A warning that blocks is a rule; a rule that cannot block is
+          # decoration. This checks the channel is actually two-valued:
+          # exit 0 by default, exit 1 under --strict, same finding both times.
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "p", symmetry_check: "the other one cuts against it", operators_used: [O1, O2, O3], discards_note: "nothing refused"}
+          seeds:
+            - id: KS-1
+              tier: S
+              operator: O1
+              claim: "a claim"
+              illet: "a structural equivalence"
+              breaking_point: "here"
+              cheapest_refutation: {test: "run it", adds_capacity: false}
+              arbiter: {class: author, who: "the author"}
+              prior_art: {searched: true}
+              claims_superiority: false
+              threshold_proposal: "support at >= 15%"
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          discards: []
+          YAML
+          out="$(python tools/kiyas_validate.py "$tmp")"   # must exit 0
+          echo "$out"
+          echo "$out" | grep -q "W1:" || { echo "FAIL: W1 did not warn" >&2; exit 1; }
+          echo "$out" | grep -q "W3:" || { echo "FAIL: W3 did not warn" >&2; exit 1; }
+          if python tools/kiyas_validate.py --strict "$tmp"; then
+            echo "FAIL: --strict did not promote warnings to failures" >&2
+            exit 1
+          fi
+          echo "OK: warnings warn by default and fail under --strict."
 
       - name: Ledger reporter must run
         run: python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml

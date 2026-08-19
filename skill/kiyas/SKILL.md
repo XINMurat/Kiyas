@@ -12,6 +12,16 @@ description: Disciplined ideation and analogical inference for research that is 
 > (A4) trace base-rate prior (AD6). The analogical core did not change; what
 > changed is the hygiene a candidate passes before entering Mizan.
 
+> **[Revised 2026-08-19 — G8/G9 + warnings]** A systematic pass over this
+> file against the schema (`PROSE-SCHEMA-AUDIT.md`) found two places where the
+> data contract permitted what the prose forbids outright: an `[H-aday]` with
+> no cheapest refutation (constraint 3), and an `[H-aday]` whose prior art was
+> never searched (constraint 4 — G3 only ever covered the narrower
+> superiority-claim gate). Both now block. The validator also gained a
+> non-blocking warning channel, because a single blocking channel teaches
+> authors to write batches that avoid triggering rules — G6's own lesson,
+> applied to the tool.
+
 > **[Revised 2026-08-19 — G7]** The discard list became part of the
 > machine-readable contract. Until now `SKILL.md` required it and the schema
 > had no slot for it, so the one section a host instruction to stay agreeable
@@ -151,7 +161,7 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G7). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G9). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
@@ -160,7 +170,18 @@ relative and a discrimination test (G3); the matched-budget control arm
 whenever the test adds capacity (G4); an arbiter block using Mizan's five R8
 classes (G5); a recorded AD1–AD6 sweep, where AD1/AD2/AD4 force a tier
 while AD5/AD6 demand that a caveat travel with the seed (G6); and a `discards`
-block, required even when empty (G7).
+block, required even when empty (G7); a cheapest refutation on every
+`[H-aday]` (G8); and a prior-art search on every `[H-aday]` (G9).
+
+**Two channels, and the reason there are two.** G1–G9 block. W1–W4 do not:
+a numeric threshold with an author/none arbiter, a batch where every seed
+lands at `[H-aday]`, a symmetry check naming no seed, an O5 transfer with no
+scope caveat. Each of those is usually wrong and legitimately right often
+enough that stopping on it would be false precision — so the tool says look,
+not halt. `--strict` promotes them; CI runs strict, local runs do not. The
+reasoning is G6's, turned on the tool itself: if every flag blocked, authors
+would learn to write around the flags, which is not the same as writing
+better seeds.
 
 G7 is the rule with the least obvious justification and the clearest evidence
 behind it. The discard list is the section that disappears first — measured,
@@ -312,5 +333,6 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G7), with
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G9 and
+  warnings W1–W4), with
   the arbiter block shared with Mizan R8.
