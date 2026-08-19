@@ -22,15 +22,26 @@ aynısı.*
 | 7 | Hepsi `[H-aday]` olan parti | **KAPATILDI** — W2 (uyarı) |
 | 8 | `symmetry_check` var olmayan id | **KAPATILDI** — W3 (uyarı) |
 | 9 | O5 ⇒ scope_caveat | **KAPATILDI** — W4 (uyarı) |
-| 4 | `class` ↔ `independent_of_author` çelişkisi | AÇIK |
-| 5 | `refuted_patterns_source` hiç okunmuyor | AÇIK |
+| 4 | `class` ↔ `independent_of_author` çelişkisi | **KAPATILDI** — G10 (Mizan'dan taşındı) |
+| 5 | `refuted_patterns_source` hiç okunmuyor | **KAPATILDI** — G11 |
 | 10 | `seeds[S]` ↔ `discards` sınırı | AÇIK — kural değil, karar bekliyor |
 
 §1'deki içi boş parti artık **iki ihlalle düşüyor** (G8 + G9) ve dört uyarı
 üretiyor. Her ikisi için CI'ya self-test eklendi; birisi bir gün geçmeye
 başlarsa, sözleşme yine yazılı hâlinin altına düşmüş demektir.
 
-Kapanmayanların hepsi bilinçli: 4 ve 5 sıradaki turda, 10 bir karar gerektiriyor.
+**10 numara dışında hepsi kapandı**; o bir eksik kural değil, verilmemiş bir
+karar (illeti düşen fikir `seeds[S]`'e mi `discards`'a mı yazılır).
+
+**Tarama sırasında çıkan ek bulgu — kontrolleri koşan dosyanın kendisi bozuktu.**
+G7 commit'inde CI workflow'una eklediğim bir `printf 'discards: []
+'`,
+üreteç tarafından escape'i yutulduğu için tırnak içine gerçek bir satır sonu
+koydu ve **workflow YAML'ı geçersiz hâle geldi** — yani `main`'de bir süre
+GitHub Actions dosyayı hiç ayrıştıramadı. Düzeltildi, ve CONTRIBUTING'in
+pre-PR listesine 0. adım olarak workflow'un kendi ayrıştırma kontrolü eklendi.
+Ders, denetimin kendi temasının aynısı: **kontrolleri koşan şeyi kimse
+kontrol etmiyordu.**
 Kapsam sınırları (§6) **değişmedi** — `docs/` taranmadı, Mizan taranmadı.
 
 ---

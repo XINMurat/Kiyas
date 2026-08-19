@@ -1,6 +1,6 @@
 name: CI
 
-# Runs the LLM-free G1–G9 seed validator (in --strict mode, so W1–W4
+# Runs the LLM-free G1–G11 seed validator (in --strict mode, so W1–W4
 # warnings fail the build too) and checks that the shipped
 # kiyas.skill stays in sync with skill/kiyas/. Static checks only: this
 # pipeline is a `runtime` arbiter for CONTRACT COMPLETENESS, never for idea
@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r tools/requirements.txt
 
-      - name: Validate every seed batch (G1–G9, --strict)
+      - name: Validate every seed batch (G1–G11, --strict)
         run: |
           set -e
           found=0
@@ -108,6 +108,38 @@ jobs:
           fi
           echo "OK: AD4 feedback loop is wired."
 
+      - name: Self-test — G10/G11 must reject a contradictory arbiter and a silent sweep
+        run: |
+          set -e
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], discards_note: "nothing refused"}
+          seeds:
+            - id: KS-1
+              tier: S
+              operator: O1
+              claim: "a claim"
+              illet: "a structural equivalence"
+              breaking_point: "here"
+              cheapest_refutation: {test: "run it", adds_capacity: false}
+              arbiter: {class: author, who: "me", independent_of_author: true}
+              prior_art: {searched: true}
+              claims_superiority: false
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          discards: []
+          YAML
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "G10:" || { echo "FAIL: G10 did not fire" >&2; exit 1; }
+          echo "$out" | grep -q "G11:" || { echo "FAIL: G11 did not fire" >&2; exit 1; }
+          echo "OK: G10 and G11 both fired."
+
       - name: Self-test — G7 must reject a batch with no discard list
         run: |
           set -e
@@ -143,8 +175,7 @@ jobs:
           fi
           echo "OK: G7 rejected a batch that recorded no discards."
           # ...and the same batch passes once the absence is declared.
-          printf 'discards: []
-' >> "$tmp"
+          echo 'discards: []' >> "$tmp"
           sed -i 's/symmetry_check: "s"/symmetry_check: "s", discards_note: "nothing refused; the two obvious reframings were considered"/' "$tmp"
           python tools/kiyas_validate.py "$tmp"
           echo "OK: an explicitly empty discard list with a note is accepted."
