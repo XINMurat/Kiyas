@@ -30,6 +30,14 @@ batch:
     mechanism is irrelevant at any strength, and that the observed gains
     come from selective damping alone.
   refuted_patterns_source: "refuted-patterns.yaml (exported 2026-07-23)"
+  discards_note: >
+    Nothing recorded, and that is a defect in this batch rather than a
+    property of it. This round was generated against schema v1.0, which had
+    no slot for discards, so whatever was weighed and refused went
+    unwritten and is no longer recoverable. It is left empty instead of
+    reconstructed: a discard list invented after the fact is worse than an
+    absent one, because it looks like evidence of weighing. The batch in
+    examples/kiyas-seed.jspace.example.yaml shows the block filled in.
 
 seeds:
   # -------------------------------------------------------------------
@@ -314,3 +322,6 @@ seeds:
       status: "declined"
       mizan_hypothesis_id: ""
       registry: "stays at [S]; recorded so it is not regenerated as new"
+
+# G7 (schema v1.1) — see batch.discards_note above for why this is empty.
+discards: []

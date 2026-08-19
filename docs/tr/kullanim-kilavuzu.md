@@ -27,7 +27,7 @@ seçiminden gelir, daha çok analoji istemekten değil.
 geçer, tier'lanır, bayraklanır ve kriticklik × (bilgi-değeri / maliyet)
 sırasına dizilir.
 
-## 3. Sert kurallar (özet — şemadaki G1–G6)
+## 3. Sert kurallar (özet — şemadaki G1–G7)
 
 1. İllet boş olamaz. İlleti isimlendirilemeyen fikir üretilmiş sayılmaz.
 2. Bir fikir hipotez adayı olmadan önce kırılma noktası yazılmış olmalı.
@@ -40,6 +40,9 @@ sırasına dizilir.
    tavanlıdır; hakemsiz olan spekülatif kalır.
 6. AD1–AD6 taraması, açık "clear" dahil kayda geçer. AD1/AD2/AD4 tier'ı
    zorlar; AD5/AD6 tohumla birlikte seyahat eden bir şerh ister.
+7. Parti **reddedilenlerini** kaydeder — neyin tartılıp reddedildiği ve nedeni.
+   Boşken bile zorunludur; o durumda parti neyi değerlendirdiğini söyler.
+   Yalnız hayatta kalanların listesi, bir şeyin tartıldığını gösteremez.
 
 ## 4. Tier'ları okumak
 

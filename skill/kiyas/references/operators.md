@@ -8,6 +8,10 @@
 > arm** (A2) and **trace base-rate prediction** (A4) fields in the seed
 > template. The seven operators and the analogical core did not change.
 
+> **[Revised 2026-08-19 — G7]** §2's contract now states that the batch
+> carries its discards, and the schema enforces it. The seven operators and
+> the analogical core are unchanged.
+
 > **[Revised 2026-07-23 — G1–G6]** §2's contract and §4's template have a
 > machine-readable twin in `schemas/kiyas-seed.yaml`, enforced by
 > `tools/kiyas_validate.py`. The prose below stays authoritative for *how to
@@ -130,8 +134,15 @@ call it "decorative". If the Prior art line says "not searched", a
 superiority/originality claim CANNOT be `[H-aday]` [A1].
 
 The machine-readable form of this envelope is `schemas/kiyas-seed.yaml`; the
-checker is `tools/kiyas_validate.py` (G1–G6). It verifies that the fields are
+checker is `tools/kiyas_validate.py` (G1–G7). It verifies that the fields are
 filled, never that they are true — see SKILL.md §"The runtime arbiter".
+
+**The batch also carries its discards [G7].** Alongside the seeds, record what
+was weighed and refused, each entry naming the idea and the reason it was
+refused — the anti-pattern that caught it (AD1..AD6) or the prior art that
+already occupies it. The block is required even when nothing was discarded, in
+which case say so and name what was considered. A batch listing only survivors
+is indistinguishable from one where nothing was ever weighed.
 
 ---
 

@@ -12,6 +12,13 @@ description: Disciplined ideation and analogical inference for research that is 
 > (A4) trace base-rate prior (AD6). The analogical core did not change; what
 > changed is the hygiene a candidate passes before entering Mizan.
 
+> **[Revised 2026-08-19 — G7]** The discard list became part of the
+> machine-readable contract. Until now `SKILL.md` required it and the schema
+> had no slot for it, so the one section a host instruction to stay agreeable
+> silently removes was also the one section CI could not notice was missing.
+> `discards` is now a required key (schema v1.1); an empty list is legal with
+> a `discards_note`. Nothing else about the method changed.
+
 > **[Revised 2026-07-23 — G1–G6]** The output contract became data. Seeds can
 > now be written to `schemas/kiyas-seed.yaml` and checked mechanically by
 > `tools/kiyas_validate.py`; the arbiter block is shared with Mizan's R8, so a
@@ -144,15 +151,25 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G6). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G7). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
 (G2); the prior-art gate on superiority claims, including a named strongest
 relative and a discrimination test (G3); the matched-budget control arm
 whenever the test adds capacity (G4); an arbiter block using Mizan's five R8
-classes (G5); and a recorded AD1–AD6 sweep, where AD1/AD2/AD4 force a tier
-while AD5/AD6 demand that a caveat travel with the seed (G6).
+classes (G5); a recorded AD1–AD6 sweep, where AD1/AD2/AD4 force a tier
+while AD5/AD6 demand that a caveat travel with the seed (G6); and a `discards`
+block, required even when empty (G7).
+
+G7 is the rule with the least obvious justification and the clearest evidence
+behind it. The discard list is the section that disappears first — measured,
+not assumed: same fixture, three discards under a neutral host and zero under
+a host that forbade rejecting the team's ideas (`examples/`). It disappears
+without a trace, because an empty section and an unwritten one are the same
+absence. Making the key mandatory is what turns that silence into a failing
+check; an empty list stays legal, but only alongside a `discards_note` saying
+what was considered.
 
 What it cannot do, and what must be said whenever the tool is described: it
 checks that the illet field is **filled**, never that the illet is **true**.
@@ -295,5 +312,5 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G6), with
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G7), with
   the arbiter block shared with Mizan R8.

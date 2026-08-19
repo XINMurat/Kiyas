@@ -1,5 +1,5 @@
 # =====================================================================
-# Kıyas Seed Schema v1.0  (kiyas-seed.yaml)
+# Kıyas Seed Schema v1.1  (kiyas-seed.yaml)
 # =====================================================================
 # Machine-readable form of the Kıyas output contract. A "seed" is one
 # generated idea, carrying everything Mizan needs to preregister it.
@@ -32,6 +32,20 @@
 #       the judge that Mizan's registry will demand.
 #   G6. Anti-pattern sweep flags (AD1..AD6) MUST be recorded — including
 #       explicit "clear". Silence is not the same as a clean sweep.
+#   G7. The `discards` block MUST be present, even when empty. SKILL.md
+#       makes the discard list part of the deliverable; until v1.1 the
+#       contract had no slot for it, so the one section a host instruction
+#       to "stay agreeable" silently deletes was also the one section CI
+#       could not notice was missing. An empty list is legal but must be
+#       accompanied by batch.discards_note naming what was considered —
+#       "state the discards, or state that there were none".
+#
+# MIGRATION v1.0 -> v1.1: batches written against v1.0 now fail G7. The fix
+# is two lines (`discards: []` plus a discards_note) and the failure is the
+# point: a batch that cannot say what it refused cannot show it weighed
+# anything. Recovering discards after the fact is usually impossible, and
+# admitting that is a better record than a reconstructed one — see the note
+# in examples/kiyas-seed.example.yaml, which is exactly this case.
 #
 # Tiers: S (speculative) | H-aday (hypothesis candidate, Mizan-ready)
 #        NK (notation-suspect) | GB (fed-back from a refuted pattern)
@@ -51,6 +65,10 @@ batch:
     (e.g. refuted-patterns.yaml produced by mizan_export_refuted.py).
     "not consulted" is allowed and honest — it just means AD4 flags in
     this batch are unverified.
+  discards_note: >
+    MANDATORY when `discards` is empty (G7): what was considered and
+    refused nothing, so that an empty list is distinguishable from an
+    unwritten one. Leave blank when discards are recorded below.
 
 seeds:
   - id: "KS-001"
@@ -135,3 +153,25 @@ seeds:
       status: "pending"             # pending | registered | declined
       mizan_hypothesis_id: ""       # filled when it enters a Mizan registry
       registry: ""                  # path/URL of that registry
+
+# =====================================================================
+# G7 — the discard list. What you refused to generate is information about
+# the generation; a batch showing only survivors is indistinguishable from
+# one where nothing was ever weighed. This is also the first section a host
+# instruction to stay agreeable removes, and the loss is invisible because
+# an empty section and an unwritten one are the same absence — which is why
+# the key is required rather than optional.
+#
+# Each entry needs BOTH fields: what was refused, and why. A reason of
+# "didn't fit" is not a reason; name the anti-pattern (AD1..AD6) or the
+# prior art that saturates it.
+# =====================================================================
+discards:
+  - claim: >
+      The idea that was weighed and refused, stated well enough that a
+      reader can tell it apart from the seeds that survived.
+    reason: >
+      Why it was refused: which anti-pattern caught it (AD1 notation
+      coincidence, AD2 surface resonance, ...), or which prior art already
+      occupies it. "Skip and cite" is a legitimate reason and should say
+      whose work it defers to.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G6.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G7.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -58,6 +58,8 @@ PLACEHOLDER_MARKERS = (
     "the smallest experiment that kills",
     "the concrete judge —",
     "the real competitor.",
+    "the idea that was weighed and refused",
+    "why it was refused: which anti-pattern",
 )
 
 # Bilingual message catalog: key -> (en, tr)
@@ -162,9 +164,29 @@ MSG = {
         "TEMPLATE: seed '{id}' field '{field}' still contains schema placeholder text — the contract is formatted, not filled.",
         "ŞABLON: '{id}' tohumunun '{field}' alanı hâlâ şema yer-tutucu metnini taşıyor — sözleşme doldurulmamış, sadece biçimlenmiş.",
     ),
+    "G7_no_discards": (
+        "G7: batch has no `discards` block — what you refused is part of the generation; "
+        "an unwritten discard list and an empty one are the same absence. Write `discards: []` "
+        "plus batch.discards_note if nothing was refused.",
+        "G7: partide `discards` bloğu yok — neyi reddettiğin üretimin parçasıdır; "
+        "yazılmamış bir reddedilenler listesi ile boş bir liste aynı yokluktur. Hiçbir şey "
+        "reddedilmediyse `discards: []` ve batch.discards_note yaz.",
+    ),
+    "G7_empty_without_note": (
+        "G7: batch declares `discards: []` but no batch.discards_note — an empty list is legal "
+        "only when it says what was considered and refused nothing.",
+        "G7: parti `discards: []` diyor ama batch.discards_note yok — boş liste ancak neyin "
+        "değerlendirilip hiçbirinin reddedilmediğini söylediğinde geçerlidir.",
+    ),
+    "G7_discard_incomplete": (
+        "G7: discard #{i} is missing {field} — a discard needs both what was refused and why "
+        "(name the anti-pattern or the prior art that saturates it).",
+        "G7: {i}. reddedilen girdide {field} eksik — bir reddetme hem neyin reddedildiğini hem "
+        "nedenini ister (anti-deseni ya da onu doyuran prior art'ı adlandır).",
+    ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G6 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G6 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G7 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G7 ihlali yok.",
     ),
     "found": (
         "{n} violation(s) found.",
@@ -258,7 +280,47 @@ def check(data: dict, lang: str, refuted: list[dict] | None = None) -> list[str]
         errs += _check_sweep(s, sid, tier, lang)
         errs += _check_refuted_relatives(s, sid, tier, refuted or [], lang)
 
+    errs += _check_discards(data, batch, lang)
+
     check.n_seeds = len(seeds)  # type: ignore[attr-defined]
+    return errs
+
+
+def _check_discards(data: dict, batch: dict, lang: str) -> list[str]:
+    """G7 — the discard list is part of the deliverable, present even when empty.
+
+    Deliberately required rather than optional. SKILL.md's own measured
+    finding is that this section is what disappears first under a host that
+    rewards agreement, and it disappears without leaving a trace: an empty
+    section and an unwritten one look identical. A key that must be there
+    turns that invisible absence into a failing check.
+
+    What it cannot do, stated for the same reason the rest of this tool
+    states it: it verifies that discards were RECORDED, never that the
+    right ideas were discarded.
+    """
+    if "discards" not in data:
+        return [m("G7_no_discards", lang)]
+    discards = data.get("discards")
+    if discards is None:
+        discards = []
+    if not isinstance(discards, list):
+        return [m("G7_no_discards", lang)]
+
+    if not discards:
+        if not _s(batch.get("discards_note")):
+            return [m("G7_empty_without_note", lang)]
+        return []
+
+    errs: list[str] = []
+    for i, d in enumerate(discards, 1):
+        if not isinstance(d, dict):
+            errs.append(m("G7_discard_incomplete", lang, i=i, field="claim, reason"))
+            continue
+        missing = [f for f in ("claim", "reason")
+                   if not _s(d.get(f)) or _is_placeholder(_s(d.get(f)))]
+        if missing:
+            errs.append(m("G7_discard_incomplete", lang, i=i, field=", ".join(missing)))
     return errs
 
 
@@ -365,7 +427,7 @@ def _check_refuted_relatives(s: dict, sid: Any, tier: str,
 
 
 def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(description="Kıyas seed G1–G6 validator")
+    ap = argparse.ArgumentParser(description="Kıyas seed G1–G7 validator")
     ap.add_argument("seeds", help="path to a kiyas-seed.yaml")
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
     ap.add_argument("--refuted", metavar="PATH",

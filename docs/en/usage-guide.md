@@ -28,7 +28,7 @@ more analogies.
 the same contract, tiered, flagged, and ordered by criticality ×
 (information value / cost).
 
-## 3. Hard rules (summary — G1–G6 in the schema)
+## 3. Hard rules (summary — G1–G7 in the schema)
 
 1. Illet non-empty. An idea whose illet cannot be named was not generated.
 2. Breaking point present before an idea can be a hypothesis candidate.
@@ -41,6 +41,9 @@ the same contract, tiered, flagged, and ordered by criticality ×
    Self-judged stays capped; unjudged stays speculative.
 6. The AD1–AD6 sweep is recorded, including explicit "clear". AD1/AD2/AD4
    force a tier; AD5/AD6 require a caveat to travel with the seed.
+7. The batch records its **discards** — what was weighed and refused, and why.
+   Required even when empty, in which case the batch says what it considered.
+   A list of survivors alone cannot show that anything was weighed.
 
 ## 4. Reading the tiers
 

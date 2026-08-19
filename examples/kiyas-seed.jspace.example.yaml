@@ -1,0 +1,717 @@
+# Worked Kıyas batch #2 — cross-domain transfer whose illet FAILS, and what
+# gets salvaged from the failure.
+#
+# Companion to kiyas-seed.example.yaml. That file demonstrates a batch inside
+# ONE domain (a model's own architecture). This one demonstrates the harder
+# and more failure-prone case: carrying a criterion from an unrelated field
+# (analytic number theory) into interpretability.
+#
+# What this batch demonstrates deliberately:
+#   - a transfer whose illet is tested and DOES NOT carry (KS-J006, tier S,
+#     AD2 flagged) — and which is nonetheless kept, because the point at
+#     which it broke is what generated KS-J002 and KS-J003
+#   - four distinct operators (O1, O2, O4, O7)
+#   - one seed that breaks the current thesis (KS-J005, symmetry / AD3)
+#   - one seed pinned at NK by its own instrument-artifact flag (KS-J004)
+#   - a non-empty `discards` block (see the note on it at the bottom)
+#
+# SOURCE HYGIENE — the reason this batch reads the way it does:
+# the generation was triggered by an external report describing a
+# Jacobian-based interpretability method and an associated low-dimensional
+# "workspace" subspace. The generating agent could NOT independently reach
+# that report, its code, or its replications. Every statement about it is
+# therefore third-hand and is written as "the source report states", never as
+# fact. The report is left unnamed on purpose: a fixture that hard-codes
+# unverified factual claims rots when they turn out wrong, and nobody
+# revisits a fixture. What is being frozen here is the SHAPE of a transfer,
+# not the truth of a paper.
+#
+# Read together with examples/distillation-user-analogy.md, which is the
+# distillation-mode pass that produced KS-J001's illet.
+
+batch:
+  problem: >
+    A method is reported to read a small, causally load-bearing subspace out
+    of a language model's residual stream by averaging a Jacobian over a
+    corpus. It is unknown whether that subspace is an intrinsic structure of
+    the model or an artifact of the instrument that defines it, and the
+    source report itself states that nothing is known about what decides
+    entry into it.
+  date: "2026-08-19"
+  operators_used: ["O1", "O2", "O4", "O7"]
+  symmetry_check: >
+    KS-J005 breaks the current thesis. Both the source report ("the
+    structure emerged spontaneously from gradient descent") and the user's
+    own framing ("it is a by-product of the computation") derive the
+    subspace from COMPUTATION. KS-J005 proposes it is inherited from DATA —
+    a learned imitation of verbalized human reasoning present in the
+    corpus — which deflates both.
+  refuted_patterns_source: >
+    not consulted — no refuted-patterns export exists for this target
+    domain. AD4 flags in this batch are therefore unverified and are
+    recorded as such rather than as "clear".
+
+seeds:
+  # ===================================================================
+  # KS-J006 comes FIRST because it is the transfer everything else is a
+  # reaction to. It failed. It is kept, at S, with AD2 flagged.
+  # ===================================================================
+  - id: "KS-J006"
+    tier: "S"
+    claim: >
+      The Jacobian lens is a fiber reader: it recovers the arithmetic-like
+      structure hidden in the pre-images of an information-collapsing map,
+      in the same way that the fibers of (i,j) -> i*j carry prime structure
+      that no linear summary of the multiplication table carries.
+    operator: "O1"
+
+    illet: >
+      Attempted illet: "information destroyed by a collapsing map survives
+      in the partition of its pre-images, not in its linear summaries."
+      This does NOT carry. The property that actually made every linear
+      summary of the multiplication table useless was its RANK-1 structure,
+      not the mere fact of collapse; a corpus-averaged Jacobian is not
+      rank-deficient in that way, so reading a linear summary of it can and
+      evidently does carry information. Under the source domain's own
+      criterion — "are you reading the sum or the fiber?" — the Jacobian
+      lens is emphatically reading a SUM, and the analogy predicts it should
+      be blind. The source report states it is not blind.
+
+    breaking_point: >
+      Stated for the record even though the tier is S: the transfer would
+      only hold for a readout map whose averaged linearization is
+      rank-deficient. Nothing establishes that for a residual stream, and
+      the seed dies exactly there.
+
+    cheapest_refutation:
+      test: >
+        Already refuted at the desk, by the source domain's own criterion —
+        no experiment needed. The rank-1 property has no counterpart, so the
+        illet has no carrier. Kept as a record of what the failure produced:
+        the question "is the structure in the top singular directions (the
+        sum) or in the kernel (the fiber)?", which became KS-J002 and
+        KS-J003.
+      adds_capacity: false
+      matched_budget_control: "not applicable"
+
+    arbiter:
+      class: "none"
+      who: >
+        no judge — the seed is closed by argument, not by measurement. With
+        no arbiter, attaching a numeric threshold to it would be theatre;
+        none is attached.
+      independent_of_author: false
+      latency: "never"
+      calibration: >
+        unknown, and deliberately so — a threshold here would imply an
+        oracle that does not exist.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Shalizi & Crutchfield 2001 — causal states / epsilon-machines: the equivalence classes of histories with identical predictive futures ARE the fibers of the readout map"
+        - "Littman, Sutton & Singh 2001 — predictive state representations"
+      strongest_relative: >
+        Causal states (Shalizi & Crutchfield 2001). The fiber framing is
+        already this, under a different name and with 25 years of prior
+        development.
+      discrimination_test: >
+        None survives — once the illet failed, there is no distinction left
+        to test against the strongest relative. Recording that is the point.
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: >
+        flagged: "fiber" and "spectrum" are shared VOCABULARY between the
+        two domains, not shared structure. The word survived the transfer;
+        the property did not.
+      AD2_surface_resonance: >
+        flagged: this is the anti-pattern in its textbook form — the
+        analogy sounded deep, and the illet dissolved the moment it was
+        required to name which property bears the load. The tier is S for
+        exactly this reason.
+      AD3_confirmation_bias: >
+        clear — this seed cuts against the transfer the user proposed, so
+        it is on the correcting side of the batch.
+      AD4_refuted_relative: >
+        unverified — no refuted-patterns export for this domain (see
+        batch.refuted_patterns_source).
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: >
+        flagged: cross-domain transfers from analytic number theory into
+        machine learning have a poor base rate in this project's own record;
+        the honest prior on any such transfer is low, and this seed matched
+        that prior.
+    scope_caveat: "not applicable — no prediction is made."
+    trace_base_rate: >
+      Number-theory-to-ML transfers in this author's record: no positive
+      result so far. The base rate going in was ~0, and it held. Written
+      here so the next such seed inherits the number rather than the
+      enthusiasm.
+
+    threshold_proposal: >
+      none — with arbiter class "none", a numeric rule would be decorative.
+    cost: "one desk pass"
+    preregistered_prediction: >
+      The author expected the transfer to carry, and it did not. Recorded
+      because a generator whose predictions are never wrong is not being
+      scored.
+
+    handoff:
+      status: "declined"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # ===================================================================
+  - id: "KS-J001"
+    tier: "H-aday"
+    claim: >
+      Membership of an intermediate variable in the reported workspace
+      subspace increases monotonically with the NUMBER of downstream
+      components that read it; single-reader variables stay outside it.
+    operator: "O1"
+
+    illet: >
+      Shared-carrier necessity. A variable read by several downstream
+      consumers must be written in a coordinate system all of them agree on;
+      a variable with one consumer can stay in private, idiosyncratic
+      coordinates. In a transformer the only coordinate system every layer
+      shares is the vocabulary (unembedding) basis. On this reading, the
+      fact that the reported subspace is defined as a sparse cone of
+      unembedding vectors is not a choice of instrument but a consequence:
+      many-reader variables are forced into the one common alphabet.
+
+    breaking_point: >
+      Reader count and activation magnitude are naturally correlated — a
+      direction many components read is also a direction that is large. If
+      the two cannot be separated, the illet is untestable and the seed
+      falls back to S. It also assumes readers can be counted from static
+      weights; if reading is strongly input-gated, the static count is the
+      wrong instrument.
+
+    cheapest_refutation:
+      test: >
+        On an open-weight model, for each candidate feature direction
+        compute reader count = number of downstream OV / MLP-input weight
+        vectors whose cosine with that direction exceeds a null-calibrated
+        cutoff. Compute AUC(reader count -> membership in the sparse
+        decomposition). Report the partial correlation controlling for
+        activation magnitude. AUC at chance kills the shared-carrier illet.
+      adds_capacity: false
+      matched_budget_control: "not applicable — no parameters are added"
+
+    arbiter:
+      class: "instrument"
+      who: >
+        the published decomposition code run on an open-weight model;
+        measurement is deterministic given the model and does not pass
+        through the author's judgement
+      independent_of_author: true
+      latency: "days"
+      calibration: >
+        Null from direction permutation on the SAME weight matrices, so the
+        cutoff comes from this instrument's own null. No threshold is
+        inherited from probe-R^2 or SAE literature.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Baars 1988; Dehaene & Naccache 2001 — global broadcast: contents available to many consumers"
+        - "Huh et al. 2024 — Platonic Representation Hypothesis: convergence toward a shared representation"
+        - "Elhage et al. 2021 — residual stream as a shared communication channel between components"
+      strongest_relative: >
+        The magnitude-only account: membership is predicted by how large a
+        direction is, and reader count is merely correlated with magnitude.
+        This is the rival that must lose, and it is in the comparison set.
+      discrimination_test: >
+        Partial correlation and a magnitude-matched subsample: within a band
+        of near-identical activation magnitude, does reader count still
+        predict membership? If it does not, the magnitude account wins.
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear — the claim is about weight geometry, not a numeric coincidence"
+      AD2_surface_resonance: >
+        clear — this seed is the salvaged, load-bearing rewrite of a surface
+        analogy (cream rising in churned milk) whose original physical illet
+        failed; see examples/distillation-user-analogy.md
+      AD3_confirmation_bias: "clear — KS-J005 carries the batch's symmetry"
+      AD4_refuted_relative: "unverified — no refuted-patterns export for this domain"
+      AD5_scale_leak: >
+        flagged: the test runs on a small open-weight model while the source
+        report's claims concern a much larger one
+      AD6_trace_base_rate: "clear — this seed does not join an established negative trace"
+    scope_caveat: >
+      Scoped to open-weight models in the range the test actually runs on.
+      A positive result there does not transfer to frontier-scale models by
+      restatement; the source report's own subject is out of reach.
+    trace_base_rate: "not applicable"
+
+    threshold_proposal: >
+      Support at AUC >= 0.70 with the magnitude-controlled partial
+      correlation still positive; refute at AUC <= 0.55 or at a partial
+      correlation that vanishes under magnitude matching.
+    cost: "low — weight geometry plus one existing decomposition pass"
+    preregistered_prediction: >
+      The author expects a real but magnitude-entangled effect: AUC in the
+      0.65-0.75 band, with roughly a third of it surviving magnitude
+      control.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # ===================================================================
+  - id: "KS-J002"
+    tier: "H-aday"
+    claim: >
+      The singular value spectrum of the averaged Jacobian contains a gap
+      separating the reported workspace subspace from the rest, and that cut
+      can be recovered without reference to the sparsity threshold that
+      currently defines it.
+    operator: "O4"
+
+    illet: >
+      A cut is either intrinsic to the object or imposed by the instrument,
+      and the discriminating signature is whether it survives removal of the
+      instrument's free parameter. The subspace is currently defined by a
+      chosen sparsity level. Push that parameter out of the picture and look
+      at the operator's own spectrum: a gap that is there without being put
+      there is structure; a smooth spectrum means the boundary is drawn by
+      the measurement.
+
+    breaking_point: >
+      A spectral gap is sufficient for an intrinsic cut but not necessary.
+      A real subspace could be defined by a non-spectral property and leave
+      no gap, so a negative result constrains the "clean boundary" reading
+      rather than the existence of the structure. The seed must be reported
+      that way or it overclaims.
+
+    cheapest_refutation:
+      test: >
+        SVD the averaged Jacobian per layer. Measure max sigma_i /
+        sigma_{i+1} and its index. Compare against a random matrix null of
+        matched shape and norm. Refit the Jacobian on a second, disjoint
+        corpus and check whether the gap index moves.
+      adds_capacity: false
+      matched_budget_control: "not applicable — this is a measurement, not a trained arm"
+
+    arbiter:
+      class: "runtime"
+      who: >
+        a deterministic SVD script; the verdict is a number the author
+        cannot influence once the corpora are fixed
+      independent_of_author: true
+      latency: "seconds"
+      calibration: >
+        Marchenko-Pastur / matched random-matrix null computed for THIS
+        matrix shape and norm. Explicitly not inherited from SAE dictionary
+        or tuned-lens thresholds — those are different instruments with
+        different nulls.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Belrose et al. 2023 — tuned lens: learned per-layer translators, a different linearization of the same stream"
+        - "Marchenko & Pastur 1967 — the standard null for 'is this spectrum structured?'"
+        - "spectral-gap arguments in dimensionality selection, e.g. scree/eigengap heuristics"
+      strongest_relative: >
+        The tuned lens. It is the closest existing linearized readout, and
+        the same gap question can be asked of it.
+      discrimination_test: >
+        Run the identical SVD on the tuned-lens transport matrices. If both
+        show the same gap at the same index, the gap is a property of
+        linearized readout in general and says nothing specific about the
+        workspace subspace.
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: >
+        clear — the null is derived from this matrix's own distribution, and
+        the discrimination test rules out a readout-generic artifact
+      AD2_surface_resonance: "clear — no analogy is load-bearing here; this is a direct measurement"
+      AD3_confirmation_bias: "clear — the refute branch is as informative as the support branch"
+      AD4_refuted_relative: "unverified — no refuted-patterns export for this domain"
+      AD5_scale_leak: >
+        flagged: runs on open-weight models; the source report's subject
+        model cannot be measured
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Scoped to open-weight models. A gap found there is evidence about
+      those models, not about the model the source report describes.
+    trace_base_rate: "not applicable"
+
+    threshold_proposal: >
+      Support when the observed max ratio exceeds the 99th percentile of the
+      matched null AND the gap index is stable within +/-25% across two
+      disjoint fitting corpora. Refute when the spectrum is
+      null-indistinguishable, or when the index moves with the corpus — in
+      which case every capacity-style statement about the subspace drops to
+      "critical control missing".
+    cost: "very low — one SVD per layer"
+    preregistered_prediction: >
+      The author expects a soft shoulder rather than a clean gap, and
+      expects the index to drift with the corpus — i.e. expects the refute
+      branch.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # ===================================================================
+  - id: "KS-J003"
+    tier: "H-aday"
+    claim: >
+      Two states with identical workspace content but different components
+      in the kernel of the averaged Jacobian are behaviourally
+      indistinguishable downstream; if they are not, behaviour-bearing
+      structure exists outside the measured subspace.
+    operator: "O2"
+
+    illet: >
+      Inversion of the measurement's direction. Every reported result asks
+      what the instrument SEES. The completeness of the instrument is a
+      claim about what it CANNOT see, and that claim is only testable by
+      perturbing inside the kernel. The source report states that what
+      decides entry into the subspace is unknown; that is a question about
+      the kernel, and nothing in the reported work looks there.
+
+    breaking_point: >
+      The kernel is defined by a corpus-averaged linearization, so it is not
+      the true kernel for any particular prompt. Linearization error can
+      push the result in either direction: a genuinely empty kernel can look
+      active because the averaged kernel leaks, and an active one can look
+      empty because the perturbation misses the locally relevant directions.
+
+    cheapest_refutation:
+      test: >
+        Construct matched pairs h and h + v with v in the averaged kernel
+        and ||v|| fixed. Measure KL divergence of the output distribution
+        over the next 20 tokens. Control arm: random v of equal norm drawn
+        outside the kernel, which isolates the effect of perturbation
+        magnitude from the effect of its direction.
+      adds_capacity: false
+      matched_budget_control: >
+        not applicable in the parameter sense — no capacity is added. The
+        equal-norm random-direction arm plays the analogous role for
+        perturbation budget and is mandatory for the same reason.
+
+    arbiter:
+      class: "runtime"
+      who: "a deterministic intervention script; KL is computed, not judged"
+      independent_of_author: true
+      latency: "hours"
+      calibration: >
+        The ratio is normalised by the equal-norm random arm measured on the
+        same model and prompts, so the scale comes from this instrument's
+        own null rather than from an external effect-size convention.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Ravfogel et al. 2020 — INLP: iterative null-space projection for concept removal"
+        - "Belrose et al. 2023 — LEACE: concept erasure with guarantees"
+        - "Geiger et al. 2021 — causal abstraction / interchange interventions"
+      strongest_relative: >
+        LEACE (Belrose et al. 2023). It is the most developed method for
+        asking what survives in a null space.
+      discrimination_test: >
+        Those methods erase a NAMED concept; this seed interrogates the
+        kernel of the MEASURING operator itself. The concrete test of the
+        distinction: take a direction LEACE identifies as carrying a
+        concept, and check whether it lies inside the averaged Jacobian's
+        kernel. If it always does, the two questions coincide and this seed
+        adds nothing.
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: >
+        clear — the decision ratio is calibrated against the equal-norm
+        random arm on the same instrument
+      AD2_surface_resonance: "clear — no analogy carries this seed"
+      AD3_confirmation_bias: "clear — both branches are informative and both are stated"
+      AD4_refuted_relative: "unverified — no refuted-patterns export for this domain"
+      AD5_scale_leak: "flagged: open-weight models only"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Scoped to open-weight models and to the corpus the Jacobian was fitted
+      on. The averaged kernel is corpus-relative and the caveat travels with
+      every number.
+    trace_base_rate: "not applicable"
+
+    threshold_proposal: >
+      KL(kernel) / KL(random equal-norm) <= 0.25 supports "the kernel is
+      behaviourally empty"; >= 0.75 refutes the completeness reading and
+      makes the workspace/true-cognitive-space distinction quantitative.
+      The 0.25-0.75 band is underpowered and buys a second model, not a
+      headline.
+    cost: "low to medium"
+    preregistered_prediction: >
+      The author expects the middle band — a partly active kernel — which
+      would mean the honest answer is "incomplete instrument", not a
+      verdict either way.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # ===================================================================
+  - id: "KS-J004"
+    tier: "NK"
+    claim: >
+      Simultaneous workspace contents repel each other: their co-occupancy
+      statistics show negative correlation relative to an
+      independent-selection null, as a finite shared resource under
+      competition requires.
+    operator: "O1"
+
+    illet: >
+      Units competing for one finite shared resource cannot be
+      independently distributed; occupancy of one suppresses occupancy of
+      others, and the signature is negative correlation against an
+      independent null. This is the same structural property that makes
+      eigenvalue spacings repel in random matrix ensembles, borrowed here
+      ONLY as a statistical template — no claim is made that the two
+      domains share content, mechanism, or a common cause.
+
+    breaking_point: >
+      The sparse coding algorithm that produces the coefficients is itself a
+      greedy, residual-subtracting procedure, and such procedures manufacture
+      negatively correlated coefficients from unstructured targets. If the
+      algorithm's own baseline repulsion cannot be subtracted, the
+      measurement cannot distinguish competition in the model from
+      competition in the decomposition, and this seed does not rise above
+      NK.
+
+    cheapest_refutation:
+      test: >
+        Collect sparse coefficient vectors over a large prompt set and
+        measure pairwise correlation and the coefficient-gap distribution.
+        Null 1: token-frequency-matched independent sampling. Null 2 — the
+        one that decides the tier: run the identical decomposition against
+        RANDOM target vectors using the same dictionary, and measure the
+        baseline repulsion the algorithm produces on its own. Observed
+        repulsion must exceed that baseline, not merely the independent
+        null.
+      adds_capacity: false
+      matched_budget_control: "not applicable — measurement only"
+
+    arbiter:
+      class: "instrument"
+      who: "the published sparse decomposition, run over a fixed prompt corpus"
+      independent_of_author: true
+      latency: "days"
+      calibration: >
+        Two nulls, both computed with this decomposition on this dictionary.
+        No spacing statistic or repulsion threshold is imported from the
+        random-matrix literature — that literature supplies the SHAPE of the
+        question and nothing else, which is precisely why AD1 is flagged.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Dehaene & Changeux 2011 — ignition: threshold, all-or-none, winner-take-all workspace dynamics"
+        - "Montgomery 1973 — pair correlation / level repulsion, borrowed as a statistical template only"
+        - "sparse autoencoder feature co-occurrence and near-orthogonality analyses"
+      strongest_relative: >
+        The SAE co-occurrence literature — it already measures whether
+        sparsely coded features co-activate, on the same kind of object.
+      discrimination_test: >
+        Run the same two nulls on an SAE decomposition of the same model. If
+        SAE features show the identical repulsion profile, the effect is a
+        property of sparse coding, not of a competing workspace.
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: >
+        flagged: the repulsion signature is imported from a different
+        instrument and a different field. Until the algorithm-baseline null
+        clears it, this seed is tiered NK — this is the flag doing its job,
+        not a defect in the idea.
+      AD2_surface_resonance: >
+        clear — the illet (finite shared resource forces negative
+        correlation) is nameable and does the work; the number-theory
+        surface is explicitly disclaimed
+      AD3_confirmation_bias: "clear"
+      AD4_refuted_relative: "unverified — no refuted-patterns export for this domain"
+      AD5_scale_leak: "flagged: open-weight models only"
+      AD6_trace_base_rate: >
+        flagged: this seed belongs to the same number-theory-to-ML transfer
+        trace that KS-J006 died in
+    scope_caveat: >
+      Scoped to open-weight models and to the specific decomposition
+      algorithm used. A different sparse coder is a different instrument and
+      needs its own baseline.
+    trace_base_rate: >
+      Number-theory-to-ML transfers in this record: no positive result so
+      far, and KS-J006 in this very batch is another negative. The prior is
+      correspondingly low. Two-sided note: those negatives all concerned
+      transfers of CONTENT (does the model contain arithmetic structure);
+      this seed transfers only a statistical TEMPLATE, a cell the trace has
+      not sampled — so the low base rate is out-of-distribution here and
+      does not license confidence in a null result either.
+
+    threshold_proposal: >
+      Support requires mean pairwise correlation below the 1st percentile of
+      BOTH nulls, and — if the source report's own follow-up analysis is
+      right that many tokens collapse into far fewer coherent ideas — a
+      cluster count in the single digits rather than in the twenties.
+      Proposed only conditionally: with AD1 unresolved the number is not yet
+      lockable.
+    cost: "medium"
+    preregistered_prediction: >
+      The author expects repulsion to be present but largely explained by
+      the decomposition algorithm, i.e. expects null 2 to eat most of it.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+  # ===================================================================
+  - id: "KS-J005"
+    tier: "H-aday"
+    claim: >
+      The size and sharpness of the workspace subspace tracks the density of
+      VERBALIZED reasoning in a model's training data: it is markedly weaker
+      in a base model than in the instruction/chain-of-thought-tuned model of
+      the same family and size.
+    operator: "O7"
+
+    illet: >
+      Substrate swap holding the function fixed. The function — "a subspace
+      whose contents are verbalizable and reportable" — is held constant
+      while the substrate is changed from a computation-shaped explanation
+      to a data-shaped one. The structural claim: a property that looks like
+      spontaneous emergence is indistinguishable, from the inside, from a
+      property imitated out of a corpus that already contains it. Pretraining
+      text is saturated with humans verbalizing their own intermediate
+      reasoning, so "verbalizable" may be inherited rather than discovered.
+
+    breaking_point: >
+      Base and tuned models differ in far more than verbalized-reasoning
+      density, so any difference is only evidence for the illet if it is
+      SELECTIVE. If instruction tuning shifts every representational
+      property measured, the comparison identifies nothing and the seed
+      falls back to S.
+
+    cheapest_refutation:
+      test: >
+        Same family, same parameter count, base vs instruction-tuned. Measure
+        the variance share the subspace explains, intermediate-concept
+        recovery at fixed sparsity, and intervention-swap success rate.
+        Control: a capability that does not depend on the subspace — fluent
+        continuation, sentiment classification — must NOT show the same
+        difference profile.
+      adds_capacity: false
+      matched_budget_control: >
+        The two arms must have identical parameter counts, or the comparison
+        is a capacity comparison and the seed is void. This is the
+        matched-budget requirement in its cross-model form.
+
+    arbiter:
+      class: "instrument"
+      who: >
+        the published decomposition run on a third-party base/instruct model
+        pair; neither model nor its training is under the author's control
+      independent_of_author: true
+      latency: "days"
+      calibration: >
+        Difference thresholds derived from the spread across seeds and
+        prompt subsets on the SAME instrument. No effect-size convention is
+        imported.
+
+    prior_art:
+      searched: true
+      relatives:
+        - "Deng et al. 2023/2024 — internalizing chain-of-thought: explicit reasoning traces absorbed into forward computation"
+        - "work on how instruction tuning reshapes representation geometry"
+        - "Baars 1988 — the theory whose convergent-emergence reading this seed deflates"
+      strongest_relative: >
+        The generic account: "instruction tuning improves everything, and
+        this is one more instance." It is the rival that the selectivity
+        control exists to defeat, and it is in the comparison set.
+      discrimination_test: >
+        Selectivity. The generic account predicts base-to-tuned improvement
+        across the control capabilities too; the illet predicts the gap
+        concentrates on the subspace measures and leaves fluency and
+        sentiment roughly flat.
+    claims_superiority: false
+
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear — the illet is a substrate swap with a named held-fixed function"
+      AD3_confirmation_bias: >
+        clear, and this is the seed that discharges AD3 for the whole batch:
+        it cuts against both the source report's framing and the user's
+      AD4_refuted_relative: "unverified — no refuted-patterns export for this domain"
+      AD5_scale_leak: "flagged: open-weight pairs only"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Scoped to the open-weight base/instruct pair actually measured. A
+      difference there is not a claim about how the source report's subject
+      model acquired its structure.
+    trace_base_rate: "not applicable"
+
+    threshold_proposal: >
+      A gap of >= 15 points in intervention-swap success rate, with the
+      control capabilities differing by < 5 points, supports the data-origin
+      reading. A gap of <= 5 points supports the computation-origin reading.
+      Both branches are publishable; that is the point of running it.
+    cost: "medium"
+    preregistered_prediction: >
+      The author expects a substantial gap that FAILS the selectivity
+      control — i.e. expects the generic account to win, and says so before
+      running.
+
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: ""
+
+# =====================================================================
+# Discards — ideas weighed and refused, kept because a batch showing only
+# survivors is indistinguishable from one where nothing was ever weighed.
+#
+# SCHEMA HISTORY: this block was written against v1.0, which had no slot for
+# it — the validator neither read nor enforced discards, so the one section a
+# host instruction to "stay agreeable" silently deletes was also the one
+# section CI could not notice was missing. That gap was proposed upstream
+# from this file and closed in schema v1.1 as rule G7: the key is now
+# REQUIRED, and an empty list is legal only with a batch.discards_note
+# saying what was considered.
+# =====================================================================
+discards:
+  - claim: "Direct transfer of zeta zeros / the explicit formula to the Jacobian spectrum"
+    reason: >
+      AD1 in pure form. The only thing shared between the domains is the
+      word "spectrum". No illet could be named that did not reduce to that
+      word.
+  - claim: "The reported ~10% of activations resembles the fraction of cortex active at a given moment"
+    reason: >
+      AD2. Two numbers of similar size from unrelated measurement
+      traditions, with no base rate for how often such pairs coincide by
+      chance and no nameable structural link.
+  - claim: >
+      The user's cream-separation analogy taken literally: look for spinodal
+      decomposition, a critical temperature, a phase boundary during training
+    reason: >
+      AD2. Physical separation is carried by a conserved quantity under a
+      body force with surface energy at the interface; gradient descent has
+      no counterpart for any of the three. The physics was dropped and the
+      illet replaced, which is what produced KS-J001. See
+      examples/distillation-user-analogy.md for the full pass.
+  - claim: "Ignition equals a percolation threshold"
+    reason: >
+      Not an illet failure — the illet is fine. Prior art is saturated:
+      the originating theory's own formal model is already a threshold
+      dynamic. Skip and cite; generating it as new would be a rediscovery
+      dressed as a seed.
+  - claim: "Cross-model universality of the workspace subspace"
+    reason: >
+      Prior art saturated (Platonic Representation Hypothesis; Git-Re-Basin;
+      fixed-point universality work), and independently confirmed inside
+      this author's own project. Skip and cite.

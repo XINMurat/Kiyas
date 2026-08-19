@@ -6,7 +6,7 @@ Kıyas is a methodology project, so it holds itself to its own discipline.
 Contributions are welcome but must respect the rules the tool applies to
 everyone.
 
-### Ground rules (the same G1–G6 the tool enforces)
+### Ground rules (the same G1–G7 the tool enforces)
 
 1. **Name the illet.** Any claim about why a change helps states the
    structural reason it bears load — not that it "feels cleaner". A PR whose
@@ -32,9 +32,11 @@ everyone.
 ### Before opening a PR
 
 ```bash
-# 1. seed batches must pass G1–G6 (English or Turkish messages):
+# 1. seed batches must pass G1–G7 (English or Turkish messages):
 python tools/kiyas_validate.py examples/kiyas-seed.example.yaml
 python tools/kiyas_validate.py --lang tr examples/kiyas-seed.example.yaml
+python tools/kiyas_validate.py examples/kiyas-seed.jspace.example.yaml
+python tools/kiyas_validate.py --lang tr examples/kiyas-seed.jspace.example.yaml
 
 # 2. the unfilled template must still FAIL (this is a real check, not a joke):
 python tools/kiyas_validate.py skill/kiyas/schemas/kiyas-seed.yaml && echo "BROKEN"
@@ -83,7 +85,7 @@ behaviour and the shipped behaviour disagree.
 ### What lives where
 
 - `skill/kiyas/` — the skill (CC-BY-4.0 for prose, MIT for the schema).
-- `tools/` — the G1–G6 validator, the ledger reporter, the git hook (MIT).
+- `tools/` — the G1–G7 validator, the ledger reporter, the git hook (MIT).
 - `examples/`, `templates/`, `ledger/` — worked material and starting points.
 - `docs/` — bilingual guides (CC-BY-4.0).
 
@@ -105,7 +107,7 @@ Kıyas bir metodoloji projesidir; bu yüzden kendi disiplinine kendisi de uyar.
 Katkılar memnuniyetle karşılanır ama aracın herkese uyguladığı kurallara saygı
 göstermek zorundadır.
 
-### Temel kurallar (aracın uyguladığı G1–G6'nın aynısı)
+### Temel kurallar (aracın uyguladığı G1–G7'nin aynısı)
 
 1. **İlleti isimlendir.** Bir değişikliğin neden işe yaradığına dair her iddia,
    yükü taşıyan yapısal sebebi yazar — "daha temiz duruyor" değil. Gerekçesi

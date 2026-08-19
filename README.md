@@ -48,11 +48,11 @@ equivalent of type-checking: elimination before execution.
 |---|---|
 | `skill/kiyas/SKILL.md` | The skill itself — modes, procedure, tiers, anti-patterns |
 | `skill/kiyas/references/operators.md` | Seven generative operators, the anti-pattern sweep (AD1–AD6), the Mizan seed template |
-| `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G6) |
+| `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G7) |
 | `kiyas.skill` | One-file package for installing the skill |
-| `tools/kiyas_validate.py` | LLM-free G1–G6 checker |
+| `tools/kiyas_validate.py` | LLM-free G1–G7 checker |
 | `tools/kiyas_ledger.py` | Survival-rate reporter for generated seeds |
-| `examples/` | A worked batch that CI validates, plus a sample refuted-patterns export |
+| `examples/` | Two worked batches that CI validates (one single-domain, one cross-domain transfer whose illet fails), a distillation-mode pass, the portability runs, and a sample refuted-patterns export |
 | `ledger/` | Where the survival record accumulates |
 | `docs/` | Quickstart and usage guide (EN/TR) |
 
@@ -70,7 +70,14 @@ Or point your project at `skill/kiyas/` directly.
 ```bash
 pip install -r tools/requirements.txt
 python tools/kiyas_validate.py examples/kiyas-seed.example.yaml
+python tools/kiyas_validate.py examples/kiyas-seed.jspace.example.yaml
 ```
+
+The second batch is the harder case: a criterion carried in from an unrelated
+field whose illet is tested and **fails**, kept at `[S]` because the point where
+it broke is what generated two of the surviving seeds. The distillation-mode
+counterpart — the same discipline applied to a user's own raw analogy — is
+[`examples/distillation-user-analogy.md`](examples/distillation-user-analogy.md).
 
 With the negative-constraint feedback loop wired in:
 
@@ -146,7 +153,7 @@ and methodology text → CC-BY-4.0** ([`LICENSE-docs.md`](LICENSE-docs.md)).
 ### Version
 
 **v1.0** — seven operators + AD1–AD6 sweep + A1–A4 preregistration hygiene +
-G1–G6 seed schema & validator + survival ledger + Mizan feedback loop.
+G1–G7 seed schema & validator + survival ledger + Mizan feedback loop.
 
 ---
 
@@ -199,11 +206,11 @@ derleyici bedavaya eler; kod dışında eleme pahalıdır, o yüzden filtre üre
 |---|---|
 | `skill/kiyas/SKILL.md` | Skill'in kendisi — modlar, prosedür, tier'lar, anti-desenler |
 | `skill/kiyas/references/operators.md` | Yedi üretici operatör, anti-desen taraması (AD1–AD6), Mizan tohum şablonu |
-| `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G6 kuralları) |
+| `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G7 kuralları) |
 | `kiyas.skill` | Skill'i kurmak için tek-dosya paket |
-| `tools/kiyas_validate.py` | LLM'siz G1–G6 denetleyici |
+| `tools/kiyas_validate.py` | LLM'siz G1–G7 denetleyici |
 | `tools/kiyas_ledger.py` | Üretilen tohumların sağ-kalım oranı raporlayıcısı |
-| `examples/` | CI'ın doğruladığı çalışılmış parti + örnek çürütülmüş-desen dosyası |
+| `examples/` | CI'ın doğruladığı iki çalışılmış parti (biri tek-alan, biri illeti düşen alanlar-arası taşıma), bir damıtma-modu koşusu, taşınabilirlik koşuları ve örnek çürütülmüş-desen dosyası |
 | `ledger/` | Sağ-kalım kaydının biriktiği yer |
 | `docs/` | Hızlı başlangıç ve kullanım kılavuzu (EN/TR) |
 
@@ -220,7 +227,13 @@ Ya da projeni doğrudan `skill/kiyas/` dizinine yönlendir.
 ```bash
 pip install -r tools/requirements.txt
 python tools/kiyas_validate.py --lang tr examples/kiyas-seed.example.yaml
+python tools/kiyas_validate.py --lang tr examples/kiyas-seed.jspace.example.yaml
 ```
+
+İkinci parti zor durumdur: başka bir alandan taşınan bir ölçütün illeti sınanır
+ve **düşer**; tohum `[S]`'de tutulur, çünkü kırıldığı nokta hayatta kalan iki
+tohumu üreten şeydir. Damıtma-modu karşılığı — aynı disiplinin kullanıcının
+kendi ham analojisine uygulanması — [`examples/distillation-user-analogy.md`](examples/distillation-user-analogy.md).
 
 Geri-besleme döngüsü bağlıyken:
 
