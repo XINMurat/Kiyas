@@ -152,8 +152,16 @@ and methodology text → CC-BY-4.0** ([`LICENSE-docs.md`](LICENSE-docs.md)).
 
 ### Version
 
+**v1.1** — G7–G11 close the gap between the prose and the schema
+([`PROSE-SCHEMA-AUDIT.md`](PROSE-SCHEMA-AUDIT.md)): the discard list, a
+cheapest refutation and a prior-art search on every `[H-aday]`, a
+self-consistent arbiter, a stated refuted-patterns source. Adds a
+non-blocking warning channel (W1–W4, `--strict` in CI), a second worked batch
+(a cross-domain transfer whose illet fails), the first distillation-mode
+example, and the first survival-ledger entries.
+
 **v1.0** — seven operators + AD1–AD6 sweep + A1–A4 preregistration hygiene +
-G1–G11 seed schema & validator + survival ledger + Mizan feedback loop.
+G1–G6 seed schema & validator + survival ledger + Mizan feedback loop.
 
 ---
 
@@ -271,6 +279,13 @@ Bilinçli olarak ikili: **kod ve şemalar → MIT** ([`LICENSE`](LICENSE)); **d�
 ve metodoloji metni → CC-BY-4.0** ([`LICENSE-docs.md`](LICENSE-docs.md)).
 
 ### Sürüm
+
+**v1.1** — G7–G11, proza ile şema arasındaki farkı kapatır
+([`PROSE-SCHEMA-AUDIT.md`](PROSE-SCHEMA-AUDIT.md)): reddedilenler listesi, her
+`[H-aday]` için en ucuz çürütme ve prior-art araması, kendisiyle çelişmeyen
+hakem, beyan edilmiş çürütülmüş-desen kaynağı. Bloke etmeyen uyarı kanalı
+(W1–W4, CI'da `--strict`), ikinci çalışılmış parti (illeti düşen alanlar-arası
+bir taşıma), ilk damıtma-modu örneği ve sağ-kalım defterinin ilk girdileri.
 
 **v1.0** — yedi operatör + AD1–AD6 taraması + A1–A4 önkayıt hijyeni + G1–G6
 tohum şeması ve doğrulayıcısı + sağ-kalım defteri + Mizan geri-besleme döngüsü.
