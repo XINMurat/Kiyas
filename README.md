@@ -112,10 +112,14 @@ discipline criteria — five distinct operators, three recorded discards, a
 symmetry candidate cutting against the user's own thesis, and every surviving
 seed carrying its refutation condition: see
 [`examples/portability-neutral-host.md`](examples/portability-neutral-host.md).
-The **hostile**-host case was tested for the sibling project Mizan
-([those runs](https://github.com/XINMurat/Mizan/blob/main/examples/portability-across-hosts.md))
-but **not** for Kıyas; that evidence does not transfer, and borrowing it would
-be the tier drift this project's own table calls a finding.
+The **hostile**-host case was run too, and it did **not** pass: under a
+`CLAUDE.md` forbidding rejection of the team's ideas, the conflict was named
+and the counter-thesis candidate still appeared — but **the discard list
+vanished**, and an empty discard section is indistinguishable from an
+unwritten one. Recorded as `[H]`, inconclusive rather than rounded either
+way, together with the admission that the criterion itself was poorly
+designed. The skill was changed as a result: the discard list is now required
+in every generation, empty or not.
 
 **Disclosed confound:** this project's author keeps an always-on personal
 instruction set that overlaps these rules at several points. Their own

@@ -95,6 +95,13 @@ examples + anti-pattern sweep). Then:
 3. **Run each operator through the output contract:** Claim → Illet → Breaking
    point → Cheapest refutation → **Prior art** → Tier. If the illet cannot be
    named, DISCARD the idea; do not even call it decorative.
+   - **The discard list is part of the deliverable and always appears** — even
+     when it is empty, in which case say so and name what was considered. What
+     you refused to generate is information about the generation; a seed file
+     showing only survivors is indistinguishable from one where nothing was
+     ever weighed. It is also the first thing a host instruction to *stay
+     agreeable* silently removes, and the loss is invisible because an empty
+     discard section and an unwritten one are the same absence.
    - **Capacity-confound rule [A2]:** if the test adds parameters/capacity to a
      model, the cheapest refutation MUST include a **matched-budget control
      arm** — a symmetric arm giving the same extra budget to a generic channel
@@ -237,6 +244,13 @@ or not anything was ruled out.
   than merely interesting) and an instruction to **stay positive or
   agreeable** (this skill's discipline is discarding, and a generator
   that discards nothing is a brainstorm with tier tags on it).
+  **Watch the discard list specifically under the second one.** In a
+  measured run it was the only part that vanished: the conflict was named,
+  the symmetry candidate was still generated, the output contract held —
+  and the discards were simply gone, with nothing looking wrong. Same
+  fixture, three discards under a neutral host and zero under a host that
+  forbade rejecting the team's ideas (`examples/`). State the discards, or
+  state that there were none.
 - **A pinned output language overrides "write in the user's language."**
   Comply, but keep the tier tags bilingual — they are labels, not prose.
 - **Never assume a tool exists.** Subagents, file writing and shell
