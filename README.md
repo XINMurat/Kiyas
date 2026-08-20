@@ -150,6 +150,18 @@ tool enforces on everyone.
 Dual, deliberately: **code and schemas → MIT** ([`LICENSE`](LICENSE)); **prose
 and methodology text → CC-BY-4.0** ([`LICENSE-docs.md`](LICENSE-docs.md)).
 
+### Case study — the skills used on a real problem
+
+[**sieve-to-spectrum**](https://github.com/XINMurat/sieve-to-spectrum) is a
+number-theory project that ran on Kıyas: a multiplication table re-derives
+three centuries of results, and along the way four seeds are generated with their illet, breaking point and cheapest refutation.
+
+It is worth reading because it is not a demonstration. The seeds were
+preregistered before they were run, **three of the four came back negative**,
+and the negatives are still in the repository — which is the outcome this
+methodology is built to survive and the one a self-made example never
+produces.
+
 ### Version
 
 **v1.1** — G7–G11 close the gap between the prose and the schema
@@ -277,6 +289,17 @@ uyguladığı kuralların aynısı.
 
 Bilinçli olarak ikili: **kod ve şemalar → MIT** ([`LICENSE`](LICENSE)); **düzyazı
 ve metodoloji metni → CC-BY-4.0** ([`LICENSE-docs.md`](LICENSE-docs.md)).
+
+### Vaka çalışması — skill'lerin gerçek bir problemde kullanımı
+
+[**sieve-to-spectrum**](https://github.com/XINMurat/sieve-to-spectrum), Kıyas
+üzerinde koşan bir sayı-teorisi projesi: bir çarpım tablosundan üç yüzyıllık
+sonuçlar yeniden türetiliyor ve yol boyunca dört tohum illeti, kırılma noktası ve en ucuz çürütmesiyle üretiliyor.
+
+Okumaya değer, çünkü bir gösteri değil. Tohumlar koşulmadan önce önkayıt
+edildi, **dördün üçü negatif döndü**, ve negatifler hâlâ depoda duruyor — bu
+metodolojinin ayakta kalmak için kurulduğu sonuç, ve kendi yaptığın bir
+örneğin asla üretmediği sonuç.
 
 ### Sürüm
 
