@@ -13,7 +13,7 @@ description: "A Claude skill for research that is stuck. Every generated idea sh
 [Mizan](https://github.com/XINMurat/Mizan) ·
 [İskele](https://github.com/XINMurat/Iskele) ·
 [ux-mizan](https://github.com/XINMurat/ux-mizan) ·
-[**the family**](https://xinmurat.github.io/)
+[**the family · aile**](https://xinmurat.github.io/)
 
 ---
 
