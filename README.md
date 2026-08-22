@@ -29,6 +29,15 @@ backlog, tracked progress:
 A surviving seed is not a plan. When ideas clear the audit, İskele is where they
 become phases, tasks, and acceptance criteria you can actually execute.
 
+A fourth member, [**ux-mizan**](https://github.com/XINMurat/ux-mizan), carries Mizan's discipline into
+experience — the "users get lost / this screen is confusing" complaints —
+where the evidence is behavioural rather than documentary. It matters to Kıyas
+for one reason: a UX finding it cannot yet prove is exactly the shape Kıyas
+takes as input. A `[H]` mechanism with a refutation condition attached is a
+seed already dressed for the audit.
+
+> **İskele builds · Mizan weighs · Kıyas generates · ux-mizan measures experience**
+
 ## Why a generator needs a discipline at all
 
 The verification loop that makes coding tasks tractable is not powered by the
@@ -207,6 +216,15 @@ backlog, izlenen ilerleme:
 Sağ kalan bir tohum henüz plan değildir. Fikirler denetimden geçtiğinde, onları
 fiilen yürütebileceğin fazlara, görevlere ve kabul kriterlerine çeviren yer
 İskele'dir.
+
+Dördüncü üye [**ux-mizan**](https://github.com/XINMurat/ux-mizan), Mizan'ın disiplinini **deneyime** taşır —
+"kullanıcılar kayboluyor", "bu ekran karışık" şikâyetlerine — kanıtın belgesel
+değil davranışsal olduğu yere. Kıyas'ı ilgilendirmesinin tek bir sebebi var:
+henüz kanıtlanamayan bir UX bulgusu, tam olarak Kıyas'ın girdi aldığı şeklin
+kendisidir. Çürütme koşulu iliştirilmiş bir `[H]` mekanizması, denetime hazır
+giyinmiş bir tohumdur.
+
+> **İskele kurar · Mizan tartar · Kıyas üretir · ux-mizan deneyimi ölçer**
 
 ## Bir üreticiye neden disiplin gerekir
 
