@@ -12,7 +12,8 @@ description: "A Claude skill for research that is stuck. Every generated idea sh
 [Latest release](https://github.com/XINMurat/Kiyas/releases/latest) ·
 [Mizan](https://github.com/XINMurat/Mizan) ·
 [İskele](https://github.com/XINMurat/Iskele) ·
-[ux-mizan](https://github.com/XINMurat/ux-mizan)
+[ux-mizan](https://github.com/XINMurat/ux-mizan) ·
+[**the family**](https://xinmurat.github.io/)
 
 ---
 
