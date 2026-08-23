@@ -27,7 +27,7 @@ seçiminden gelir, daha çok analoji istemekten değil.
 geçer, tier'lanır, bayraklanır ve kriticklik × (bilgi-değeri / maliyet)
 sırasına dizilir.
 
-## 3. Sert kurallar (özet — şemadaki G1–G11)
+## 3. Sert kurallar (özet — şemadaki G1–G12)
 
 1. İllet boş olamaz. İlleti isimlendirilemeyen fikir üretilmiş sayılmaz.
 2. Bir fikir hipotez adayı olmadan önce kırılma noktası yazılmış olmalı.
@@ -53,9 +53,17 @@ sırasına dizilir.
 11. Parti, baktığı **çürütülmüş-desen ihracını** adlandırır. "Bakılmadı"
     dürüsttür; sessizlik her AD4 satırını doğrulanamaz kılar.
 
-Dört kontrol daha **bloke etmeden uyarır** (`--strict` ile düşerler): hakemi
+12. Parti, **nasıl çekildiğini** kaydeder: tohum (sabitlenmemiş çekiliş için
+    `"fresh"`), host, ve isteğe bağlı bir girdi özeti. Sabitlenmiş bir tohum
+    partiyi tekrar üretilebilir **yapmaz** — üreteç bir dil modelidir. Kaydın
+    satın aldığı şey karşılaştırılabilirliktir: aynı özeti taşıyan iki parti
+    aynı problemden ve aynı çürütülmüş-desen ihracından çekilmiştir, yani
+    aralarındaki fark çekilişin farkıdır, sorunun değil.
+
+Beş kontrol daha **bloke etmeden uyarır** (`--strict` ile düşerler): hakemi
 olmayan sayısal eşik, her tohumu hipotez adayı olan parti, hiçbir tohumu
-adlandırmayan simetri kontrolü, ve şerhsiz ölçek transferi. Her birinin meşru
+adlandırmayan simetri kontrolü, şerhsiz ölçek transferi, ve girdi özeti
+olmayan sabitlenmiş tohum. Her birinin meşru
 istisnası var; o yüzden araç "dur" değil "bak" der — tek bir bloke eden kanal,
 kuralların etrafından yazmayı öğretir.
 

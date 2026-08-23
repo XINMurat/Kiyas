@@ -32,7 +32,7 @@ cp templates/kiyas-seed.yaml my-project/seeds.yaml
 python tools/kiyas_validate.py my-project/seeds.yaml
 ```
 
-The validator checks G1–G11 mechanically (no LLM): illet present, breaking
+The validator checks G1–G12 mechanically (no LLM): illet present, breaking
 point present for candidates, prior-art gate on superiority claims,
 matched-budget control arm when the test adds capacity, an arbiter block, and
 a recorded anti-pattern sweep. See `docs/en/usage-guide.md`.
@@ -90,7 +90,7 @@ cp templates/kiyas-seed.yaml projem/tohumlar.yaml
 python tools/kiyas_validate.py --lang tr projem/tohumlar.yaml
 ```
 
-Doğrulayıcı G1–G11'u mekanik kontrol eder (LLM yok): illet var mı, adaylarda
+Doğrulayıcı G1–G12'yi mekanik kontrol eder (LLM yok): illet var mı, adaylarda
 kırılma noktası var mı, üstünlük iddiasında prior-art kapısı, test kapasite
 eklerken eşleşik-bütçe kontrol kolu, hakem bloğu ve kayda geçmiş anti-desen
 taraması. Bkz. `docs/tr/kullanim-kilavuzu.md`.

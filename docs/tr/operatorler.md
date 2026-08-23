@@ -2,7 +2,7 @@
 
 > **Türkçe operatör metni.** Bu dosya, `skill/kiyas/references/operators.md`'nin
 > Türkçe aslıdır (revize 2026-07-22, A1/A3/A4). Paketlenen sürüm İngilizcedir.
-> G1–G11 notları bu asılda yoktur; bkz. `docs/tr/kullanim-kilavuzu.md`.
+> G1–G12 notları bu asılda yoktur; bkz. `docs/tr/kullanim-kilavuzu.md`.
 
 
 > **[Revize 2026-07-22 — A1/A3/A4]** SKILL.md'nin A1–A4 yamalarının operasyonel

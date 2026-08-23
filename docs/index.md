@@ -42,7 +42,7 @@ and the [portability runs](https://github.com/XINMurat/Kiyas/blob/main/examples/
 that test whether the discipline survives someone else's setup.
 
 The output contract has a machine-readable form and an LLM-free checker
-(rules G1–G11, plus a non-blocking warning channel). It verifies that the
+(rules G1–G12, plus a non-blocking warning channel). It verifies that the
 illet field is **filled**, never that the illet is **true** — contract
 completeness is machine-checkable, idea quality is not.
 

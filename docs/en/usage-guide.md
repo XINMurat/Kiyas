@@ -28,7 +28,7 @@ more analogies.
 the same contract, tiered, flagged, and ordered by criticality ×
 (information value / cost).
 
-## 3. Hard rules (summary — G1–G11 in the schema)
+## 3. Hard rules (summary — G1–G12 in the schema)
 
 1. Illet non-empty. An idea whose illet cannot be named was not generated.
 2. Breaking point present before an idea can be a hypothesis candidate.
@@ -54,10 +54,18 @@ the same contract, tiered, flagged, and ordered by criticality ×
 11. The batch names the **refuted-patterns export** it consulted. "Not
     consulted" is honest; silence makes every AD4 line unverifiable.
 
-Four further checks **warn without blocking** (`--strict` makes them fail): a
+12. The batch records **how it was drawn**: the seed (`"fresh"` for an
+    unpinned draw), the host, and optionally an inputs digest. A pinned seed
+    does **not** make a batch reproducible — the generator is a language
+    model. What the record buys is comparability: two batches carrying the
+    same digest were drawn from the same problem and the same refuted-patterns
+    export, so a difference between them is a difference in the draw and not
+    in the question.
+
+Five further checks **warn without blocking** (`--strict` makes them fail): a
 numeric threshold with no judge behind it, a batch where every seed is a
-hypothesis candidate, a symmetry check naming no seed, and a scale transfer
-with no scope caveat. Each has legitimate exceptions, so the tool says look,
+hypothesis candidate, a symmetry check naming no seed, a scale transfer
+with no scope caveat, and a pinned seed with no inputs digest. Each has legitimate exceptions, so the tool says look,
 not halt — a single blocking channel teaches you to write around the rules.
 
 ## 4. Reading the tiers

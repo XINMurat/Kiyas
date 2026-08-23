@@ -4,7 +4,7 @@
 > aslıdır (revize 2026-07-22, A1–A4). Paketlenen skill metni İngilizcedir —
 > Mizan'ın kuralıyla aynı: skill gövdesi İngilizce, dokümanlar iki dilli, tier
 > etiketleri her ikisinde de aynı. Skill kullanıcının dilinde yanıt verir.
-> G1–G11 (tohum şeması ve doğrulayıcı) bu Türkçe asılda henüz yoktur; onlar için
+> G1–G12 (tohum şeması ve doğrulayıcı) bu Türkçe asılda henüz yoktur; onlar için
 > `docs/tr/kullanim-kilavuzu.md`'ye bak.
 
 
