@@ -196,7 +196,7 @@ jobs:
           # contract has drifted below the written one again.
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], discards_note: "nothing refused"}
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
           seeds:
             - id: KS-1
               tier: H-aday
@@ -231,7 +231,7 @@ jobs:
           # exit 0 by default, exit 1 under --strict, same finding both times.
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "the other one cuts against it", operators_used: [O1, O2, O3], discards_note: "nothing refused"}
+          batch: {problem: "p", symmetry_check: "the other one cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
           seeds:
             - id: KS-1
               tier: S
