@@ -1,6 +1,6 @@
 name: CI
 
-# Runs the LLM-free G1–G11 seed validator (in --strict mode, so W1–W4
+# Runs the LLM-free G1–G12 seed validator (in --strict mode, so W1–W5
 # warnings fail the build too) and checks that the shipped
 # kiyas.skill stays in sync with skill/kiyas/. Static checks only: this
 # pipeline is a `runtime` arbiter for CONTRACT COMPLETENESS, never for idea
@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r tools/requirements.txt
 
-      - name: Validate every seed batch (G1–G11, --strict)
+      - name: Validate every seed batch (G1–G12, --strict)
         run: |
           set -e
           found=0
@@ -83,7 +83,7 @@ jobs:
           set -e
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "examples/refuted-patterns.example.yaml", discards_note: "nothing refused; two framings considered"}
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "examples/refuted-patterns.example.yaml", discards_note: "nothing refused; two framings considered", generation: {seed: "fresh", host: "ci"}}
           seeds:
             - id: KS-1
               tier: H-aday
@@ -154,7 +154,7 @@ jobs:
           # failing, that invisibility is back.
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted"}
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", generation: {seed: "fresh", host: "ci"}}
           seeds:
             - id: KS-1
               tier: S
@@ -223,6 +223,163 @@ jobs:
           echo "$out" | grep -q "G9:" || { echo "FAIL: G9 did not fire" >&2; exit 1; }
           echo "OK: G8 and G9 both fired."
 
+      - name: Self-test — G12 must reject a batch that cannot say how it was drawn
+        run: |
+          set -e
+          # A batch with no generation block cannot be compared with a second
+          # run, and comparability is the only thing a non-deterministic
+          # generator can honestly offer. Everything else here is complete, so
+          # G12 is the only rule left that can fail.
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "A stuck problem stated once.", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
+          seeds:
+            - id: KS-1
+              tier: S
+              operator: O1
+              claim: "a claim"
+              illet: "a structural equivalence"
+              breaking_point: "here"
+              cheapest_refutation: {test: "t", adds_capacity: false}
+              arbiter: {class: runtime, who: "pytest"}
+              prior_art: {searched: true}
+              claims_superiority: false
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          discards: []
+          YAML
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "G12: batch has no" || { echo "FAIL: G12 did not fire on a batch with no generation block" >&2; exit 1; }
+          echo "$out" | grep -q "^1 violation(s) found." || { echo "FAIL: the fixture tripped a rule other than G12; it no longer isolates G12." >&2; exit 1; }
+          echo "OK: G12, and only G12, rejected the unrecorded draw."
+          # ...and the same batch passes once the conditions are recorded.
+          python - "$tmp" <<'PY'
+          import io, sys
+          p = sys.argv[1]
+          s = io.open(p, encoding="utf-8").read()
+          s = s.replace('discards_note: "nothing refused"}',
+                        'discards_note: "nothing refused", generation: {seed: "fresh", host: "ci"}}')
+          io.open(p, "w", encoding="utf-8").write(s)
+          PY
+          python tools/kiyas_validate.py "$tmp"
+          echo "OK: seed \"fresh\" plus a named host is accepted."
+
+      - name: Self-test — the digest is checked, and only where it can be
+        run: |
+          set -e
+          # The whole point of inputs_digest is that a batch cannot claim to
+          # have been drawn from inputs it was not drawn from. If this stops
+          # failing, the claim is decoration.
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "A stuck problem stated once.", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
+          seeds:
+            - id: KS-1
+              tier: S
+              operator: O1
+              claim: "a claim"
+              illet: "a structural equivalence"
+              breaking_point: "here"
+              cheapest_refutation: {test: "t", adds_capacity: false}
+              arbiter: {class: runtime, who: "pytest"}
+              prior_art: {searched: true}
+              claims_superiority: false
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          discards: []
+          YAML
+          python - "$tmp" <<'PY'
+          import io, sys
+          sys.path.insert(0, "tools")
+          import kiyas_digest as d
+          p = sys.argv[1]
+          s = io.open(p, encoding="utf-8").read()
+          good = d.inputs_digest("A stuck problem stated once.", b"")
+          s = s.replace('discards_note: "nothing refused"}',
+                        'discards_note: "nothing refused", generation: {seed: 42, host: "ci", inputs_digest: "%s"}}' % good)
+          io.open(p, "w", encoding="utf-8").write(s)
+          print("digest recorded:", good)
+          PY
+          python tools/kiyas_validate.py --strict "$tmp"
+          echo "OK: a correct digest passes, and W5 does not fire once it is present."
+          # Change the question the batch says it was drawn from.
+          sed -i 's/A stuck problem stated once./A DIFFERENT problem./' "$tmp"
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "G12: batch.generation.inputs_digest is" || { echo "FAIL: a batch drawn from different inputs kept its old digest unchallenged" >&2; exit 1; }
+          echo "OK: the digest caught inputs that moved under it."
+
+      - name: Self-test — W5 warns on a pinned seed with no digest
+        run: |
+          set -e
+          # A seed with no record of the inputs it was applied to identifies
+          # nothing. It warns rather than blocks: the record is incomplete,
+          # not wrong.
+          tmp="$(mktemp --suffix=.yaml)"
+          cat > "$tmp" <<'YAML'
+          batch: {problem: "A stuck problem stated once.", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
+          seeds:
+            - id: KS-1
+              tier: S
+              operator: O1
+              claim: "a claim"
+              illet: "a structural equivalence"
+              breaking_point: "here"
+              cheapest_refutation: {test: "t", adds_capacity: false}
+              arbiter: {class: runtime, who: "pytest"}
+              prior_art: {searched: true}
+              claims_superiority: false
+              antipattern_sweep:
+                AD1_notation_coincidence: clear
+                AD2_surface_resonance: clear
+                AD3_confirmation_bias: clear
+                AD4_refuted_relative: clear
+                AD5_scale_leak: clear
+                AD6_trace_base_rate: clear
+          discards: []
+          YAML
+          sed -i 's/discards_note: "nothing refused"}/discards_note: "nothing refused", generation: {seed: 42, host: "ci"}}/' "$tmp"
+          out="$(python tools/kiyas_validate.py "$tmp")"   # must exit 0
+          echo "$out"
+          echo "$out" | grep -q "W5:" || { echo "FAIL: W5 did not warn on a pinned seed with no digest" >&2; exit 1; }
+          if python tools/kiyas_validate.py --strict "$tmp"; then
+            echo "FAIL: --strict did not promote W5" >&2; exit 1
+          fi
+          echo "OK: W5 warns by default and blocks under --strict."
+
+      - name: Self-test — the validator and the digest tool agree
+        run: |
+          set -e
+          # Two copies of one definition. If they drift, every digest already
+          # recorded in a batch becomes unverifiable without anyone noticing.
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "tools")
+          import kiyas_validate as v, kiyas_digest as d
+          cases = [("A stuck problem.", b""), ("  A   stuck\n problem.  ", b""), ("x", b"bytes")]
+          for problem, blob in cases:
+              a, b = v.inputs_digest(problem, blob), d.inputs_digest(problem, blob)
+              assert a == b, f"digest drift on {problem!r}: {a} != {b}"
+          # whitespace normalisation is part of the contract, not an accident
+          assert v.inputs_digest("A stuck problem.", b"") == v.inputs_digest("  A   stuck\n problem.  ", b"")
+          for source in ["not consulted", "Not Consulted -- no export exists", "none"]:
+              assert v._consulted_nothing(source) == d.consulted_nothing(source) == True, source
+          for source in ["refuted-patterns.yaml", ""]:
+              assert v._consulted_nothing(source) == d.consulted_nothing(source) == False, source
+          print("OK: validator and tool compute the same digest and agree on 'not consulted'.")
+          PY
+
       - name: Self-test — the warning channel warns without blocking
         run: |
           set -e
@@ -231,7 +388,7 @@ jobs:
           # exit 0 by default, exit 1 under --strict, same finding both times.
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "the other one cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
+          batch: {problem: "p", symmetry_check: "the other one cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused", generation: {seed: "fresh", host: "ci"}}
           seeds:
             - id: KS-1
               tier: S

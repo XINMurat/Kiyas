@@ -1,5 +1,5 @@
 # =====================================================================
-# Kıyas Seed Schema v1.3  (kiyas-seed.yaml)
+# Kıyas Seed Schema v1.4  (kiyas-seed.yaml)
 # =====================================================================
 # Machine-readable form of the Kıyas output contract. A "seed" is one
 # generated idea, carrying everything Mizan needs to preregister it.
@@ -40,6 +40,33 @@
 #   G11. batch.refuted_patterns_source MUST be non-empty. "not consulted" is
 #        an honest answer; an absent field is not an answer at all, and it
 #        makes every AD4 line in the batch unverifiable. Same shape as G6.
+#   G12. batch.generation MUST record how the batch was drawn: `seed` and
+#        `host`, both non-empty. READ THIS PART CAREFULLY, because it is the
+#        rule most likely to be misread as promising something it does not:
+#
+#          A PINNED SEED DOES NOT MAKE A KIYAS BATCH REPRODUCIBLE.
+#
+#        The generator is a language model. The same seed, the same problem
+#        and the same operators can still produce different seeds, and a
+#        schema that implied otherwise would be doing exactly what this
+#        family exists to refuse — dressing an unverifiable claim in the
+#        clothes of a verified one. Compare G1: the validator checks that
+#        the illet is FILLED, never that it is TRUE.
+#
+#        What generation records is the CONDITIONS of the draw, so two runs
+#        can be compared. `inputs_digest` (optional, from
+#        tools/kiyas_digest.py) hashes the normalised problem together with
+#        the refuted-patterns export, which lets the validator say whether
+#        two batches were drawn from the same inputs — so a difference
+#        between them is a difference in the draw, not in the question. The
+#        digest is verified only when it can be: when the batch consulted
+#        nothing, or when the export is passed with --refuted. Otherwise it
+#        is recorded and left unchecked, and the validator says nothing
+#        rather than implying it was verified.
+#
+#        "fresh" for an unpinned draw and "unknown" for an unnameable host
+#        are honest answers. An absent field is not an answer — same shape
+#        as G6 and G11.
 #   G7. The `discards` block MUST be present, even when empty. SKILL.md
 #       makes the discard list part of the deliverable; until v1.1 the
 #       contract had no slot for it, so the one section a host instruction
@@ -62,9 +89,17 @@
 #   W2. every seed in a batch of 2+ landing at H-aday.
 #   W3. batch.symmetry_check naming no seed id from the batch.
 #   W4. operator O5 (scale transfer) with no scope_caveat.
+#   W5. a pinned (non-"fresh") generation.seed with no inputs_digest — a seed
+#       with no record of the inputs it was applied to identifies nothing.
 # These have legitimate exceptions, so the right response is to look, not to
 # be stopped. Making every flag blocking would teach authors to write batches
 # that avoid triggering rules — the same failure G6's design note describes.
+#
+# MIGRATION v1.3 -> v1.4: G12 adds the generation block. Batches written
+# against v1.3 fail it, and the fix is two lines (`seed: "fresh"` plus a
+# host). The failure is the point in the same way G7's was: a batch that
+# cannot say what drew it cannot be compared with a second run, and the
+# comparison is the only thing a non-reproducible generator can offer.
 #
 # MIGRATION v1.2 -> v1.3: G10 and G11 close the last two findings of
 # PROSE-SCHEMA-AUDIT.md. Both shipped batches passed unchanged; a batch that
@@ -105,6 +140,14 @@ batch:
     MANDATORY when `discards` is empty (G7): what was considered and
     refused nothing, so that an empty list is distinguishable from an
     unwritten one. Leave blank when discards are recorded below.
+  generation:                      # MANDATORY (G12) — conditions, not a promise
+    seed: "fresh"                  # a pinned value, or the literal "fresh"
+    host: "claude-opus-5"          # who drew it; "unknown" is an honest answer
+    inputs_digest: "39a96779580d369c"   # optional; tools/kiyas_digest.py
+    # A pinned seed does NOT make this batch reproducible — see G12 above.
+    # These three fields let a second run be COMPARED with this one: same
+    # digest means the two draws saw the same problem and the same refuted
+    # export, so any difference between them is a difference in the draw.
 
 seeds:
   - id: "KS-001"

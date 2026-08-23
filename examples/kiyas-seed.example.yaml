@@ -39,6 +39,15 @@ batch:
     absent one, because it looks like evidence of weighing. The batch in
     examples/kiyas-seed.jspace.example.yaml shows the block filled in.
 
+  generation:
+    seed: "fresh"
+    host: "unknown"
+    # This batch predates G12, so the host that drew it is not recoverable and
+    # is recorded as unknown rather than guessed -- the same call
+    # batch.discards_note makes above. No inputs_digest either: the batch names
+    # a refuted-patterns export that is not in this repo, so the digest cannot
+    # be computed here, and a digest nobody can recompute records nothing.
+
 seeds:
   # -------------------------------------------------------------------
   - id: "KS-001"

@@ -76,8 +76,11 @@ so it stays in sync (the shipped `kiyas.skill` embeds those files):
 python - <<'PY'
 import zipfile, os
 with zipfile.ZipFile("kiyas.skill", "w", zipfile.ZIP_DEFLATED) as z:
-    for root, _, files in os.walk("skill/kiyas"):
+    for root, dirs, files in os.walk("skill/kiyas"):
+        dirs[:] = [d for d in dirs if d != "__pycache__"]   # build artifacts are not source
         for f in files:
+            if f.endswith(".pyc"):
+                continue
             p = os.path.join(root, f)
             z.write(p, os.path.relpath(p, "skill").replace(os.sep, "/"))
 PY

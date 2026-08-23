@@ -167,7 +167,7 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G11). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G12). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
@@ -180,12 +180,51 @@ block, required even when empty (G7); a cheapest refutation on every
 `[H-aday]` (G8); a prior-art search on every `[H-aday]` (G9); an arbiter
 block that does not contradict itself (G10); and a stated
 `refuted_patterns_source`, where "not consulted" is the honest answer and
-silence is not an answer at all (G11).
+silence is not an answer at all (G11); and a `generation` block recording
+which seed and which host drew the batch (G12).
 
-**Two channels, and the reason there are two.** G1–G9 block. W1–W4 do not:
+### What a seed is, and the promise it does not make
+
+**A pinned seed does not make a Kıyas batch reproducible.** The generator is
+a language model. The same seed, the same problem and the same operators can
+still produce different candidates, and a field that implied otherwise would
+be doing precisely what this family exists to refuse — dressing an
+unverifiable claim in the clothes of a verified one. It is G1 turned on the
+tooling: the validator checks that the illet is *filled*, never that it is
+*true*; `generation` records the conditions of a draw, never that the draw
+repeats.
+
+What the block buys is **comparability**, which is the most a
+non-deterministic generator can honestly offer:
+
+```yaml
+generation:
+  seed: "fresh"                      # or a pinned value
+  host: "claude-opus-5"              # "unknown" is an honest answer
+  inputs_digest: "7f5c514e048e036b"  # python tools/kiyas_digest.py <batch>
+```
+
+`inputs_digest` hashes the whitespace-normalised `batch.problem` together with
+the bytes of the refuted-patterns export. Two batches carrying the same digest
+were drawn from the same question and the same negative constraints — so a
+difference between them is a difference in the *draw*, not in the inputs. That
+is what makes a second run evidence rather than an anecdote, and it is the
+thing you actually need when a `[H-aday]` seed reaches a Mizan registry and
+somebody asks where it came from.
+
+The digest is verified **only when it can be**: when the batch consulted
+nothing (the hashed input is then the empty string, so no file is needed), or
+when the export is passed with `--refuted`. Otherwise it is recorded and left
+unchecked, and the validator says nothing — reporting an unchecked digest as
+verified would be the same error the skill audits for everywhere else.
+
+W5 catches the half-record: a pinned seed with no `inputs_digest`. A seed with
+no record of the inputs it was applied to identifies nothing.
+
+**Two channels, and the reason there are two.** G1–G12 block. W1–W5 do not:
 a numeric threshold with an author/none arbiter, a batch where every seed
 lands at `[H-aday]`, a symmetry check naming no seed, an O5 transfer with no
-scope caveat. Each of those is usually wrong and legitimately right often
+scope caveat, a pinned seed with no inputs digest. Each of those is usually wrong and legitimately right often
 enough that stopping on it would be false precision — so the tool says look,
 not halt. `--strict` promotes them; CI runs strict, local runs do not. The
 reasoning is G6's, turned on the tool itself: if every flag blocked, authors
@@ -342,6 +381,6 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G11 and
-  warnings W1–W4), with
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G12 and
+  warnings W1–W5), with
   the arbiter block shared with Mizan R8.

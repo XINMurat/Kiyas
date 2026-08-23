@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G11.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G12.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -19,9 +19,9 @@ question. The same logic applies to this tool. A single blocking channel
 pushes authors to write batches that do not trigger rules, which is not the
 same as writing better batches. So:
 
-  * VIOLATIONS (G1–G11) block. They mark a contract that is incomplete in a way
+  * VIOLATIONS (G1–G12) block. They mark a contract that is incomplete in a way
     the prose forbids outright.
-  * WARNINGS (W1–W4) do not block by default. They mark shapes that are
+  * WARNINGS (W1–W5) do not block by default. They mark shapes that are
     usually wrong but have legitimate exceptions, so the right response is to
     look, not to be stopped. `--strict` promotes them to violations; CI runs
     strict, local runs do not.
@@ -39,6 +39,7 @@ Dependency: PyYAML  (pip install pyyaml)
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 import sys
 from typing import Any
@@ -238,6 +239,37 @@ MSG = {
         "yaz ya da \"not consulted\" de. Sessizlik temiz tarama değildir ve partideki her AD4 "
         "satırını doğrulanamaz kılar.",
     ),
+    "G12_no_generation": (
+        "G12: batch has no `generation` block — a batch that cannot say which seed and which "
+        "host drew it cannot be compared with a second run. Write generation.seed (\"fresh\" is "
+        "an honest answer) and generation.host.",
+        "G12: partide `generation` bloğu yok — hangi tohum ve hangi host tarafından çekildiğini "
+        "söyleyemeyen bir parti ikinci bir koşuyla karşılaştırılamaz. generation.seed (\"fresh\" "
+        "dürüst bir cevaptır) ve generation.host yaz.",
+    ),
+    "G12_no_field": (
+        "G12: batch.generation has no {field} — silence is not a value. Write \"fresh\" for an "
+        "unpinned draw or \"unknown\" for a host you cannot name; an absent field is not an answer.",
+        "G12: batch.generation içinde {field} yok — sessizlik bir değer değildir. Sabitlenmemiş "
+        "bir çekiliş için \"fresh\", adlandıramadığın bir host için \"unknown\" yaz; olmayan bir "
+        "alan cevap değildir.",
+    ),
+    "G12_digest_mismatch": (
+        "G12: batch.generation.inputs_digest is {claimed} but the inputs hash to {actual} — the "
+        "batch was drawn from different inputs than the ones it names, so comparing it with "
+        "another run would compare two different questions.",
+        "G12: batch.generation.inputs_digest {claimed} diyor ama girdilerin özeti {actual} — parti "
+        "adlandırdığı girdilerden değil başka girdilerden çekilmiş; başka bir koşuyla "
+        "karşılaştırmak iki farklı soruyu karşılaştırmak olurdu.",
+    ),
+    "W5_pinned_seed_no_digest": (
+        "W5: batch.generation.seed is pinned to '{seed}' but there is no inputs_digest — a seed "
+        "with no record of the inputs it was applied to identifies nothing. Run "
+        "tools/kiyas_digest.py and record it.",
+        "W5: batch.generation.seed '{seed}' olarak sabitlenmiş ama inputs_digest yok — hangi "
+        "girdilere uygulandığı kayıtlı olmayan bir tohum hiçbir şeyi tanımlamaz. "
+        "tools/kiyas_digest.py çalıştırıp kaydet.",
+    ),
     "W1_threshold_without_judge": (
         "W1: seed {id} proposes a numeric threshold but its arbiter class is '{cls}' — the form "
         "of a verification loop without its judge is not rigor. Drop the number or name a judge.",
@@ -263,8 +295,8 @@ MSG = {
         "bulgu, yeniden ifade edilerek başka bir rejim hakkında iddiaya dönüşmez.",
     ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G11 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G11 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G12 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G12 ihlali yok.",
     ),
     "warn_header": (
         "{n} warning(s) — not blocking; re-run with --strict to treat them as failures.",
@@ -298,6 +330,52 @@ def load(path: str) -> dict:
     return data
 
 
+NOT_CONSULTED = {"not consulted", "none", "-"}
+
+
+def normalise_problem(text: str) -> str:
+    """Collapse whitespace so reflowing the YAML block cannot move the digest."""
+    return re.sub(r"\s+", " ", (text or "").strip())
+
+
+def inputs_digest(problem: str, refuted_bytes: bytes) -> str:
+    """Must stay identical to tools/kiyas_digest.py; a self-test pins them together."""
+    h = hashlib.sha256()
+    h.update(normalise_problem(problem).encode("utf-8"))
+    h.update(b"\x00")
+    h.update(refuted_bytes)
+    return h.hexdigest()[:16]
+
+
+def _consulted_nothing(source: str) -> bool:
+    """True when the batch declares it consulted no refuted-patterns export.
+
+    A prefix test, not equality: the honest form in practice is "not consulted
+    -- <why>", and treating that as "an export we were not handed" would stop
+    the digest being verified on exactly the batches where it can be.
+    """
+    low = _s(source).lower()
+    return low in NOT_CONSULTED or low.startswith("not consulted")
+
+
+def refuted_blob(path: str | None, source: str) -> bytes | None:
+    """The bytes inputs_digest is computed over, or None when unavailable.
+
+    None is not an error: the batch names an export we were not handed, so the
+    digest is recorded but unchecked. Reporting an unchecked digest as verified
+    would be the exact failure this repo audits for.
+    """
+    if _consulted_nothing(source):
+        return b""
+    if not path:
+        return None
+    try:
+        with open(path, "rb") as fh:
+            return fh.read()
+    except OSError:
+        return None
+
+
 def load_refuted(path: str | None) -> list[dict]:
     """Negative constraints exported from a Mizan registry (AD4 feedback loop)."""
     if not path:
@@ -320,7 +398,8 @@ def _flagged(value: str) -> bool:
 
 
 def check(data: dict, lang: str,
-          refuted: list[dict] | None = None) -> tuple[list[str], list[str]]:
+          refuted: list[dict] | None = None,
+          refuted_bytes: bytes | None = None) -> tuple[list[str], list[str]]:
     """Return (violations, warnings). See the module docstring for why two."""
     errs: list[str] = []
     warns: list[str] = []
@@ -339,6 +418,14 @@ def check(data: dict, lang: str,
     # honest answer, an absent field is not an answer at all.
     if not _s(batch.get("refuted_patterns_source")):
         errs.append(m("G11_no_refuted_source", lang))
+
+    # G12 — generation conditions. A pinned seed does NOT make an LLM draw
+    # reproducible, and this rule deliberately does not pretend otherwise: it
+    # only demands that the conditions be RECORDED, so two runs can be shown
+    # to have seen the same problem and the same refuted export. Same shape as
+    # G6 and G11 — "fresh" and "unknown" are answers, absence is not.
+    errs += _check_generation(batch, refuted_bytes, lang)
+    warns += _check_generation_warnings(batch, lang)
 
     ops = {_s(s.get("operator")).upper() for s in seeds if _s(s.get("operator"))}
     declared = {_s(o).upper() for o in (batch.get("operators_used") or [])}
@@ -538,6 +625,39 @@ def _check_sweep(s: dict, sid: Any, tier: str, lang: str) -> list[str]:
     return errs
 
 
+def _check_generation(batch: dict, refuted_bytes: bytes | None, lang: str) -> list[str]:
+    """G12 — the batch records how it was drawn, and the record is consistent."""
+    gen = batch.get("generation")
+    if not isinstance(gen, dict) or not gen:
+        return [m("G12_no_generation", lang)]
+
+    errs = []
+    for field in ("seed", "host"):
+        if not _s(gen.get(field)):
+            errs.append(m("G12_no_field", lang, field=field))
+
+    claimed = _s(gen.get("inputs_digest"))
+    # Verifiable in exactly two situations: the batch consulted nothing (the
+    # empty input hashes without any file), or the export was passed with
+    # --refuted. Otherwise the digest is recorded but unchecked, and saying so
+    # is better than implying it was verified.
+    if claimed and refuted_bytes is not None:
+        actual = inputs_digest(_s(batch.get("problem")), refuted_bytes)
+        if claimed != actual:
+            errs.append(m("G12_digest_mismatch", lang, claimed=claimed, actual=actual))
+    return errs
+
+
+def _check_generation_warnings(batch: dict, lang: str) -> list[str]:
+    gen = batch.get("generation")
+    if not isinstance(gen, dict):
+        return []
+    seed = _s(gen.get("seed"))
+    if seed and seed.lower() != "fresh" and not _s(gen.get("inputs_digest")):
+        return [m("W5_pinned_seed_no_digest", lang, seed=seed)]
+    return []
+
+
 def _check_refuted_relatives(s: dict, sid: Any, tier: str,
                              refuted: list[dict], lang: str) -> list[str]:
     """AD4 — the negative-constraint feedback loop, when an export is supplied.
@@ -573,7 +693,7 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--refuted", metavar="PATH",
                     help="refuted-patterns.yaml exported from a Mizan registry (AD4 check)")
     ap.add_argument("--strict", action="store_true",
-                    help="treat W1-W4 warnings as violations (CI runs strict; local runs do not)")
+                    help="treat W1-W5 warnings as violations (CI runs strict; local runs do not)")
     args = ap.parse_args(argv)
 
     # The catalog carries Turkish text and a ✗ glyph; ensure UTF-8 output even
@@ -590,7 +710,9 @@ def main(argv: list[str]) -> int:
         sys.stderr.write(f"parse error: {exc}\n")
         return 2
 
-    errs, warns = check(data, args.lang, load_refuted(args.refuted))
+    errs, warns = check(
+        data, args.lang, load_refuted(args.refuted),
+        refuted_blob(args.refuted, (data.get("batch") or {}).get("refuted_patterns_source") or ""))
     n = getattr(check, "n_seeds", 0)
 
     if args.strict and warns:

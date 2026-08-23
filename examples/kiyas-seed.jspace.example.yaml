@@ -51,6 +51,16 @@ batch:
     domain. AD4 flags in this batch are therefore unverified and are
     recorded as such rather than as "clear".
 
+  generation:
+    seed: "fresh"
+    host: "unknown"
+    inputs_digest: "7f5c514e048e036b"
+    # Drawn unpinned, so "fresh" is the honest seed value. The digest IS
+    # verifiable here with no file on hand: this batch consulted no
+    # refuted-patterns export, so the hashed input is the empty string and
+    # `kiyas_validate.py` recomputes it on every run. Change one word of
+    # batch.problem and the check fails -- which is the point.
+
 seeds:
   # ===================================================================
   # KS-J006 comes FIRST because it is the transfer everything else is a
