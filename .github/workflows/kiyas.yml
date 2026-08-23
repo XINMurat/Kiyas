@@ -55,9 +55,13 @@ jobs:
       - name: Self-test — G1/G5 must reject an illet-less, arbiter-less seed
         run: |
           set -e
+          # The batch header is complete on every axis this step is not about,
+          # so the seed is the only thing left to fail on, and each rule is
+          # asserted by name. A bare non-zero exit would let any unrelated
+          # violation stand in for the ones this step exists to prove.
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "s", operators_used: [O1, O2, O3]}
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted", discards_note: "nothing refused"}
           seeds:
             - id: KS-1
               tier: H-aday
@@ -65,11 +69,13 @@ jobs:
               claim: "something"
               illet: ""
               breaking_point: ""
+          discards: []
           YAML
-          if python tools/kiyas_validate.py "$tmp"; then
-            echo "FAIL: validator passed a seed with no illet and no arbiter" >&2
-            exit 1
-          fi
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          for rule in G1 G2 G5 G6; do
+            echo "$out" | grep -q "$rule: seed KS-1" || { echo "FAIL: $rule did not fire on the empty seed" >&2; exit 1; }
+          done
           echo "OK: G1/G2/G5/G6 correctly rejected the empty seed."
 
       - name: Self-test — AD4 must flag a relative of a refuted pattern
@@ -77,7 +83,7 @@ jobs:
           set -e
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "s", operators_used: [O1, O2, O3]}
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "examples/refuted-patterns.example.yaml", discards_note: "nothing refused; two framings considered"}
           seeds:
             - id: KS-1
               tier: H-aday
@@ -98,15 +104,14 @@ jobs:
                 AD6_trace_base_rate: clear
           discards: []
           YAML
-          # discards_note is deliberately absent below only in the G7 test;
-          # here the batch note is supplied so this step can fail for the AD4
-          # reason alone.
-          sed -i 's/symmetry_check: "s"/symmetry_check: "s", discards_note: "nothing refused; two framings considered"/' "$tmp"
-          if python tools/kiyas_validate.py --refuted examples/refuted-patterns.example.yaml "$tmp"; then
-            echo "FAIL: AD4 did not flag a known-refuted relative" >&2
-            exit 1
-          fi
-          echo "OK: AD4 feedback loop is wired."
+          # The batch header above is complete on every other axis, so AD4 is
+          # the only rule left that can fail. The count assertion is what makes
+          # that a fact rather than an intention.
+          out="$(python tools/kiyas_validate.py --refuted examples/refuted-patterns.example.yaml "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "AD4: seed KS-1 resembles refuted pattern" || { echo "FAIL: AD4 did not flag a known-refuted relative" >&2; exit 1; }
+          echo "$out" | grep -q "^1 violation(s) found." || { echo "FAIL: the fixture tripped a rule other than AD4; it no longer isolates AD4." >&2; exit 1; }
+          echo "OK: AD4 feedback loop is wired, and it fired alone."
 
       - name: Self-test — G10/G11 must reject a contradictory arbiter and a silent sweep
         run: |
@@ -149,7 +154,7 @@ jobs:
           # failing, that invisibility is back.
           tmp="$(mktemp --suffix=.yaml)"
           cat > "$tmp" <<'YAML'
-          batch: {problem: "p", symmetry_check: "s", operators_used: [O1, O2, O3]}
+          batch: {problem: "p", symmetry_check: "KS-1 cuts against it", operators_used: [O1, O2, O3], refuted_patterns_source: "not consulted"}
           seeds:
             - id: KS-1
               tier: S
@@ -169,14 +174,17 @@ jobs:
                 AD5_scale_leak: clear
                 AD6_trace_base_rate: clear
           YAML
-          if python tools/kiyas_validate.py "$tmp"; then
-            echo "FAIL: validator accepted a batch with no discards block" >&2
-            exit 1
-          fi
-          echo "OK: G7 rejected a batch that recorded no discards."
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "G7: batch has no" || { echo "FAIL: G7 did not fire on a batch with no discards block" >&2; exit 1; }
+          # G7 must be the ONLY violation. Without this the second half below
+          # passes on a rule it was never about — which is exactly how this
+          # step quietly became a G11 test when G11 was introduced.
+          echo "$out" | grep -q "^1 violation(s) found." || { echo "FAIL: the fixture tripped a rule other than G7; it no longer isolates G7." >&2; exit 1; }
+          echo "OK: G7, and only G7, rejected a batch that recorded no discards."
           # ...and the same batch passes once the absence is declared.
           echo 'discards: []' >> "$tmp"
-          sed -i 's/symmetry_check: "s"/symmetry_check: "s", discards_note: "nothing refused; the two obvious reframings were considered"/' "$tmp"
+          sed -i 's/refuted_patterns_source: "not consulted"/refuted_patterns_source: "not consulted", discards_note: "nothing refused; the two obvious reframings were considered"/' "$tmp"
           python tools/kiyas_validate.py "$tmp"
           echo "OK: an explicitly empty discard list with a note is accepted."
 
