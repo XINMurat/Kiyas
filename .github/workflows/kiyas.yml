@@ -423,6 +423,29 @@ jobs:
       - name: Ledger reporter must run
         run: python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
 
+      - name: The declared schema version agrees with the schema itself
+        run: |
+          set -e
+          # reimagine-it keeps five host manifests honest by refusing to build
+          # when they disagree on a version. Same idea, one repo: the version
+          # is stated once in the schema's own banner, echoed in SKILL.md
+          # frontmatter, and CI refuses to let the two drift. A version that
+          # lives in two places is a version that is wrong in one of them.
+          python - <<'PY'
+          import io, re, sys, yaml
+          schema = io.open("skill/kiyas/schemas/kiyas-seed.yaml", encoding="utf-8").read()
+          banner = re.search(r"Schema v([0-9]+\.[0-9]+)", schema)
+          if not banner:
+              print("FAIL: the schema has no 'Schema vX.Y' banner to be pinned to", file=sys.stderr)
+              sys.exit(1)
+          skill = io.open("skill/kiyas/SKILL.md", encoding="utf-8").read()
+          fm = yaml.safe_load(skill[4:skill.index(chr(10) + "---" + chr(10), 4)])
+          declared = str((fm.get("metadata") or {}).get("schema_version") or "")
+          if declared != banner.group(1):
+              print(f"FAIL: SKILL.md declares schema_version {declared!r} but the schema banner says {banner.group(1)!r}", file=sys.stderr)
+              sys.exit(1)
+          print(f"ok  schema v{declared} agrees in both places")
+          PY
       - name: templates/ copy must match the schema
         run: |
           # The template is a convenience copy of the schema. Nothing stops

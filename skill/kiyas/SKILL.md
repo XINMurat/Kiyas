@@ -1,6 +1,10 @@
 ---
 name: kiyas
 description: Disciplined ideation and analogical inference for research that is stuck. Use whenever the user wants to generate ideas, break through a blocked problem, find analogies or cross-domain relationships, reframe a question, brainstorm hypotheses, or explore "what else could explain this / what am I not seeing." Also use to open new experimental directions from a dead end, connect two unrelated fields, or turn a vague intuition into a testable hypothesis. Triggers include "fikir üret", "tıkandım", "analoji kur", "başka nasıl bakabilirim", "yeni yön", "bağlantı kur", "brainstorm", "ideate", "reframe", "what am I missing". The generative upstream partner of Mizan (mizan audits/refutes; kiyas generates candidates shaped for that audit). Every idea it produces ships ready to enter a Mizan registry as a preregistered [S]/[H] hypothesis.
+license: MIT
+metadata:
+  author: XINMurat
+  schema_version: "1.4"   # pinned to the schema banner by CI
 ---
 
 # Kıyas — Disciplined Ideation and Analogical Inference
