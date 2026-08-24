@@ -468,7 +468,7 @@ jobs:
           # the past, and rewriting history to match the present is the
           # opposite of what an append-only family should do.
           python - <<'PY'
-          import io, re, sys, glob
+          import io, os, re, sys, glob
           src = io.open("tools/kiyas_validate.py", encoding="utf-8").read()
           have = sorted({int(n) for n in re.findall(r'"G([0-9]+)[:_]', src)})
           if not have:
@@ -478,12 +478,12 @@ jobs:
           print(f"validator implements G1-G{top}")
 
           bad = []
-          for path in glob.glob("docs/**/*.md", recursive=True) + ["README.md", "CONTRIBUTING.md", "skill/kiyas/SKILL.md"]:
+          for path in [p for p in (glob.glob("docs/**/*.md", recursive=True) + ["README.md", "CONTRIBUTING.md", "skill/kiyas/SKILL.md"] + glob.glob("tools/**/*", recursive=True) + glob.glob("skill/**/references/*.md", recursive=True)) if os.path.isfile(p) and "__pycache__" not in p and not p.endswith((".pyc", ".xlsx", ".skill"))]:
               # A changelog entry wraps across lines, so the exemption has to
               # follow the paragraph, not the line: "**v1.0** - ... G1-G6 ..."
               # is true about v1.0 no matter which line the range lands on.
               dated = False
-              for i, line in enumerate(io.open(path, encoding="utf-8").read().splitlines(), 1):
+              for i, line in enumerate(io.open(path, encoding="utf-8", errors="replace").read().splitlines(), 1):
                   if not line.strip():
                       dated = False
                   elif re.search(r"\*\*v[0-9]+\.[0-9]+\*\*", line):
@@ -508,6 +508,26 @@ jobs:
               sys.exit(1)
           print(f"ok  every rule-range claim says G1-G{top}")
           PY
+
+      - name: No real name reaches what gets published
+        env:
+          # Set this repository secret to a newline-separated list of names that
+          # must never be published: clients, internal products, private repos.
+          # Unset, the sweep reports NOT CONFIGURED and passes -- a repository
+          # that has not set this up is not a repository that failed.
+          FORBIDDEN_TERMS: ${{ secrets.FORBIDDEN_TERMS }}
+        run: |
+          set -e
+          # From vaddermail/maestro-framework, check 14. The examples here use
+          # invented names on purpose; that is the discipline, this is the net.
+          # A real name in a tracked file is published the moment it is pushed,
+          # and deleting it afterwards does not un-publish it.
+          #
+          # The tree and the package are swept separately: they are built by
+          # different code, so a clean tree does not prove a clean kiyas.skill.
+          # A hit prints the file, the line and the term's index -- never the
+          # term, because this log is public.
+          python tools/leak_check.py --package kiyas.skill
 
   skill-package-in-sync:
     runs-on: ubuntu-latest

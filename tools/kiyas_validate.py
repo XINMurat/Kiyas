@@ -687,7 +687,7 @@ def _check_refuted_relatives(s: dict, sid: Any, tier: str,
 
 
 def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(description="Kıyas seed G1–G7 validator")
+    ap = argparse.ArgumentParser(description="Kıyas seed G1–G12 validator")
     ap.add_argument("seeds", help="path to a kiyas-seed.yaml")
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
     ap.add_argument("--refuted", metavar="PATH",

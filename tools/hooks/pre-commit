@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Kıyas pre-commit hook — runs the G1–G6 validator on staged seed files.
-# Kıyas pre-commit kancası — hazırlanmış tohum dosyalarını G1–G6 denetler.
+# Kıyas pre-commit hook — runs the G1–G12 validator on staged seed files.
+# Kıyas pre-commit kancası — hazırlanmış tohum dosyalarını G1–G12 denetler.
 #
 # Install / Kurulum:
 #   cp tools/hooks/pre-commit .git/hooks/pre-commit
@@ -44,9 +44,23 @@ done
 
 if [ "$fail" -ne 0 ]; then
   echo ""
-  echo "kiyas: commit blocked — seed batch violates a hard rule (G1–G6)."
-  echo "kiyas: commit engellendi — tohum partisi bir sert kuralı (G1–G6) ihlal ediyor."
+  echo "kiyas: commit blocked — seed batch violates a hard rule (G1–G12)."
+  echo "kiyas: commit engellendi — tohum partisi bir sert kuralı (G1–G12) ihlal ediyor."
   echo "       Fix the entry or, if this is a deliberate exception, document it."
   exit 1
 fi
+
+# --- leak gate -------------------------------------------------------------
+# Nothing published can carry a real name. The list lives in .forbidden-terms
+# (gitignored) -- with no list this is a no-op, so the hook stays usable by
+# anyone who has not set one up. This runs before the commit rather than in CI
+# because CI runs after the push, and a push to a public repository is the
+# publication itself.
+if ! "$PYTHON" "$here/tools/leak_check.py" --staged; then
+  echo ""
+  echo "kiyas: commit blocked -- a staged file matches a forbidden term."
+  echo "kiyas: commit engellendi -- hazirlanan bir dosya yasakli bir terimle eslesiyor."
+  exit 1
+fi
+
 exit 0
