@@ -57,6 +57,7 @@ equivalent of type-checking: elimination before execution.
 |---|---|
 | `skill/kiyas/SKILL.md` | The skill itself — modes, procedure, tiers, anti-patterns |
 | `skill/kiyas/references/operators.md` | Seven generative operators, the anti-pattern sweep (AD1–AD6), the Mizan seed template |
+| `skill/kiyas/references/recovery.md` | Recovery ramps (RR-00…RR-12) for when a run stops behaving, plus the closing scorecard |
 | `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G12, warnings W1–W5) |
 | `kiyas.skill` | One-file package for installing the skill |
 | `tools/kiyas_validate.py` | LLM-free G1–G12 checker; `--strict` also fails on W1–W5 |
@@ -245,6 +246,7 @@ derleyici bedavaya eler; kod dışında eleme pahalıdır, o yüzden filtre üre
 |---|---|
 | `skill/kiyas/SKILL.md` | Skill'in kendisi — modlar, prosedür, tier'lar, anti-desenler |
 | `skill/kiyas/references/operators.md` | Yedi üretici operatör, anti-desen taraması (AD1–AD6), Mizan tohum şablonu |
+| `skill/kiyas/references/recovery.md` | Kurtarma rampaları (RR-00…RR-12) ve kapanış çizelgesi · TR: `docs/tr/kurtarma.md` |
 | `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G12 kuralları, W1–W5 uyarıları) |
 | `kiyas.skill` | Skill'i kurmak için tek-dosya paket |
 | `tools/kiyas_validate.py` | LLM'siz G1–G12 denetleyici; `--strict` W1–W5'te de düşer |

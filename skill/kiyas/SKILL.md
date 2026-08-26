@@ -313,6 +313,12 @@ developed.
 - Metaphor is a source of intuition, not evidence (same principle as the
   project culture).
 - Write in the user's language; keep tier tags bilingual.
+- **Never bring a question empty-handed.** The one question step 1 allows —
+  and every open item after it — carries your recommendation and its reason:
+  situation, readings, recommendation, why, cost if wrong. A recommendation can
+  be rejected in one word; a bare question stalls someone who came here because
+  they were already stuck. **A recommendation is not approval, and an
+  unanswered recommendation is not consent** (`references/recovery.md` RR-10).
 - Treat an equivalence that looks unexpectedly deep with the same suspicion as
   an unexpectedly good experimental result (the generative counterpart of Mizan
   commitment 5): exhaust the notation-coincidence and surface-resonance
@@ -341,6 +347,9 @@ or not anything was ruled out.
   fixture, three discards under a neutral host and zero under a host that
   forbade rejecting the team's ideas (`examples/`). State the discards, or
   state that there were none.
+- **Load references on demand.** `operators.md` before the first generation,
+  `recovery.md` the moment a run stops behaving. Reading both up front spends
+  the context the generation itself needs.
 - **A pinned output language overrides "write in the user's language."**
   Comply, but keep the tier tags bilingual — they are labels, not prose.
 - **Never assume a tool exists.** Subagents, file writing and shell
@@ -381,6 +390,11 @@ or not anything was ruled out.
 
 ## References
 
+- `references/recovery.md` — the ramps for when a run stops behaving
+  (`RR-00`…`RR-12`): a validator that did not run, an equivalence that looks
+  too good, a batch that only agrees, a seed that came back `[R]`, the urge to
+  add capacity after a miss. Also the model failure classes behind them and the
+  closing process scorecard. Read when something breaks.
 - `references/operators.md` — each of the seven generative operators: when,
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan

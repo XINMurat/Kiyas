@@ -155,6 +155,11 @@ negatif-kısıt olarak Kıyas'a geri döner.** Pratik uygulama:
 
 ## Referanslar
 
+- `references/recovery.md` (Türkçe: [`kurtarma.md`](kurtarma.md)) — Bir koşu
+  davranmayı bıraktığında rampalar (`RR-00`…`RR-12`): doğrulayıcı koşmadı,
+  denklik fazla iyi görünüyor, batch yalnız doğruluyor, tohum `[R]` döndü,
+  test tutmayınca kapasite ekleme dürtüsü. Model hata sınıfları ve kapanış
+  çizelgesi de burada.
 - `references/operators.md` — Yedi üretici operatörün her biri: ne zaman, nasıl,
   ve projeden çalışılmış örnek; ardından çıktı sözleşmesi (prior-art dahil),
   anti-desen tarama listesi (AD1–AD6) ve Mizan önkayıt-tohumu şablonu. İlk
