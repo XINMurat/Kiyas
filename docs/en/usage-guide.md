@@ -28,7 +28,7 @@ more analogies.
 the same contract, tiered, flagged, and ordered by criticality ×
 (information value / cost).
 
-## 3. Hard rules (summary — G1–G12 in the schema)
+## 3. Hard rules (summary — G1–G13 in the schema)
 
 1. Illet non-empty. An idea whose illet cannot be named was not generated.
 2. Breaking point present before an idea can be a hypothesis candidate.
@@ -61,6 +61,15 @@ the same contract, tiered, flagged, and ordered by criticality ×
     same digest were drawn from the same problem and the same refuted-patterns
     export, so a difference between them is a difference in the draw and not
     in the question.
+
+13. The batch marks **every pair** of hypothesis candidates: independent,
+    contradicting (then name the experiment that separates them), resting on a
+    shared premise, one depending on the other (say which), or settled by the
+    same test. Every other rule here judges ONE seed, so a property that lives
+    between two of them is invisible by construction — and it is the property
+    that says what the batch is worth. Six seeds on one premise are one bet
+    with six faces. The number that follows is printed with the verdict:
+    *N candidates, K independent bets*. Batches declaring seed schema 1.5+.
 
 Five further checks **warn without blocking** (`--strict` makes them fail): a
 numeric threshold with no judge behind it, a batch where every seed is a

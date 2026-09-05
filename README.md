@@ -58,9 +58,9 @@ equivalent of type-checking: elimination before execution.
 | `skill/kiyas/SKILL.md` | The skill itself — modes, procedure, tiers, anti-patterns |
 | `skill/kiyas/references/operators.md` | Seven generative operators, the anti-pattern sweep (AD1–AD6), the Mizan seed template |
 | `skill/kiyas/references/recovery.md` | Recovery ramps (RR-00…RR-13) for when a run stops behaving, plus the closing scorecard |
-| `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G12, warnings W1–W5) |
+| `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G13, warnings W1–W5) |
 | `kiyas.skill` | One-file package for installing the skill |
-| `tools/kiyas_validate.py` | LLM-free G1–G12 checker; `--strict` also fails on W1–W5 |
+| `tools/kiyas_validate.py` | LLM-free G1–G13 checker; `--strict` also fails on W1–W5 |
 | `tools/kiyas_ledger.py` | Survival-rate reporter for generated seeds |
 | `examples/` | Two worked batches that CI validates (one single-domain, one cross-domain transfer whose illet fails), a distillation-mode pass, the portability runs, and a sample refuted-patterns export |
 | `ledger/` | Where the survival record accumulates |
@@ -174,6 +174,19 @@ produces.
 
 ### Version
 
+**v1.3** — G13, the pair pass: a batch is marked pair by pair, not only seed
+by seed. Every other rule judges ONE seed, so a property living BETWEEN two of
+them was invisible by construction — and it is the property that says what the
+batch is worth. Six candidates resting on one premise are one bet with six
+faces; two that cannot both hold are cheaper to separate than to test apart,
+and unmarked they reach Mizan as two hypotheses nobody knows are rivals. The
+relation vocabulary (`contradicts`, `depends_on`, `shared_illet`, `same_test`,
+`independent`) is chosen to survive that handoff. The verdict line now carries
+*N candidates, K independent bets*, as a note rather than a warning: a two-step
+plan is a legitimate batch, and promoting the count would teach authors to
+leave dependencies undeclared. Seed schema 1.5; batches below it are
+unenforced.
+
 **v1.2** — G12: a batch records the conditions it was drawn under, so a seed
 list cannot be read as if the operators, the problem statement and the refuted
 export behind it were all known. Adds the recovery ramps `RR-00`…`RR-13` for
@@ -258,9 +271,9 @@ derleyici bedavaya eler; kod dışında eleme pahalıdır, o yüzden filtre üre
 | `skill/kiyas/SKILL.md` | Skill'in kendisi — modlar, prosedür, tier'lar, anti-desenler |
 | `skill/kiyas/references/operators.md` | Yedi üretici operatör, anti-desen taraması (AD1–AD6), Mizan tohum şablonu |
 | `skill/kiyas/references/recovery.md` | Kurtarma rampaları (RR-00…RR-13) ve kapanış çizelgesi · TR: `docs/tr/kurtarma.md` |
-| `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G12 kuralları, W1–W5 uyarıları) |
+| `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G13 kuralları, W1–W5 uyarıları) |
 | `kiyas.skill` | Skill'i kurmak için tek-dosya paket |
-| `tools/kiyas_validate.py` | LLM'siz G1–G12 denetleyici; `--strict` W1–W5'te de düşer |
+| `tools/kiyas_validate.py` | LLM'siz G1–G13 denetleyici; `--strict` W1–W5'te de düşer |
 | `tools/kiyas_ledger.py` | Üretilen tohumların sağ-kalım oranı raporlayıcısı |
 | `examples/` | CI'ın doğruladığı iki çalışılmış parti (biri tek-alan, biri illeti düşen alanlar-arası taşıma), bir damıtma-modu koşusu, taşınabilirlik koşuları ve örnek çürütülmüş-desen dosyası |
 | `ledger/` | Sağ-kalım kaydının biriktiği yer |
@@ -334,6 +347,19 @@ metodolojinin ayakta kalmak için kurulduğu sonuç, ve kendi yaptığın bir
 örneğin asla üretmediği sonuç.
 
 ### Sürüm
+
+**v1.3** — G13, çift pası: bir parti artık yalnız tohum tohum değil, çift çift
+işaretlenir. Buradaki diğer her kural TEK tohum yargılar; iki tohumun ARASINDA
+yaşayan özellik bu yüzden yapısal olarak görünmezdi — ve partinin ne ettiğini
+söyleyen tam olarak o özelliktir. Tek öncüle dayanan altı aday, altı yüzü olan
+tek bahistir; ikisi birden doğru olamayan iki aday, ayrı ayrı test edilmektense
+ayrıştırılmak üzere daha ucuzdur ve işaretlenmezse Mizan'a rakip olduğu
+bilinmeyen iki hipotez olarak gider. İlişki sözlüğü (`contradicts`,
+`depends_on`, `shared_illet`, `same_test`, `independent`) o devri taşıyacak
+şekilde seçildi. Hüküm satırı artık *N aday, K bağımsız bahis* sayısını da
+basıyor — uyarı olarak değil not olarak: iki adımlı plan meşru bir partidir ve
+sayıyı uyarıya çevirmek, yazarlara bağımlılıkları beyan etmemeyi öğretirdi.
+Tohum şeması 1.5; altındaki partiler uygulanmadan kalır.
 
 **v1.2** — G12: bir parti, hangi koşullar altında çekildiğini kaydeder; böylece
 bir tohum listesi, arkasındaki operatörler, problem tanımı ve çürütülmüş-desen

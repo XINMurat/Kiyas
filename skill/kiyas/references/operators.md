@@ -139,7 +139,7 @@ call it "decorative". If the Prior art line says "not searched", a
 superiority/originality claim CANNOT be `[H-aday]` [A1].
 
 The machine-readable form of this envelope is `schemas/kiyas-seed.yaml`; the
-checker is `tools/kiyas_validate.py` (G1–G12, plus non-blocking W1–W5). It verifies that the fields are
+checker is `tools/kiyas_validate.py` (G1–G13, plus non-blocking W1–W5). It verifies that the fields are
 filled, never that they are true — see SKILL.md §"The runtime arbiter".
 
 **The batch also carries its discards [G7].** Alongside the seeds, record what

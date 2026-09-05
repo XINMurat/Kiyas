@@ -29,6 +29,13 @@
 # Read together with examples/distillation-user-analogy.md, which is the
 # distillation-mode pass that produced KS-J001's illet.
 
+# NOTE ON G13: this batch declares no seed schema_version, so the pair pass is
+# unenforced here and none was run. That is deliberate and it is the honest
+# record: the rule shipped after this batch was drawn, and marking its four
+# candidates' six pairs now would be six relations invented by someone who did
+# not draw them -- the ideation equivalent of writing scenarios after the gap
+# is found. The other worked example (kiyas-seed.example.yaml) demonstrates
+# G13 on a relation its own seeds already stated.
 batch:
   problem: >
     A method is reported to read a small, causally load-bearing subspace out

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Kıyas pre-commit hook — runs the G1–G12 validator on staged seed files.
-# Kıyas pre-commit kancası — hazırlanmış tohum dosyalarını G1–G12 denetler.
+# Kıyas pre-commit hook — runs the G1–G13 validator on staged seed files.
+# Kıyas pre-commit kancası — hazırlanmış tohum dosyalarını G1–G13 denetler.
 #
 # Install / Kurulum:
 #   cp tools/hooks/pre-commit .git/hooks/pre-commit
@@ -58,8 +58,8 @@ done
 
 if [ "$fail" -ne 0 ]; then
   echo ""
-  echo "kiyas: commit blocked — seed batch violates a hard rule (G1–G12)."
-  echo "kiyas: commit engellendi — tohum partisi bir sert kuralı (G1–G12) ihlal ediyor."
+  echo "kiyas: commit blocked — seed batch violates a hard rule (G1–G13)."
+  echo "kiyas: commit engellendi — tohum partisi bir sert kuralı (G1–G13) ihlal ediyor."
   echo "       Fix the entry or, if this is a deliberate exception, document it."
   exit 1
 fi

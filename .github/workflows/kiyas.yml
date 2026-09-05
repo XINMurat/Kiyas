@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r tools/requirements.txt
 
-      - name: Validate every seed batch (G1–G12, --strict)
+      - name: Validate every seed batch (G1–G13, --strict)
         run: |
           set -e
           found=0
@@ -453,6 +453,74 @@ jobs:
           # hands users a contract the validator does not enforce.
           diff -u skill/kiyas/schemas/kiyas-seed.yaml templates/kiyas-seed.yaml \
             || { echo "templates/kiyas-seed.yaml has drifted from the schema." >&2; exit 1; }
+
+      - name: Self-test — G13 must reject an unread pair and a half-marked one
+        run: |
+          set -e
+          # Every other rule in this validator judges ONE seed. A property that
+          # exists only BETWEEN two seeds is invisible by construction, and it
+          # is the property that decides what a batch is worth: six seeds on one
+          # premise are one bet with six faces. The worked example carried
+          # exactly such a relation in prose -- KS-003's breaking_point says it
+          # depends on KS-001 -- where nothing could read it.
+          tmp="$(mktemp --suffix=.yaml)"
+          python - "$tmp" <<'PY'
+          import io, sys, yaml
+          d = yaml.safe_load(io.open("examples/kiyas-seed.example.yaml", encoding="utf-8"))
+          d["seeds"][3]["tier"] = "H-aday"          # a third candidate
+          d["seeds"][3]["prior_art"]["searched"] = True
+          io.open(sys.argv[1], "w", encoding="utf-8").write(
+              yaml.safe_dump(d, allow_unicode=True, sort_keys=False))
+          PY
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          # three candidates, three pairs, only one of them read
+          echo "$out" | grep -q "G13: pair KS-001/KS-004 is not in the pair_pass" || { echo "FAIL: G13 accepted partial pair coverage" >&2; exit 1; }
+          echo "$out" | grep -q "G13: pair KS-003/KS-004 is not in the pair_pass" || { echo "FAIL: G13 accepted partial pair coverage" >&2; exit 1; }
+          echo "OK: G13 refuses a chosen subset of pairs."
+
+          # a relation that claims something has to carry what makes it actionable
+          python - "$tmp" <<'PY'
+          import io, sys, yaml
+          p = sys.argv[1]
+          d = yaml.safe_load(io.open(p, encoding="utf-8"))
+          d["batch"]["pair_pass"]["pairs"] = [
+              {"a": "KS-001", "b": "KS-003", "relation": "contradicts", "note": "x"},
+              {"a": "KS-001", "b": "KS-004", "relation": "depends_on", "note": "x"},
+              {"a": "KS-003", "b": "KS-004", "relation": "sort-of-related"},
+          ]
+          io.open(p, "w", encoding="utf-8").write(
+              yaml.safe_dump(d, allow_unicode=True, sort_keys=False))
+          PY
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "contradicts with no discriminating_test" || { echo "FAIL: a contradiction shipped with no separating experiment" >&2; exit 1; }
+          echo "$out" | grep -q "depends_on with no direction" || { echo "FAIL: a dependency shipped without saying which way" >&2; exit 1; }
+          echo "$out" | grep -q "G13: pair KS-003/KS-004 has relation" || { echo "FAIL: an unknown relation was accepted" >&2; exit 1; }
+          echo "OK: a claimed relation carries what makes it actionable."
+
+          # migration: the same batch below 1.5 is unenforced
+          python - "$tmp" <<'PY'
+          import io, sys, yaml
+          p = sys.argv[1]
+          d = yaml.safe_load(io.open(p, encoding="utf-8"))
+          d["batch"]["schema_version"] = "1.4"
+          d["batch"].pop("pair_pass")
+          io.open(p, "w", encoding="utf-8").write(
+              yaml.safe_dump(d, allow_unicode=True, sort_keys=False))
+          PY
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          if echo "$out" | grep -q "G13:"; then
+            echo "FAIL: G13 fired on a 1.4 batch; the migration gate is not holding" >&2; exit 1
+          fi
+          echo "OK: G13 waits for seed schema 1.5, the way Mizan's rules wait for theirs."
+
+          # the note is a NOTE: it must not become a violation under --strict,
+          # or authors learn to leave dependencies undeclared
+          out="$(python tools/kiyas_validate.py --strict examples/kiyas-seed.example.yaml)"
+          echo "$out"
+          echo "$out" | grep -q "independent bet" || { echo "FAIL: the independent-bet count is not reported" >&2; exit 1; }
+          echo "OK: the bet count is reported, and --strict does not promote it."
 
       - name: Docs claim the rule range the validator actually has
         run: |

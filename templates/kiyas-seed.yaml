@@ -1,5 +1,5 @@
 # =====================================================================
-# Kıyas Seed Schema v1.4  (kiyas-seed.yaml)
+# Kıyas Seed Schema v1.5  (kiyas-seed.yaml)
 # =====================================================================
 # Machine-readable form of the Kıyas output contract. A "seed" is one
 # generated idea, carrying everything Mizan needs to preregister it.
@@ -67,6 +67,55 @@
 #        "fresh" for an unpinned draw and "unknown" for an unnameable host
 #        are honest answers. An absent field is not an answer — same shape
 #        as G6 and G11.
+#   G13. THE PAIR PASS (schema 1.5+). A batch is generated seed by seed and
+#        judged seed by seed: illet, breaking point, cheapest refutation,
+#        prior art -- every one of those questions is asked of ONE seed. So a
+#        property that exists only BETWEEN two seeds is invisible by
+#        construction, and it is the property that decides what the batch is
+#        actually worth:
+#
+#          * six seeds resting on one unexamined premise are not six bets.
+#            They are one bet with six faces, and the list looks diversified
+#            precisely because each face was checked alone.
+#          * two seeds that cannot both be true are worth more together than
+#            apart -- the experiment that separates them is cheaper than the
+#            two that test them one at a time. Handed to Mizan unmarked, the
+#            contradiction becomes two preregistered hypotheses nobody knows
+#            are rivals.
+#          * a seed that only holds if another one does is a second step, not
+#            a second option, and a batch that lists it as an alternative is
+#            counting the same bet twice.
+#
+#        So: when `batch.schema_version` is 1.5 or higher and the batch has
+#        two or more H-aday seeds, `batch.pair_pass.pairs` MUST carry every
+#        unordered pair of them, exactly once. Coverage is all pairs, not a
+#        chosen subset: picking which pairs to examine after seeing the seeds
+#        is the same move as picking a threshold after seeing the result.
+#
+#        Each row: `a`, `b` (distinct H-aday ids) and `relation`, one of
+#          independent   neither touches the other. The honest majority case;
+#                        no note required, one line each.
+#          contradicts   both cannot hold. REQUIRES `discriminating_test` --
+#                        the experiment that kills one and spares the other.
+#                        This is Mizan R15's rival-mechanism rule, one level
+#                        up: at the batch instead of inside one entry.
+#          shared_illet  one premise carries both; if it falls, both fall.
+#                        REQUIRES `note` naming the premise.
+#          depends_on    one only holds if the other does. REQUIRES `note`
+#                        and `direction` (the id that does the depending).
+#          same_test     one experiment settles both. Not a defect -- a
+#                        saving, and the reason to notice it before running
+#                        two.
+#
+#        The relation vocabulary is chosen to survive the handoff: Mizan's
+#        registry already carries `contradicts` and `depends_on` as entry
+#        relations, so a marked pair arrives there as a relation rather than
+#        as a sentence in a note field.
+#
+#        MIGRATION: a batch that declares no `schema_version`, or one below
+#        1.5, is unenforced. The rule costs exactly one line per pair, and
+#        batches are small by design (three operators, a handful of seeds).
+#
 #   G7. The `discards` block MUST be present, even when empty. SKILL.md
 #       makes the discard list part of the deliverable; until v1.1 the
 #       contract had no slot for it, so the one section a host instruction
@@ -122,6 +171,9 @@
 # =====================================================================
 
 batch:
+  schema_version: "1.5"            # 1.5+ activates G13 (the pair pass).
+                                   # Absent or lower = unenforced, so an older
+                                   # batch stays valid and migrates on purpose.
   problem: >
     The blocked problem in ONE sentence: what is stuck, which constraint
     hurts. Every seed in this batch answers this.
@@ -148,6 +200,25 @@ batch:
     # These three fields let a second run be COMPARED with this one: same
     # digest means the two draws saw the same problem and the same refuted
     # export, so any difference between them is a difference in the draw.
+
+  # --- G13: the pass that looks BETWEEN the seeds ---------------------
+  # Everything else in this file judges one seed at a time. This is where a
+  # batch finds out whether its seeds are several bets or one bet wearing
+  # several faces. Every unordered pair of H-aday seeds, exactly once.
+  pair_pass:
+    pairs:
+      - a: "KS-001"
+        b: "KS-003"
+        relation: "depends_on"     # independent | contradicts | shared_illet
+                                   #             | depends_on  | same_test
+        direction: "KS-003"        # REQUIRED for depends_on: who depends
+        note: >                    # REQUIRED except for `independent`
+          KS-003's substitution argument only becomes testable once KS-001
+          has lifted the cap. Listing them as two options counts one bet
+          twice; they are a first step and a second.
+        discriminating_test: ""    # REQUIRED for `contradicts`: the
+                                   # experiment that kills one and spares
+                                   # the other
 
 seeds:
   - id: "KS-001"

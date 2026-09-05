@@ -18,6 +18,7 @@
 # a blocker would just teach authors to leave the sweep silent.
 
 batch:
+  schema_version: "1.5"            # 1.5+ activates G13, the pair pass
   problem: >
     State-space coupling is capped at |c| <= ~0.03 by the Gershgorin
     stability constraint, which makes the coupling mechanism decorative:
@@ -47,6 +48,27 @@ batch:
     # batch.discards_note makes above. No inputs_digest either: the batch names
     # a refuted-patterns export that is not in this repo, so the digest cannot
     # be computed here, and a digest nobody can recompute records nothing.
+
+  # G13 — the pass that reads the batch as a SET rather than a list. Two
+  # H-aday seeds here, so exactly one pair. It is not a formality: the
+  # relation below was already written in KS-003's own breaking_point
+  # ("the substitution argument only holds once KS-001 has lifted the cap"),
+  # where no check could see it and no handoff could carry it. That sentence
+  # is why this rule exists.
+  pair_pass:
+    pairs:
+      - a: "KS-001"
+        b: "KS-003"
+        relation: "depends_on"
+        direction: "KS-003"
+        note: >
+          KS-003 argues the coupling substrate is redundant; that argument
+          is only testable once KS-001 has lifted the stability cap, because
+          redundancy and weakness are indistinguishable while both channels
+          are capped. Listed side by side they read as two options and count
+          as two bets; they are one bet in two steps, and the order is not
+          reversible.
+        discriminating_test: ""
 
 seeds:
   # -------------------------------------------------------------------

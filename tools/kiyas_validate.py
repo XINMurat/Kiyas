@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G12.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G13.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -19,7 +19,7 @@ question. The same logic applies to this tool. A single blocking channel
 pushes authors to write batches that do not trigger rules, which is not the
 same as writing better batches. So:
 
-  * VIOLATIONS (G1–G12) block. They mark a contract that is incomplete in a way
+  * VIOLATIONS (G1–G13) block. They mark a contract that is incomplete in a way
     the prose forbids outright.
   * WARNINGS (W1–W5) do not block by default. They mark shapes that are
     usually wrong but have legitimate exceptions, so the right response is to
@@ -262,6 +262,68 @@ MSG = {
         "adlandırdığı girdilerden değil başka girdilerden çekilmiş; başka bir koşuyla "
         "karşılaştırmak iki farklı soruyu karşılaştırmak olurdu.",
     ),
+    "G13_no_pair_pass": (
+        "G13: the batch has {n} H-aday seeds and no pair_pass. Every other check in this file "
+        "judges ONE seed; seeds resting on a single premise are one bet with several faces, and "
+        "that is invisible until the pairs are read.",
+        "G13: partide {n} H-aday tohum var ve pair_pass yok. Bu dosyadaki diğer her kontrol TEK "
+        "tohum yargılar; tek bir öncüle dayanan tohumlar, birkaç yüzü olan tek bahistir ve bu, "
+        "çiftler okunana kadar görünmez.",
+    ),
+    "G13_pair_missing": (
+        "G13: pair {a}/{b} is not in the pair_pass. Coverage is EVERY pair of H-aday seeds: "
+        "choosing which pairs to look at after seeing the seeds is threshold shopping with a "
+        "different name.",
+        "G13: {a}/{b} çifti pair_pass'te yok. Kapsam, H-aday tohumların HER çiftidir: tohumları "
+        "gördükten sonra hangi çiftlere bakılacağını seçmek, adı değişmiş eşik alışverişidir.",
+    ),
+    "G13_pair_duplicate": (
+        "G13: pair {a}/{b} appears more than once in the pair_pass.",
+        "G13: {a}/{b} çifti pair_pass'te birden fazla kez geçiyor.",
+    ),
+    "G13_pair_unknown": (
+        "G13: pair_pass row names {id}, which is not an H-aday seed in this batch.",
+        "G13: pair_pass satırı {id} diyor; bu partide böyle bir H-aday tohum yok.",
+    ),
+    "G13_same_seed": (
+        "G13: pair_pass row names {id} on both sides -- a pair is two different seeds.",
+        "G13: pair_pass satırı iki tarafta da {id} diyor -- çift, iki FARKLI tohumdur.",
+    ),
+    "G13_bad_relation": (
+        "G13: pair {a}/{b} has relation {got!r}; expected one of {allowed}.",
+        "G13: {a}/{b} çiftinin relation değeri {got!r}; beklenen: {allowed}.",
+    ),
+    "G13_no_note": (
+        "G13: pair {a}/{b} is {rel} with no note. `independent` is the only relation that needs no "
+        "explanation; the others each name something the batch would otherwise carry unexamined.",
+        "G13: {a}/{b} çifti {rel} ama not yok. Açıklama gerektirmeyen tek ilişki `independent`; "
+        "diğerleri, partinin aksi hâlde incelenmeden taşıyacağı bir şeyi adlandırır.",
+    ),
+    "G13_no_discriminator": (
+        "G13: pair {a}/{b} contradicts with no discriminating_test. If both cannot hold, the "
+        "experiment that kills one and spares the other is cheaper than testing each alone -- and "
+        "unmarked, the pair reaches Mizan as two hypotheses nobody knows are rivals.",
+        "G13: {a}/{b} çifti contradicts ama discriminating_test yok. İkisi birden doğru olamıyorsa, "
+        "birini öldürüp diğerini bırakan deney, ikisini ayrı ayrı test etmekten ucuzdur -- ve "
+        "işaretlenmezse çift, Mizan'a rakip olduğu bilinmeyen iki hipotez olarak gider.",
+    ),
+    "G13_no_direction": (
+        "G13: pair {a}/{b} is depends_on with no direction. Which of the two is the second step?",
+        "G13: {a}/{b} çifti depends_on ama direction yok. İkisinden hangisi ikinci adım?",
+    ),
+    "G13_bad_direction": (
+        "G13: pair {a}/{b} names direction {got!r}, which is neither side of the pair.",
+        "G13: {a}/{b} çiftinin direction değeri {got!r}; çiftin iki tarafından biri değil.",
+    ),
+    "note_independent_bets": (
+        "{n} H-aday seed(s), {k} independent bet(s) once shared premises and dependencies are "
+        "counted. This is a NOTE, not a finding: a two-step plan is a legitimate batch. It is "
+        "printed because a batch is worth its independent bets and reads as though it were worth "
+        "its length.",
+        "{n} H-aday tohum, ortak öncüller ve bağımlılıklar sayıldıktan sonra {k} bağımsız bahis. "
+        "Bu bir NOT, bulgu değil: iki adımlı bir plan meşru bir partidir. Basılmasının sebebi "
+        "şu: bir parti, bağımsız bahisleri kadar eder ama uzunluğu kadar ediyormuş gibi okunur.",
+    ),
     "W5_pinned_seed_no_digest": (
         "W5: batch.generation.seed is pinned to '{seed}' but there is no inputs_digest — a seed "
         "with no record of the inputs it was applied to identifies nothing. Run "
@@ -295,8 +357,8 @@ MSG = {
         "bulgu, yeniden ifade edilerek başka bir rejim hakkında iddiaya dönüşmez.",
     ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G12 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G12 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G13 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G13 ihlali yok.",
     ),
     "warn_header": (
         "{n} warning(s) — not blocking; re-run with --strict to treat them as failures.",
@@ -427,6 +489,12 @@ def check(data: dict, lang: str,
     errs += _check_generation(batch, refuted_bytes, lang)
     warns += _check_generation_warnings(batch, lang)
 
+    # G13 — the pair pass. Every other check in this file judges one seed;
+    # this one is the only place the batch is read as a set.
+    pair_errs, pair_warns = _check_pair_pass(batch, seeds, lang)
+    errs += pair_errs
+    warns += pair_warns
+
     ops = {_s(s.get("operator")).upper() for s in seeds if _s(s.get("operator"))}
     declared = {_s(o).upper() for o in (batch.get("operators_used") or [])}
     all_ops = ops | declared
@@ -505,6 +573,111 @@ def check(data: dict, lang: str,
     errs += _check_discards(data, batch, lang)
 
     check.n_seeds = len(seeds)  # type: ignore[attr-defined]
+    return errs, warns
+
+
+PAIR_RELATIONS = ("independent", "contradicts", "shared_illet", "depends_on", "same_test")
+
+
+def _batch_at_least(batch: dict, want: tuple[int, int]) -> bool:
+    """G13's migration gate. A seed file carried no version until 1.5, so an
+    absent one means "written before the rule" and is left alone -- the same
+    shape as Mizan's schema gate and for the same reason: a rule that breaks
+    every existing file on upgrade is a rule people learn to route around."""
+    raw = _s(batch.get("schema_version"))
+    parts = raw.split(".")
+    try:
+        got = (int(parts[0]), int(parts[1]) if len(parts) > 1 else 0)
+    except (ValueError, IndexError):
+        return False
+    return got >= want
+
+
+def _check_pair_pass(batch: dict, seeds: list[dict], lang: str) -> tuple[list[str], list[str]]:
+    """G13 — the pass that looks BETWEEN the seeds.
+
+    Checks coverage and completeness, never quality: that every pair was
+    looked at and that a claimed relation carries what it needs to be acted
+    on. Whether two seeds REALLY share a premise is a judgement, and this
+    tool does not make judgements.
+    """
+    errs: list[str] = []
+    warns: list[str] = []
+    _check_pair_pass.note = ""
+    if not _batch_at_least(batch, (1, 5)):
+        return errs, warns
+
+    haday = [_s(x.get("id")) for x in seeds if _s(x.get("tier")) == "H-aday" and _s(x.get("id"))]
+    if len(haday) < 2:
+        return errs, warns
+
+    block = batch.get("pair_pass")
+    rows = [r for r in ((block or {}).get("pairs") or []) if isinstance(r, dict)]
+    if not rows:
+        return [m("G13_no_pair_pass", lang, n=len(haday))], warns
+
+    known = set(haday)
+    seen: dict[tuple[str, str], int] = {}
+    # relation -> the pairs carrying it, for the independence count below
+    linked: list[tuple[str, str]] = []
+    for r in rows:
+        a_id, b_id = _s(r.get("a")), _s(r.get("b"))
+        for one in (a_id, b_id):
+            if one and one not in known:
+                errs.append(m("G13_pair_unknown", lang, id=one))
+        if a_id and a_id == b_id:
+            errs.append(m("G13_same_seed", lang, id=a_id))
+            continue
+        if a_id in known and b_id in known:
+            key = tuple(sorted((a_id, b_id)))
+            seen[key] = seen.get(key, 0) + 1
+            if seen[key] == 2:
+                errs.append(m("G13_pair_duplicate", lang, a=key[0], b=key[1]))
+
+        rel = _s(r.get("relation")).lower()
+        if rel not in PAIR_RELATIONS:
+            errs.append(m("G13_bad_relation", lang, a=a_id or "?", b=b_id or "?",
+                          got=rel, allowed=", ".join(PAIR_RELATIONS)))
+            continue
+        if rel != "independent" and not _s(r.get("note")):
+            errs.append(m("G13_no_note", lang, a=a_id, b=b_id, rel=rel))
+        if rel == "contradicts" and not _s(r.get("discriminating_test")):
+            errs.append(m("G13_no_discriminator", lang, a=a_id, b=b_id))
+        if rel == "depends_on":
+            direction = _s(r.get("direction"))
+            if not direction:
+                errs.append(m("G13_no_direction", lang, a=a_id, b=b_id))
+            elif direction not in (a_id, b_id):
+                errs.append(m("G13_bad_direction", lang, a=a_id, b=b_id, got=direction))
+        if rel in ("shared_illet", "depends_on", "same_test") and a_id in known and b_id in known:
+            linked.append((a_id, b_id))
+
+    for i, a_id in enumerate(haday):
+        for b_id in haday[i + 1:]:
+            if tuple(sorted((a_id, b_id))) not in seen:
+                errs.append(m("G13_pair_missing", lang, a=a_id, b=b_id))
+
+    # W6 -- how many independent bets are left once the links are counted.
+    # Union-find over the linked pairs: seeds tied to each other are one bet.
+    parent = {x: x for x in haday}
+
+    def find(x: str) -> str:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for a_id, b_id in linked:
+        ra, rb = find(a_id), find(b_id)
+        if ra != rb:
+            parent[ra] = rb
+    bets = len({find(x) for x in haday})
+    # A NOTE, deliberately not a warning. Under --strict a warning becomes a
+    # violation, and "these two seeds are one bet in two steps" is a true
+    # sentence about a healthy batch -- promoting it would teach authors to
+    # avoid declaring dependencies, which is the one thing this rule exists to
+    # get written down.
+    _check_pair_pass.note = m("note_independent_bets", lang, n=len(haday), k=bets)
     return errs, warns
 
 
@@ -687,7 +860,7 @@ def _check_refuted_relatives(s: dict, sid: Any, tier: str,
 
 
 def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(description="Kıyas seed G1–G12 validator")
+    ap = argparse.ArgumentParser(description="Kıyas seed G1–G13 validator")
     ap.add_argument("seeds", help="path to a kiyas-seed.yaml")
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
     ap.add_argument("--refuted", metavar="PATH",
@@ -727,12 +900,18 @@ def main(argv: list[str]) -> int:
         if not args.strict:
             for w in warns:
                 print("  ! " + w)
+        note = getattr(_check_pair_pass, "note", "")
+        if note:
+            print("  · " + note)
         print(m("found", args.lang, n=len(errs)))
         if args.strict and warns:
             print(m("warn_strict", args.lang, n=len(warns)))
         return 1
 
+    note = getattr(_check_pair_pass, "note", "")
     print(m("clean", args.lang, n=n))
+    if note:
+        print("  · " + note)
     if warns:
         for w in warns:
             print("  ! " + w)

@@ -27,7 +27,7 @@ seçiminden gelir, daha çok analoji istemekten değil.
 geçer, tier'lanır, bayraklanır ve kriticklik × (bilgi-değeri / maliyet)
 sırasına dizilir.
 
-## 3. Sert kurallar (özet — şemadaki G1–G12)
+## 3. Sert kurallar (özet — şemadaki G1–G13)
 
 1. İllet boş olamaz. İlleti isimlendirilemeyen fikir üretilmiş sayılmaz.
 2. Bir fikir hipotez adayı olmadan önce kırılma noktası yazılmış olmalı.
@@ -59,6 +59,15 @@ sırasına dizilir.
     satın aldığı şey karşılaştırılabilirliktir: aynı özeti taşıyan iki parti
     aynı problemden ve aynı çürütülmüş-desen ihracından çekilmiştir, yani
     aralarındaki fark çekilişin farkıdır, sorunun değil.
+
+13. Parti, hipotez adaylarının **her çiftini** işaretler: bağımsız, çelişen
+    (o zaman ikisini ayıran deneyi adlandır), ortak bir öncüle dayanan, biri
+    diğerine bağımlı (hangisi olduğunu söyle), ya da aynı testle kapanan.
+    Buradaki diğer her kural TEK tohum yargılar; iki tohumun arasında yaşayan
+    bir özellik bu yüzden yapısal olarak görünmezdir — ve partinin ne ettiğini
+    söyleyen tam olarak o özelliktir. Tek öncüle dayanan altı tohum, altı yüzü
+    olan tek bahistir. Ardından gelen sayı hükümle birlikte basılır:
+    *N aday, K bağımsız bahis*. Tohum şeması 1.5+ beyan eden partilerde.
 
 Beş kontrol daha **bloke etmeden uyarır** (`--strict` ile düşerler): hakemi
 olmayan sayısal eşik, her tohumu hipotez adayı olan parti, hiçbir tohumu

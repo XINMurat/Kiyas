@@ -4,7 +4,7 @@ description: Disciplined ideation and analogical inference for research that is 
 license: MIT
 metadata:
   author: XINMurat
-  schema_version: "1.4"   # pinned to the schema banner by CI
+  schema_version: "1.5"   # pinned to the schema banner by CI
 ---
 
 # Kıyas — Disciplined Ideation and Analogical Inference
@@ -150,7 +150,29 @@ examples + anti-pattern sweep). Then:
 5. **Symmetry check:** do all your candidates flatter the current thesis? At
    least one must cut against it; otherwise this is confirmation bias —
    generate one.
-6. **Hand off to Mizan:** present `[H-aday]` ideas as seeds that paste straight
+6. **Pair pass — read the batch as a SET, not a list.** Every step above
+   judges ONE seed: its illet, its breaking point, its cheapest refutation,
+   its prior art. So a property that exists only BETWEEN two seeds is
+   invisible by construction — and it decides what the batch is actually
+   worth. Take every pair of `[H-aday]` seeds and mark it:
+   - **independent** — neither touches the other. The honest majority case.
+   - **contradicts** — both cannot hold. Then name the experiment that kills
+     one and spares the other: it is cheaper than the two separate tests, and
+     an unmarked contradiction reaches Mizan as two preregistered hypotheses
+     nobody knows are rivals.
+   - **shared_illet** — one premise carries both. Six seeds on one premise
+     are not six bets; they are one bet with six faces, and the list looks
+     diversified precisely because each face was checked alone.
+   - **depends_on** — one only holds if the other does. Say which. A second
+     step listed as a second option counts the same bet twice.
+   - **same_test** — one experiment settles both. Not a defect, a saving.
+
+   All pairs, not a chosen subset: picking which pairs to examine after seeing
+   the seeds is threshold shopping with a different name. Then report the
+   number that follows — *N seeds, K independent bets*. A batch is worth its
+   independent bets and reads as though it were worth its length. (G13, seed
+   schema 1.5+.)
+7. **Hand off to Mizan:** present `[H-aday]` ideas as seeds that paste straight
    into the Mizan Registry Entry template (formal claim + metric + arbiter +
    capacity-control arm + threshold proposal + refutation + prior art +
    discrimination test + trace base-rate prediction). Kıyas stops here; tier
@@ -171,7 +193,7 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G12). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G13). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
@@ -225,7 +247,7 @@ verified would be the same error the skill audits for everywhere else.
 W5 catches the half-record: a pinned seed with no `inputs_digest`. A seed with
 no record of the inputs it was applied to identifies nothing.
 
-**Two channels, and the reason there are two.** G1–G12 block. W1–W5 do not:
+**Two channels, and the reason there are two.** G1–G13 block. W1–W5 do not:
 a numeric threshold with an author/none arbiter, a batch where every seed
 lands at `[H-aday]`, a symmetry check naming no seed, an O5 transfer with no
 scope caveat, a pinned seed with no inputs digest. Each of those is usually wrong and legitimately right often
@@ -399,6 +421,6 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G12 and
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G13 and
   warnings W1–W5), with
   the arbiter block shared with Mizan R8.

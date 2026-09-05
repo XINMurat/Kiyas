@@ -82,7 +82,7 @@ honest batch, not a failed one.
 or the refuted-patterns export raised.
 
 **FIRST MOVE.** Diagnose before substituting. Does the absence remove a
-**capability** or a **convenience**? Without the validator, G1–G12 were not
+**capability** or a **convenience**? Without the validator, G1–G13 were not
 checked — that is a capability, and "the seeds look complete to me" is exactly
 the producer-side judgement the validator exists to replace. Without the
 refuted-patterns file, the `[GB]` check did not happen; **`refuted_patterns_source`
