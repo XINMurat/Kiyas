@@ -174,6 +174,17 @@ produces.
 
 ### Version
 
+**v1.2** — G12: a batch records the conditions it was drawn under, so a seed
+list cannot be read as if the operators, the problem statement and the refuted
+export behind it were all known. Adds the recovery ramps `RR-00`…`RR-13` for
+when the generation itself goes wrong — including **RR-13**, the first measure
+here that comes from outside the batch: an idea that arrived from elsewhere on
+the same blocked problem, or a known-refuted pattern that shipped anyway, is
+recorded and mapped to the operator, sweep or refuted entry that should have
+caught it. Generation has no runtime, so nothing inside a batch can contradict
+it; that is exactly why the outside signal needed a row and a ramp. Seed schema
+1.4.
+
 **v1.1** — G7–G11 close the gap between the prose and the schema
 ([`PROSE-SCHEMA-AUDIT.md`](PROSE-SCHEMA-AUDIT.md)): the discard list, a
 cheapest refutation and a prior-art search on every `[H-aday]`, a
@@ -323,6 +334,17 @@ metodolojinin ayakta kalmak için kurulduğu sonuç, ve kendi yaptığın bir
 örneğin asla üretmediği sonuç.
 
 ### Sürüm
+
+**v1.2** — G12: bir parti, hangi koşullar altında çekildiğini kaydeder; böylece
+bir tohum listesi, arkasındaki operatörler, problem tanımı ve çürütülmüş-desen
+ihracı biliniyormuş gibi okunamaz. Üretimin kendisi bozulduğunda devreye giren
+`RR-00`…`RR-13` kurtarma rampaları — içlerinde **RR-13**, buradaki ilk *dışarıdan
+gelen* ölçü: aynı tıkanmış problemde başka yerden gelen bir fikir ya da yine de
+sevk edilen bilinen-reddedilmiş bir desen kaydedilir ve onu yakalaması gereken
+operatöre, taramaya veya reddedilen girdisine bağlanır. Üretimin runtime'ı
+yoktur, yani bir partiyi içeriden yalanlayabilecek hiçbir şey yoktur; dışarıdan
+gelen sinyalin kendi satırına ve rampasına ihtiyaç duymasının sebebi tam olarak
+budur. Tohum şeması 1.4.
 
 **v1.1** — G7–G11, proza ile şema arasındaki farkı kapatır
 ([`PROSE-SCHEMA-AUDIT.md`](PROSE-SCHEMA-AUDIT.md)): reddedilenler listesi, her
