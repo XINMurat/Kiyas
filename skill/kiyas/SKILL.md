@@ -391,7 +391,7 @@ or not anything was ruled out.
 ## References
 
 - `references/recovery.md` — the ramps for when a run stops behaving
-  (`RR-00`…`RR-12`): a validator that did not run, an equivalence that looks
+  (`RR-00`…`RR-13`): a validator that did not run, an equivalence that looks
   too good, a batch that only agrees, a seed that came back `[R]`, the urge to
   add capacity after a miss. Also the model failure classes behind them and the
   closing process scorecard. Read when something breaks.

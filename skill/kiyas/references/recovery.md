@@ -46,6 +46,7 @@ every one of them, and none of them announces itself.
 | **Optimistic reporting** | "Validated", "checked against the refuted list" with no artifact behind it | RR-01 |
 | **Rescue rewriting** | A seed came back `[R]`, so it is reworded until it reads like a different idea | RR-02 |
 | **Context decay** | Hour two: candidates still flowing, the contract no longer applied to them | RR-09 |
+| **Class-less escape** | The idea came from outside the batch, or a known-refuted pattern shipped anyway; it was absorbed, and nothing changed about what the next batch runs | RR-13 |
 
 ---
 
@@ -389,6 +390,60 @@ inherited across instruments), the capacity anti-pattern.
 
 ---
 
+## RR-13 — The answer came from outside the batch
+
+**TRIGGER.** Something got past the discipline and only the outside noticed.
+Three shapes, one ramp:
+
+1. A seed shipped, went into a registry, and turned out to repeat a pattern the
+   refuted list already held — the `[GB]` sweep had the answer and did not
+   fire.
+2. The blocked problem got unblocked by something the batch never produced: a
+   paper, a colleague's remark, a user's offhand sentence, another model. The
+   batch ran, the operators ran, and the idea came from elsewhere.
+3. A lesson was written into a `why_closed` field as "worth adding to the
+   checklist" and no checklist ever received it. This one is the quietest and
+   it is real: `refuted-patterns.yaml` already carries such a line.
+
+**FIRST MOVE.** Record it before explaining it. The pull is to absorb the
+outside idea and carry on — it is a good idea, after all — and absorbing it
+leaves no trace that the batch missed it.
+
+Then answer one question: **which part of the discipline should have produced
+or caught this?**
+
+- **A part exists and stayed silent.** Name it — an operator that was not run,
+  the `[NK]` sweep, the symmetry check, the `[GB]` comparison against the
+  refuted export (G11). Then the finding is about this batch, not the method:
+  three operators were asked for and two were run, or the refuted export was
+  stale. *"We ran no inversion operator on this problem"* is a real answer.
+- **No part covers it.** Then write the one that now does: a new operator in
+  `operators.md`, a new anti-pattern in its §3 sweep, or — for shape 1 — the
+  entry in `refuted-patterns.yaml` that the next batch will compare against.
+  A class that only matches this miss catches this miss and nothing else.
+
+**FORBIDDEN.** Absorbing the outside idea into the batch's own output and
+reporting it as generated. Counting the miss in the scorecard and stopping
+there. Retro-fitting the batch's problem statement so the outside idea looks
+like something it was aiming at (RR-07's drift, pointed backwards).
+
+**OUTPUT.** One escape recorded with its class — the operator, sweep or
+refuted entry that should have fired, or the one that now exists.
+
+**WHY THIS ONE IS DIFFERENT.** Every other measure on the scorecard is
+internal: the batch reports whether the batch ran its own filter. Generation
+has no runtime, so there is no arbiter that can contradict it from inside —
+which makes the outside signal the *only* uncorrupted evidence about whether
+this discipline generates anything the room would not have reached anyway.
+A skill that never records a miss is not a skill with no misses.
+
+**BACKED BY.** G11 (name the refuted export you compared against), AD4/`[GB]`
+(a relative of a refuted pattern is tagged or dropped), the `[NK]` sweep, the
+symmetry check, and the scorecard's **Escaped** row below — which exists
+because of this ramp.
+
+---
+
 ## Closing a batch: the process scorecard
 
 Fill this in when a generation or distillation cycle closes. It does not grade
@@ -405,6 +460,7 @@ failure; a hidden number is.
 | **`[GB]` hits** | | Candidates related to something already `[R]`. Each one is the feedback loop doing its job. |
 | **Capacity tests with a matched-budget arm** | / | Of the tests that add capacity, how many carry the control. This ratio should be 1.0; anything else names a batch that cannot attribute its own results. |
 | **Ramps used** | | Which `RR-nn` fired. A batch that used none either went perfectly or did not notice. |
+| **Escaped** | | Ideas that came from outside this batch on the same blocked problem, and known-refuted patterns that shipped anyway — with the operator, sweep or refuted entry each one now maps to (RR-13). Generation has no runtime, so this is the only measure here that the batch cannot produce about itself. An escape with no class beside it taught the method nothing. |
 | **Survival in the registry** | | The honest success metric: how many `[H-aday]` seeds survived preregistered testing. **Without a control arm it describes the record; it does not show the discipline caused it** — a permanent `[KKE]`, and the ledger prints it. |
 
 **Reading:** two or three sentences. Not "good batch" — what changes in the

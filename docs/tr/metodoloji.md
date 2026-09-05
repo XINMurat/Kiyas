@@ -156,7 +156,7 @@ negatif-kısıt olarak Kıyas'a geri döner.** Pratik uygulama:
 ## Referanslar
 
 - `references/recovery.md` (Türkçe: [`kurtarma.md`](kurtarma.md)) — Bir koşu
-  davranmayı bıraktığında rampalar (`RR-00`…`RR-12`): doğrulayıcı koşmadı,
+  davranmayı bıraktığında rampalar (`RR-00`…`RR-13`): doğrulayıcı koşmadı,
   denklik fazla iyi görünüyor, batch yalnız doğruluyor, tohum `[R]` döndü,
   test tutmayınca kapasite ekleme dürtüsü. Model hata sınıfları ve kapanış
   çizelgesi de burada.

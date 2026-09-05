@@ -40,6 +40,7 @@ tek kanıttır.
 | **RR-10** | Neyin tıkalı olduğu belirsiz | Tek soru sor, **boş elle sorma** (öneri kuralı); cevap yoksa varsayılan okumayı batch'in üstüne yaz | Üretim adımı 1, ton kuralları |
 | **RR-11** | Devredilmiş tohumu geri çekme | Hedefte **silme**, düzeltme ekle; ledger'ın hayatta kalma oranını temiz tutmak için sessizce çekme | G3/G4/G10, ledger |
 | **RR-12** | Test tutmadı, kapasite ekleme dürtüsü | **Eşleştirilmiş bütçe kolu zorunlu** (A2); enstrüman değişiyorsa eşik devralınmaz (A3) | G4, kapasite anti-deseni |
+| **RR-13** | Cevap batch'in dışından geldi | Kaçağı **kaydet**, sonra açıkla; "disiplinin hangi parçası bunu üretmeliydi?" — susan parçayı adlandır ya da artık var olanı yaz | G11, AD4/`[GB]`, çizelgedeki *Kaçan* satırı |
 
 ---
 
@@ -114,6 +115,60 @@ bu skill'in Mizan'a verebileceği **en bilgilendirici** sonuçtur.
 
 ---
 
+### RR-13 — Cevap batch'in dışından geldi
+
+**DURUM.** Bir şey disiplinin yanından geçti ve yalnız dışarısı fark etti. Üç
+biçim, tek rampa:
+
+1. Bir tohum sevk edildi, bir registry'ye girdi ve reddedilenler listesinin
+   zaten tuttuğu bir deseni tekrarladığı ortaya çıktı — `[GB]` taraması cevabı
+   elinde tutuyordu ve ateşlemedi.
+2. Tıkanmış problem, batch'in hiç üretmediği bir şeyle açıldı: bir makale, bir
+   meslektaş cümlesi, kullanıcının lafın arasında söylediği bir şey, başka bir
+   model. Batch koştu, operatörler koştu, fikir başka yerden geldi.
+3. Bir ders `why_closed` alanına *"kontrol listesi adayı"* diye yazıldı ve
+   hiçbir kontrol listesine girmedi. En sessizi bu ve gerçek:
+   `refuted-patterns.yaml` şu anda tam olarak böyle bir satır taşıyor.
+
+**İLK HAMLE.** Açıklamadan önce kaydet. Çekim, dışarıdan gelen fikri özümseyip
+devam etmektir — sonuçta iyi bir fikirdir — ve özümsemek, batch'in onu
+kaçırdığına dair hiçbir iz bırakmaz.
+
+Sonra tek soruyu cevapla: **disiplinin hangi parçası bunu üretmeli ya da
+yakalamalıydı?**
+
+- **Parça var ve sustu.** Adını yaz — koşulmamış bir operatör, `[NK]` taraması,
+  simetri kontrolü, reddedilen ihracına karşı `[GB]` karşılaştırması (G11). O
+  zaman bulgu bu batch hakkındadır, yöntem hakkında değil: üç operatör istendi,
+  ikisi koştu; ya da reddedilen ihracı bayattı. *"Bu problemde hiç tersine
+  çevirme operatörü koşmadık"* gerçek bir cevaptır.
+- **Hiçbir parça kapsamıyor.** O zaman artık kapsayanı yaz: `operators.md`'ye
+  yeni bir operatör, §3 taramasına yeni bir anti-desen, ya da 1. biçim için
+  bir sonraki batch'in karşılaştıracağı `refuted-patterns.yaml` girdisi.
+  Yalnız bu kaçırmaya uyan bir sınıf, yalnız bu kaçırmayı yakalar.
+
+**YASAK.** Dışarıdan gelen fikri batch'in çıktısına katıp üretilmiş gibi
+raporlamak. Kaçırmayı çizelgede sayıp orada durmak. Dışarıdan gelen fikir,
+batch'in hedeflediği bir şey gibi görünsün diye problem tanımını sonradan
+düzeltmek (RR-07'nin kayması, geriye doğru).
+
+**ÇIKTI.** Sınıfıyla birlikte kaydedilmiş tek bir kaçak — ateşlemesi gereken
+operatör/tarama/reddedilen girdisi, ya da artık var olan.
+
+**NEDEN BU FARKLI.** Çizelgedeki diğer her ölçü içeriden gelir: batch, kendi
+filtresini koşup koşmadığını yine kendi raporlar. Üretimin runtime'ı yoktur,
+yani onu içeriden yalanlayabilecek bir hakem de yoktur — bu yüzden dışarıdan
+gelen sinyal, bu disiplinin odanın zaten ulaşacağı yerin ötesinde bir şey
+üretip üretmediğine dair **tek bozulmamış kanıttır.** Hiç kaçak kaydetmeyen
+bir skill, kaçağı olmayan bir skill değildir.
+
+**DAYANAK.** G11 (hangi reddedilen ihracına baktığını söyle), AD4/`[GB]`
+(reddedilmiş bir desenin akrabası ya etiketlenir ya düşer), `[NK]` taraması,
+simetri kontrolü ve aşağıdaki çizelgenin **Kaçan** satırı — ki o satır bu
+rampa yüzünden var.
+
+---
+
 ## Model hata sınıfları
 
 Rampalar çare, bunlar hastalık. Akıcı bir analoji üreteci, işe yarar görünme
@@ -131,6 +186,7 @@ baskısı altında hepsini üretir ve hiçbiri kendini ilan etmez.
 | **İyimser raporlama** | "Doğrulandı", "reddedilenler listesine bakıldı" — arkasında artifact yok | RR-01 |
 | **Kurtarma yeniden-yazımı** | Tohum `[R]` döndü, farklı bir fikir gibi okunana kadar yeniden yazılıyor | RR-02 |
 | **Bağlam çürümesi** | İkinci saat: adaylar akıyor, çıktı sözleşmesi artık uygulanmıyor | RR-09 |
+| **Sınıfsız kaçak** | Fikir batch'in dışından geldi ya da bilinen reddedilmiş desen yine de sevk edildi; özümsendi, bir sonraki batch'in ne koştuğu değişmedi | RR-13 |
 
 ---
 
@@ -150,6 +206,7 @@ kötüdür.
 | `[GB]` isabeti | | Zaten `[R]` olan bir şeye akraba adaylar. Her biri geri besleme döngüsünün işini yapmasıdır. |
 | Kapasite testi / eşleştirilmiş kol | / | Kapasite ekleyen testlerin kaçı kontrol kolu taşıyor. Bu oran 1.0 olmalı; değilse batch kendi sonucunu atfedemez. |
 | Kullanılan rampalar | | Hangi `RR-nn`. Hiçbiri kullanılmadıysa ya kusursuzdu ya fark edilmedi. |
+| **Kaçan** | | Aynı tıkanmış problemde bu batch'in DIŞINDAN gelen fikirler ve yine de sevk edilen bilinen-reddedilmiş desenler — her birinin artık eşlendiği operatör, tarama ya da reddedilen girdisiyle birlikte (RR-13). Üretimin runtime'ı yoktur; bu, çizelgenin batch'in kendisi hakkında üretemeyeceği tek ölçüdür. Yanında sınıf olmayan kaçak, yönteme hiçbir şey öğretmemiştir. |
 | Registry'de hayatta kalma | | Dürüst başarı ölçüsü: kaç `[H-aday]` önkayıtlı testi atlattı. **Kontrol kolu olmadan bu sayı kaydı betimler, disiplinin sebep olduğunu göstermez** — kalıcı `[KKE]`, ledger bunu zaten basar. |
 
 **Çıkarım:** 1–2 cümle. "İyi batch" değil: sonraki üretimde ne değişecek ve
