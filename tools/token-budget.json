@@ -1,0 +1,34 @@
+{
+  "_note": "Ceilings are PREREGISTERED: written before the next change, not fitted to it. Raising one is a deliberate commit with a reason -- the same rule this skill applies to thresholds.",
+  "_runs_note": "The file lists under `runs` are a reading of SKILL.md's procedure, not a measurement of a live session. They are [H], and they are the number that matters operationally.",
+  "skill_root": "skill/kiyas",
+  "chars_per_token": 3.6,
+  "budgets": {
+    "T0": 263,
+    "T1": 6983,
+    "T2": 15633
+  },
+  "runs": {
+    "generation": {
+      "files": [
+        "skill/kiyas/SKILL.md",
+        "skill/kiyas/references/operators.md"
+      ],
+      "ceiling": 10878
+    },
+    "seed-write": {
+      "files": [
+        "skill/kiyas/SKILL.md",
+        "skill/kiyas/schemas/kiyas-seed.yaml"
+      ],
+      "ceiling": 12559
+    },
+    "recovery": {
+      "files": [
+        "skill/kiyas/SKILL.md",
+        "skill/kiyas/references/recovery.md"
+      ],
+      "ceiling": 13857
+    }
+  }
+}
