@@ -1,6 +1,41 @@
 title: "Kıyas — Disciplined Ideation and Analogical Inference"
-description: "A Claude skill for research that is stuck. Every generated idea ships with its illet, breaking point, cheapest refutation, named prior art and arbiter. Bilingual TR/EN."
-theme: jekyll-theme-minimal
+description: "A Claude skill for research that is stuck. Every generated idea ships with its illet, breaking point, cheapest refutation, named prior art and arbiter. Bilingual EN/TR."
 lang: en
-# jekyll-relative-links is enabled by default on GitHub Pages, so links to
-# .md files below resolve on both github.com and the published site.
+
+# --- what this site is, for the shared layout ---
+skill: "Kıyas"
+emoji: "🜁"
+accent: "#6b4a6e"
+accent_dark: "#b493b8"
+repo: "https://github.com/XINMurat/Kiyas"
+family_label: "the family"
+family_note: "Four skills that keep each other honest."
+license_note: "Code MIT · prose CC BY 4.0."
+
+nav_main:
+  - { name: "Overview", url: "/" }
+  - { name: "Quickstart", url: "/QUICKSTART.html" }
+
+nav_en:
+  - { name: "Usage guide", url: "/en/usage-guide.html" }
+
+nav_tr:
+  - { name: "Kullanım kılavuzu", url: "/tr/kullanim-kilavuzu.html" }
+  - { name: "Metodoloji", url: "/tr/metodoloji.html" }
+  - { name: "Operatörler", url: "/tr/operatorler.html" }
+  - { name: "Kurtarma", url: "/tr/kurtarma.html" }
+
+# The layout lives in docs/_layouts/default.html and is byte-identical in all
+# four repositories. Everything that differs between them is here, in data --
+# four copies of a stylesheet drifting one at a time is the failure this family
+# names in its own documentation.
+#
+# NOTE: no `plugins:` key. Setting it would REPLACE the GitHub Pages default
+# plugin set, and two of those defaults are load-bearing here:
+# jekyll-optional-front-matter (most pages in docs/ carry none, and without it
+# they stop being pages at all) and jekyll-relative-links (the .md links between
+# them resolve on github.com and on the site because of it).
+
+defaults:
+  - scope: { path: "" }
+    values: { layout: "default" }
