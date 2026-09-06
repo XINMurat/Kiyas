@@ -1,5 +1,7 @@
 # Kıyas Quickstart / Hızlı Başlangıç
 
+<div id="pane-en" markdown="1">
+
 ## English
 
 ### 1. Install
@@ -56,7 +58,9 @@ When the registry decides, fill in `final_tier` — including the refutations.
 python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
 ```
 
----
+</div>
+
+<div id="pane-tr" markdown="1" hidden>
 
 ## Türkçe
 
@@ -113,3 +117,5 @@ ekle. Registry karar verdiğinde `final_tier`'ı doldur — çürütmeler dahil.
 ```bash
 python tools/kiyas_ledger.py --lang tr ledger/kiyas-ledger.yaml
 ```
+
+</div>

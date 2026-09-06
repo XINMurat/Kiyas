@@ -17,6 +17,8 @@ description: "A Claude skill for research that is stuck. Every generated idea sh
 
 ---
 
+<div id="pane-en" markdown="1">
+
 ## English
 
 A language model is already a fluent analogy generator; telling it to "be
@@ -46,7 +48,9 @@ The output contract has a machine-readable form and an LLM-free checker
 illet field is **filled**, never that the illet is **true** — contract
 completeness is machine-checkable, idea quality is not.
 
----
+</div>
+
+<div id="pane-tr" markdown="1" hidden>
 
 ## Türkçe
 
@@ -65,6 +69,8 @@ ayırt edilemez.
 - [Kullanım kılavuzu](tr/kullanim-kilavuzu.md)
 - [Metodoloji](tr/metodoloji.md)
 - [Operatörler](tr/operatorler.md)
+
+</div>
 
 ---
 
