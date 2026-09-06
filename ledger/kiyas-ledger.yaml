@@ -45,6 +45,49 @@ ledger:
     put its path or URL here and fill registered_as/final_tier. Leaving this
     field honest is why the rate is undefined rather than flattering.
 
+# ---------------------------------------------------------------------
+# KONTROL KOLU — onkayit, 2026-09-06. Sonuc YOK; bu blok bir plandir.
+#
+# Bu dosyanin yukarisi iki yildir ayni seyi soyluyor: kontrol kolu olmadan
+# buradaki oran betimleyicidir. Bugune kadar o kol KURULMADI. Asagisi onu
+# kurmanin onkaydidir -- ve bilerek sonuctan ONCE yaziliyor, cunku sonradan
+# yazilan bir kontrol tanimi kendi bulacagini bulur.
+#
+# TASARIM
+#   Ayni problem ifadesi iki kola verilir:
+#     (A) disiplin kolu  — Kiyas cikti sozlesmesi (illet + kirilma noktasi +
+#         en ucuz curutme + prior art), control: false
+#     (B) kontrol kolu   — ayni model, ayni baglam, ayni tohum sayisi, ama
+#         yalnizca "bu problem icin fikir uret" istemi; control: true
+#   Iki kolun tohumlari AYNI Mizan registry'sine, KOR olarak girer: puanlayan
+#   kisi tohumun hangi koldan geldigini gormez. Kor bozulursa olcum coker ve
+#   sonuc "hucre kapandi" olarak yazilir, oran olarak degil.
+#
+# ESIK (sonuctan once kilitlendi)
+#   sag_kalim(A) - sag_kalim(B) >= 0.20  -> disiplin iddiasi desteklenir
+#   fark <= 0.05                          -> [R]: disiplin sag kalimi acmiyor
+#   arasi                                 -> guc yetersiz, tek yeniden kosum
+#
+# DURDURMA KURALI
+#   Her kolda 15 puanlanmis tohuma ulasildiginda durulur. "Fark acilana kadar
+#   toplamak" bu esigi anlamsiz kilar.
+#
+# DISLAMA KURALI
+#   Uretim aninda reddedilen tohumlar kayitta KALIR (KS-J006 gibi). Disarida
+#   birakilan tek sey: kor bozulmus tohumlar. Baska dislama yok.
+#
+# ONKOSUL
+#   Iki kolun da puanlanabilmesi icin tohumlarin gercekten bir Mizan
+#   registry'sine girmesi ve sonuclarinin kesinlesmesi gerekir. Bugun bu
+#   dosyadaki alti tohumun hicbiri girmemistir; oran hala TANIMSIZ ve
+#   kiyas_ledger.py'nin bastigi kalici [KKE] gecerlidir.
+#
+# ONKAYITLI TAHMIN
+#   Yazar farkin 0.05-0.20 araliginda, yani GUC YETERSIZ bolgesinde cikmasini
+#   bekliyor. Bu tahmin buraya yaziliyor ki sonuc ne cikarsa ciksin
+#   "zaten boyle bekliyorduk" denemesin.
+# ---------------------------------------------------------------------
+
 seeds:
   - id: "KS-J006"
     batch: "examples/kiyas-seed.jspace.example.yaml"
