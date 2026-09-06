@@ -60,7 +60,7 @@ python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
 
 </div>
 
-<div id="pane-tr" markdown="1" hidden>
+<div id="pane-tr" markdown="1" class="pane-init">
 
 ## Türkçe
 

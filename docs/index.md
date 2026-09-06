@@ -5,19 +5,18 @@ description: "A Claude skill for research that is stuck. Every generated idea sh
 
 # Kıyas
 
+<div id="pane-en" markdown="1">
+
 **Disciplined ideation and analogical inference, packaged as a Claude skill.**
-**İlkeli fikir üretimi ve analojik çıkarım — bir Claude skill'i olarak paketlenmiş.**
 
 [Repository](https://github.com/XINMurat/Kiyas) ·
 [Latest release](https://github.com/XINMurat/Kiyas/releases/latest) ·
 [Mizan](https://github.com/XINMurat/Mizan) ·
 [İskele](https://github.com/XINMurat/Iskele) ·
 [ux-mizan](https://github.com/XINMurat/ux-mizan) ·
-[**the family · aile**](https://xinmurat.github.io/)
+[**the family**](https://xinmurat.github.io/)
 
 ---
-
-<div id="pane-en" markdown="1">
 
 ## English
 
@@ -50,7 +49,18 @@ completeness is machine-checkable, idea quality is not.
 
 </div>
 
-<div id="pane-tr" markdown="1" hidden>
+<div id="pane-tr" markdown="1" class="pane-init">
+
+**İlkeli fikir üretimi ve analojik çıkarım — bir Claude skill'i olarak paketlenmiş.**
+
+[Depo](https://github.com/XINMurat/Kiyas) ·
+[Son sürüm](https://github.com/XINMurat/Kiyas/releases/latest) ·
+[Mizan](https://github.com/XINMurat/Mizan) ·
+[İskele](https://github.com/XINMurat/Iskele) ·
+[ux-mizan](https://github.com/XINMurat/ux-mizan) ·
+[**aile sayfası**](https://xinmurat.github.io/)
+
+---
 
 ## Türkçe
 
@@ -65,10 +75,10 @@ isimlendirilemiyorsa fikir atılır — ve atıldığı kaydedilir, çünkü yal
 hayatta kalanları gösteren bir parti, hiçbir şeyin tartılmadığı bir partiden
 ayırt edilemez.
 
-- [Hızlı başlangıç](QUICKSTART.md)
-- [Kullanım kılavuzu](tr/kullanim-kilavuzu.md)
-- [Metodoloji](tr/metodoloji.md)
-- [Operatörler](tr/operatorler.md)
+- [Hızlı başlangıç](QUICKSTART.md) — kur, bir parti üret, doğrula
+- [Kullanım kılavuzu](tr/kullanim-kilavuzu.md) — iki mod, sert kurallar, sık hatalar
+- [Metodoloji](tr/metodoloji.md) — skill'in tam Türkçe karşılığı
+- [Operatörler](tr/operatorler.md) — yedi operatör ve anti-desen taraması
 
 </div>
 
