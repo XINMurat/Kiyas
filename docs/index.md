@@ -84,11 +84,34 @@ ayırt edilemez.
 
 ---
 
+<div data-chrome="en" markdown="1">
+
 ## The family
 
-**İskele kurar · Mizan tartar · Kıyas üretir.**
+**İskele builds · Mizan weighs · Kıyas generates · ux-mizan measures experience.**
 [İskele](https://github.com/XINMurat/Iskele) turns a vague project intent into
 an executable delivery kit. [Mizan](https://github.com/XINMurat/Mizan) audits
 claims and maintains preregistered hypothesis registries. Kıyas generates the
-candidates Mizan weighs — already shaped for that audit, and carrying the
-judge its registry will demand.
+candidates Mizan weighs — already shaped for that audit, and carrying the judge
+its registry will demand. [ux-mizan](https://github.com/XINMurat/ux-mizan)
+applies the same discipline to experience.
+
+[All four, and how they hand off →](https://xinmurat.github.io/)
+
+</div>
+
+<div data-chrome="tr" markdown="1" class="pane-init">
+
+## Aile
+
+**İskele kurar · Mizan tartar · Kıyas üretir · ux-mizan deneyimi ölçer.**
+[İskele](https://github.com/XINMurat/Iskele) belirsiz bir proje niyetini
+koşulabilir bir teslim kitine çevirir. [Mizan](https://github.com/XINMurat/Mizan)
+iddiaları denetler ve önkayıtlı hipotez registry'leri tutar. Kıyas, Mizan'ın
+tarttığı adayları üretir — o denetime hazır biçimde ve registry'nin isteyeceği
+hakemi taşıyarak. [ux-mizan](https://github.com/XINMurat/ux-mizan) aynı
+disiplini deneyime uygular.
+
+[Dördü ve nasıl devrettikleri →](https://xinmurat.github.io/)
+
+</div>
