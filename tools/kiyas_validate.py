@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G13.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G14.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -19,7 +19,7 @@ question. The same logic applies to this tool. A single blocking channel
 pushes authors to write batches that do not trigger rules, which is not the
 same as writing better batches. So:
 
-  * VIOLATIONS (G1–G13) block. They mark a contract that is incomplete in a way
+  * VIOLATIONS (G1–G14) block. They mark a contract that is incomplete in a way
     the prose forbids outright.
   * WARNINGS (W1–W5) do not block by default. They mark shapes that are
     usually wrong but have legitimate exceptions, so the right response is to
@@ -324,6 +324,21 @@ MSG = {
         "Bu bir NOT, bulgu değil: iki adımlı bir plan meşru bir partidir. Basılmasının sebebi "
         "şu: bir parti, bağımsız bahisleri kadar eder ama uzunluğu kadar ediyormuş gibi okunur.",
     ),
+    "G14_missing_field": (
+        "G14: batch.cost_actual is missing {missing}. A cost number whose instrument, window or "
+        "attribution is unstated reads as though it had been counted rather than assigned.",
+        "G14: batch.cost_actual eksik: {missing}. Enstrümanı, penceresi ya da atıfı yazılmamış "
+        "bir maliyet sayısı, atanmış değil sayılmış gibi okunur.",
+    ),
+    "G14_bad_baseline": (
+        "G14: batch.cost_actual.baseline.kind is {got!r}; expected one of {allowed}.",
+        "G14: batch.cost_actual.baseline.kind {got!r}; beklenen: {allowed}.",
+    ),
+    "G14_no_baseline_note": (
+        "G14: baseline.kind is {kind!r} with no note. An arm nobody described is an arm nobody "
+        "can check.",
+        "G14: baseline.kind {kind!r} ama not yok. Tarif edilmemiş kol, kontrol edilemeyen koldur.",
+    ),
     "W5_pinned_seed_no_digest": (
         "W5: batch.generation.seed is pinned to '{seed}' but there is no inputs_digest — a seed "
         "with no record of the inputs it was applied to identifies nothing. Run "
@@ -357,8 +372,8 @@ MSG = {
         "bulgu, yeniden ifade edilerek başka bir rejim hakkında iddiaya dönüşmez.",
     ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G13 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G13 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G14 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G14 ihlali yok.",
     ),
     "warn_header": (
         "{n} warning(s) — not blocking; re-run with --strict to treat them as failures.",
@@ -495,6 +510,10 @@ def check(data: dict, lang: str,
     errs += pair_errs
     warns += pair_warns
 
+    # G14 — what the batch cost. Gated at 1.6; a batch that records no cost
+    # pays nothing.
+    errs += _check_cost_actual(batch, lang)
+
     ops = {_s(s.get("operator")).upper() for s in seeds if _s(s.get("operator"))}
     declared = {_s(o).upper() for o in (batch.get("operators_used") or [])}
     all_ops = ops | declared
@@ -574,6 +593,45 @@ def check(data: dict, lang: str,
 
     check.n_seeds = len(seeds)  # type: ignore[attr-defined]
     return errs, warns
+
+
+COST_BASELINES = ("none", "internal-batch", "parallel-arm", "historical")
+
+
+def _check_cost_actual(batch: dict, lang: str) -> list[str]:
+    """G14 — what the batch cost, stated so it can be read.
+
+    The ratio this deliberately does not compute is cost per seed: quota
+    filling is the first failure class in this skill's own list, and
+    cost-per-seed is improved fastest by generating more and thinking less.
+    """
+    errs: list[str] = []
+    if not _batch_at_least(batch, (1, 6)):
+        return errs
+    ca = batch.get("cost_actual")
+    if not isinstance(ca, dict):
+        return errs
+    missing = []
+    if not _s(ca.get("instrument")):
+        missing.append("instrument")
+    window = ca.get("window")
+    if not (isinstance(window, dict) and _s(window.get("from")) and _s(window.get("to"))):
+        missing.append("window.from/to")
+    if not _s(ca.get("attribution")):
+        missing.append("attribution")
+    base = ca.get("baseline") if isinstance(ca.get("baseline"), dict) else {}
+    kind = _s(base.get("kind")).lower()
+    if not kind:
+        missing.append("baseline.kind")
+    if missing:
+        errs.append(m("G14_missing_field", lang, missing=" / ".join(missing)))
+    if kind and kind not in COST_BASELINES:
+        errs.append(m("G14_bad_baseline", lang, got=kind,
+                      allowed=", ".join(COST_BASELINES)))
+        return errs
+    if kind and kind != "none" and not _s(base.get("note")):
+        errs.append(m("G14_no_baseline_note", lang, kind=kind))
+    return errs
 
 
 PAIR_RELATIONS = ("independent", "contradicts", "shared_illet", "depends_on", "same_test")
@@ -860,7 +918,7 @@ def _check_refuted_relatives(s: dict, sid: Any, tier: str,
 
 
 def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(description="Kıyas seed G1–G13 validator")
+    ap = argparse.ArgumentParser(description="Kıyas seed G1–G14 validator")
     ap.add_argument("seeds", help="path to a kiyas-seed.yaml")
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
     ap.add_argument("--refuted", metavar="PATH",

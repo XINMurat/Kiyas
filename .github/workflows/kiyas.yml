@@ -423,6 +423,37 @@ jobs:
       - name: Ledger reporter must run
         run: python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
 
+      - name: Self-test — G14 must reject an unreadable cost number
+        run: |
+          set -e
+          # Cost per SEED is the ratio this schema refuses to make easy: quota
+          # filling is failure class #1 here, and cost-per-seed is improved
+          # fastest by generating more and thinking less. The denominator worth
+          # having is survival, decided later and elsewhere.
+          tmp="$(mktemp --suffix=.yaml)"
+          python - "$tmp" <<'PY'
+          import io, sys, yaml
+          d = yaml.safe_load(io.open("examples/kiyas-seed.example.yaml", encoding="utf-8"))
+          d["batch"]["schema_version"] = "1.6"
+          d["batch"]["cost_actual"] = {"tokens": {"input": 2000},
+                                       "baseline": {"kind": "none"}}
+          io.open(sys.argv[1], "w", encoding="utf-8").write(
+              yaml.safe_dump(d, allow_unicode=True, sort_keys=False))
+          PY
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          echo "$out"
+          echo "$out" | grep -q "G14: batch.cost_actual is missing" || { echo "FAIL: G14 accepted a cost number with no instrument, window or attribution" >&2; exit 1; }
+          echo "OK: G14 refuses a number that reads as counted when it was assigned."
+
+          # migration: the same batch at 1.5 is unenforced
+          sed -i 's/schema_version: .1\.6./schema_version: "1.5"/' "$tmp"
+          out="$(python tools/kiyas_validate.py "$tmp" || true)"
+          if echo "$out" | grep -q "G14: batch"; then
+            echo "FAIL: G14 fired on a 1.5 batch; the migration gate is not holding" >&2
+            exit 1
+          fi
+          echo "OK: G14 waits for seed schema 1.6."
+
       - name: The context budget holds (T0/T1 and the per-run sets)
         run: |
           set -e

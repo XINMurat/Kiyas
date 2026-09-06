@@ -6,7 +6,7 @@
   "budgets": {
     "T0": 263,
     "T1": 6983,
-    "T2": 15633
+    "T2": 16300
   },
   "runs": {
     "generation": {
@@ -21,7 +21,7 @@
         "skill/kiyas/SKILL.md",
         "skill/kiyas/schemas/kiyas-seed.yaml"
       ],
-      "ceiling": 12559
+      "ceiling": 13200
     },
     "recovery": {
       "files": [
@@ -30,5 +30,6 @@
       ],
       "ceiling": 13857
     }
-  }
+  },
+  "_raised": "1.6 (G14): batch.cost_actual adds a block to the seed schema, loaded whenever a batch is written. Content, not commentary. Raised deliberately: T2 15633->16300, seed-write 12559->13200."
 }

@@ -4,7 +4,7 @@ description: Disciplined ideation and analogical inference for research that is 
 license: MIT
 metadata:
   author: XINMurat
-  schema_version: "1.5"   # pinned to the schema banner by CI
+  schema_version: "1.6"   # pinned to the schema banner by CI
 ---
 
 # Kıyas — Disciplined Ideation and Analogical Inference
@@ -193,7 +193,7 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G13). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G14). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
@@ -247,7 +247,7 @@ verified would be the same error the skill audits for everywhere else.
 W5 catches the half-record: a pinned seed with no `inputs_digest`. A seed with
 no record of the inputs it was applied to identifies nothing.
 
-**Two channels, and the reason there are two.** G1–G13 block. W1–W5 do not:
+**Two channels, and the reason there are two.** G1–G14 block. W1–W5 do not:
 a numeric threshold with an author/none arbiter, a batch where every seed
 lands at `[H-aday]`, a symmetry check naming no seed, an O5 transfer with no
 scope caveat, a pinned seed with no inputs digest. Each of those is usually wrong and legitimately right often
@@ -421,6 +421,6 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G13 and
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G14 and
   warnings W1–W5), with
   the arbiter block shared with Mizan R8.
