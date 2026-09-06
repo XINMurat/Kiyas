@@ -17,16 +17,21 @@ Every generated idea leaves in the same envelope:
 An idea whose illet cannot be named is discarded, not softened. An idea whose
 only judge is its own author stays speculative, however plausible it sounds.
 
-Kıyas is the generative upstream partner of
-[**Mizan**](https://github.com/XINMurat/Mizan): Mizan weighs and refutes, Kıyas
-produces what gets weighed — already shaped for that audit. Refuted patterns
-flow back as negative constraints, which closes the loop.
+Kıyas is the generative partner of
+[**Mizan**](https://github.com/XINMurat/Mizan), and the two turn between
+themselves: Mizan weighs and refutes, Kıyas produces what gets weighed — already
+shaped for that audit — and the seeds go back as preregistered entries while
+refuted patterns come the other way as negative constraints. That loop can run
+for as long as the thinking needs, with nothing being built.
 
-The third verb is [**İskele**](https://github.com/XINMurat/Iskele), which builds
-the structure the other two operate on — domain model, gated roadmap, atomic
-backlog, tracked progress:
+**Where Kıyas starts:** with a problem that is stuck. A Mizan registry is not a
+prerequisite — `refuted_patterns_source: "not consulted"` is a legal answer that
+simply caps what the batch can claim.
 
-> **İskele builds · Mizan weighs · Kıyas generates**
+When something survives and is worth building,
+[**İskele**](https://github.com/XINMurat/Iskele) takes it — a branch off that
+loop rather than a station on it. It builds the structure the others operate
+on — domain model, gated roadmap, atomic backlog, tracked progress.
 
 A surviving seed is not a plan. When ideas clear the audit, İskele is where they
 become phases, tasks, and acceptance criteria you can actually execute.
@@ -230,15 +235,20 @@ beğenilmek yerine denetlenebilmesi için.
 İlleti isimlendirilemeyen fikir yumuşatılmaz, atılır. Tek hakemi kendi yazarı
 olan fikir, ne kadar makul görünürse görünsün spekülatif kalır.
 
-Kıyas, [**Mizan**](https://github.com/XINMurat/Mizan)'ın üretici üst-kolu:
-Mizan tartar ve çürütür, Kıyas tartılacak olanı üretir — ama o denetime hazır
-biçimde. Çürütülen desenler negatif-kısıt olarak geri akar; döngü böyle kapanır.
+Kıyas, [**Mizan**](https://github.com/XINMurat/Mizan)'ın üretici ortağıdır ve
+ikisi kendi aralarında döner: Mizan tartar ve çürütür, Kıyas tartılacak olanı
+üretir — ama o denetime hazır biçimde — tohumlar önkayıt girdisi olarak geri
+gider, çürütülen desenler de öbür yönden negatif-kısıt olarak gelir. Bu döngü,
+hiçbir şey inşa edilmeden, düşünme ne kadar sürerse o kadar dönebilir.
 
-Üçüncü fiil [**İskele**](https://github.com/XINMurat/Iskele): diğer ikisinin
-üzerinde çalıştığı yapıyı kurar — alan modeli, kapılı yol haritası, atomik
-backlog, izlenen ilerleme:
+**Kıyas nereden başlar:** tıkanmış bir problemle. Mizan registry'si önkoşul
+değildir — `refuted_patterns_source: "bakılmadı"` meşru bir cevaptır; yalnızca
+partinin iddia edebileceğini tavanlar.
 
-> **İskele kurar · Mizan tartar · Kıyas üretir**
+Sağ kalan bir şey inşa edilmeye değdiğinde
+[**İskele**](https://github.com/XINMurat/Iskele) devralır — döngüden çıkan bir
+dal, üstünde bir durak değil. Diğerlerinin üzerinde çalıştığı yapıyı kurar —
+alan modeli, kapılı yol haritası, atomik backlog, izlenen ilerleme.
 
 Sağ kalan bir tohum henüz plan değildir. Fikirler denetimden geçtiğinde, onları
 fiilen yürütebileceğin fazlara, görevlere ve kabul kriterlerine çeviren yer
