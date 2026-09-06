@@ -24,6 +24,16 @@ A language model is already a fluent analogy generator; telling it to "be
 creative" adds nothing. The only thing Kıyas adds is **constraint**, so that
 what comes out can be audited instead of admired.
 
+**Where it starts:** with a problem that is stuck — a question you keep
+circling, an experiment that will not resolve, a design decision with no
+argument left. **A Mizan registry is not a prerequisite.** If one exists, its
+refuted entries become negative constraints and its gap map becomes the brief;
+if it does not, `refuted_patterns_source: "not consulted"` is a legal and
+honest answer that simply caps what the batch can claim. And once both are in
+play they tend to keep going without anything being built: Kıyas hands seeds
+back as preregistered entries, Mizan tests them, the refuted ones return as
+constraints.
+
 Every generated idea leaves in the same envelope: its **illet** (the structural
 equivalence that carries the analogy, not the surface resemblance), its
 **breaking point**, its **cheapest refutation**, its **named prior art**, and
@@ -67,6 +77,15 @@ completeness is machine-checkable, idea quality is not.
 Bir dil modeli zaten akıcı bir analoji üretecidir; ona "yaratıcı ol" demek bir
 şey katmaz. Kıyas'ın kattığı tek şey **kısıttır** — çıkanın hayranlık değil
 denetim görebilmesi için.
+
+**Nereden başlar:** tıkanmış bir problemle — dönüp durduğunuz bir soru,
+karara bağlanmayan bir deney, elinde argüman kalmamış bir tasarım kararı.
+**Mizan registry'si önkoşul değildir.** Varsa reddedilen kayıtları negatif
+kısıt, boşluk haritası da brief olur; yoksa `refuted_patterns_source:
+"bakılmadı"` meşru ve dürüst bir cevaptır — yalnızca partinin iddia
+edebileceğini tavanlar. İkisi birden devredeyse de ortada hiçbir şey inşa
+edilmeden dönmeye devam ederler: Kıyas tohumları önkayıt girdisi olarak geri
+verir, Mizan test eder, çürütülenler kısıt olarak döner.
 
 Üretilen her fikir aynı zarfla çıkar: **illeti** (analojiyi taşıyan yapısal
 denklik, yüzey benzerliği değil), **kırılma noktası**, **en ucuz çürütmesi**,
