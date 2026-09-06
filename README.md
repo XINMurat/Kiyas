@@ -1,5 +1,7 @@
 # Kıyas — Disciplined Ideation and Analogical Inference
 
+📚 **Docs / Belgeler:** [xinmurat.github.io/Kiyas](https://xinmurat.github.io/Kiyas/) — EN/TR on every page · her sayfada EN/TR
+
 A Claude skill for research that is stuck. Kıyas (Arabic/Turkish: analogical
 reasoning — carrying a ruling to a new case through a shared *illet*) does not
 make a model more creative. Models are already fluent analogy generators. It
@@ -64,7 +66,7 @@ equivalent of type-checking: elimination before execution.
 | `tools/kiyas_ledger.py` | Survival-rate reporter for generated seeds |
 | `examples/` | Two worked batches that CI validates (one single-domain, one cross-domain transfer whose illet fails), a distillation-mode pass, the portability runs, and a sample refuted-patterns export |
 | `ledger/` | Where the survival record accumulates |
-| `docs/` | Quickstart and usage guide (EN/TR) |
+| `docs/` | Source of the published site: [xinmurat.github.io/Kiyas](https://xinmurat.github.io/Kiyas/) — quickstart and usage guide, EN/TR on every page |
 
 ## Install the skill
 
@@ -277,7 +279,7 @@ derleyici bedavaya eler; kod dışında eleme pahalıdır, o yüzden filtre üre
 | `tools/kiyas_ledger.py` | Üretilen tohumların sağ-kalım oranı raporlayıcısı |
 | `examples/` | CI'ın doğruladığı iki çalışılmış parti (biri tek-alan, biri illeti düşen alanlar-arası taşıma), bir damıtma-modu koşusu, taşınabilirlik koşuları ve örnek çürütülmüş-desen dosyası |
 | `ledger/` | Sağ-kalım kaydının biriktiği yer |
-| `docs/` | Hızlı başlangıç ve kullanım kılavuzu (EN/TR) |
+| `docs/` | Yayınlanan sitenin kaynağı: [xinmurat.github.io/Kiyas](https://xinmurat.github.io/Kiyas/) — hızlı başlangıç ve kullanım kılavuzu, her sayfada EN/TR |
 
 ## Kurulum
 
