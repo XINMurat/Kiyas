@@ -43,6 +43,9 @@ survivors is indistinguishable from one where nothing was ever weighed.
 
 - [Quickstart](QUICKSTART.md) — install, generate one batch, validate it
 - [Usage guide](en/usage-guide.md) — the two modes, the hard rules, common mistakes
+- [Methodology](en/methodology.md) — the core skill in full
+- [Operators](en/operators.md) — the seven operators and the anti-pattern sweep
+- [Recovery](en/recovery.md) — the ramps for when a batch goes wrong
 
 **Worked examples** (in the repository): a
 [single-domain batch](https://github.com/XINMurat/Kiyas/blob/main/examples/kiyas-seed.example.yaml),

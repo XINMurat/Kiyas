@@ -1,0 +1,14 @@
+{
+  "_comment": "Pages mirrored from the skill package by tools/sync_en_docs.py. The skill files are the source of truth; these entries only say where each one is published and what to call it.",
+  "pages": [
+    { "out": "methodology.md", "title": "Methodology — the core skill",
+      "tr": "docs/tr/metodoloji.md",
+      "sources": ["skill/kiyas/SKILL.md"] },
+    { "out": "operators.md", "title": "Operators — the generative moves",
+      "tr": "docs/tr/operatorler.md",
+      "sources": ["skill/kiyas/references/operators.md"] },
+    { "out": "recovery.md", "title": "Recovery — the ramps for when a batch goes wrong",
+      "tr": "docs/tr/kurtarma.md",
+      "sources": ["skill/kiyas/references/recovery.md"] }
+  ]
+}
