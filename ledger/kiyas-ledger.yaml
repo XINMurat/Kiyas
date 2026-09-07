@@ -172,11 +172,22 @@ seeds:
     problem: "Cift pasi loss yerine cikarimda calistirilirsa hakem problemi cozulur mu?"
     operator: "O7"
     registered_as: "YZ-006 (mizan-product-registry.yaml)"
-    final_tier: ""
+    final_tier: "R"
+    scored: "2026-09-08"
     control: false
     date: "2026-09-06"
     note: >
-      Partinin GPU-egitimi gerektirmeyen tek tohumu; sirada once bu var.
+      Bu ledger'in ILK puanlanmis tohumu. Kosuldu (qwen2.5:1.5b, GSM8K,
+      60 problem, n=8, esit compute'lu cogunluk oyu kontrolu) ve onkayitli
+      BILESIK esigi saglamadi: celiski orani %72.5 dustu ama dogruluk
+      dusmedi degil -- nokta tahmini -3.3 puan, GA sifiri kesiyor.
+      Filtre 2 cevap duzeltti, 4 cevap bozdu: ic tutarlilik ile dogruluk
+      ayni sey degil, ve tutarli-ama-yanlis iz filtrenin tercih ettigi
+      izdir.
+      SERH: bu olcekte bayraklarin cogu akil yurutme hatasi degil
+      yozlasma (model "1 = 7" dongusune giriyor), yani filtre agirlikla
+      bozuk-cikti dedektoru olarak calisti. [R] bu kosumun kosullarinda
+      gecerlidir. Ayrinti Mizan registry'sinde YZ-006 v3.
   - id: "K-04"
     batch: "ledger/kiyas-seed.llm-reward.yaml"
     problem: "Kanit-kapili dongunun degeri, gecmis hipotezlerin korlenmis yeniden siralanmasiyla olculebilir mi?"
