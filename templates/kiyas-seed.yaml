@@ -171,24 +171,29 @@
 #       nobody re-examined.
 #
 # ACCEPTED WARNINGS — batch.accepted_warnings (optional)
-# ------------------------------------------------------
-# The W channel says "look, not halt"; CI runs --strict, which turns every
-# look into a halt. That gap is where an author quietly edits a tier to
-# silence a flag: writing around the rule rather than writing a better
-# batch, which is the failure G6's design note names. So a batch may accept
-# a warning IN THE DATA and --strict then leaves that one alone:
 #
 #   accepted_warnings:
 #     - code: "W2"
 #       reason: >
-#         why this warning is right about what it points at, and why the
+#         why the warning is right about what it points at, and why the
 #         batch is nonetheless correct as written.
 #
-# Two guards, because an exemption channel with no guards is just a mute
-# button. G15 blocks an acceptance with no reason. W7 flags an acceptance
-# whose warning did not fire -- an exemption that outlives its condition.
-# And the accepted warning is still PRINTED, marked accepted: an exemption
-# that hides the thing it exempts is worse than the halt it replaced.
+# --strict then leaves that one warning alone; it is still printed, marked
+# accepted. Without this, the only way past a CI halt is to edit a tier
+# until the flag stops firing -- writing around the rule instead of writing
+# a better batch, which is G6's own failure mode -- the tool had grown the
+# behaviour it criticises.
+#
+# Two guards keep it from being a mute button. G15 blocks an acceptance with
+# no reason: an acceptance with no stated reason is indistinguishable from
+# silence, and silence is what --strict exists to break -- the same argument
+# G7 makes about an empty discard list. W7 flags an acceptance whose warning
+# did not fire: an exemption that outlives the condition it was written for
+# is a standing permission nobody re-examined, and the next reader finds it
+# as evidence that the rule does not matter.
+#
+# And the accepted warning is still printed, marked accepted. An exemption
+# that hid the thing it exempts would be worse than the halt it replaced.
 # These have legitimate exceptions, so the right response is to look, not to
 # be stopped. Making every flag blocking would teach authors to write batches
 # that avoid triggering rules — the same failure G6's design note describes.

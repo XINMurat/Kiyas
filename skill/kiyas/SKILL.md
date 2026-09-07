@@ -264,16 +264,10 @@ not halt. `--strict` promotes them; CI runs strict, local runs do not. The
 reasoning is G6's, turned on the tool itself: if every flag blocked, authors
 would learn to write around the flags, which is not the same as writing
 better seeds.
-**A batch may accept a warning, in the data, with a reason.** The W channel
-says look rather than halt, and CI runs `--strict`, which turns every look
-into a halt. That gap is where a tier gets quietly edited to silence a flag —
-writing around the rule instead of writing a better batch, which is G6's own
-failure mode. `batch.accepted_warnings` closes it: a `code` and a `reason`,
-and `--strict` leaves that one warning alone. Two guards keep it from being a
-mute button — G15 blocks an acceptance with no reason, W7 flags an acceptance
-whose warning did not fire — and the accepted warning is still printed, marked
-accepted. An exemption that hides what it exempts is worse than the halt it
-replaced.
+**A batch may accept a warning, in the data, with a reason** —
+`batch.accepted_warnings`, guarded by G15 and W7. `--strict` turns every
+look into a halt, and the only other way past a halt is editing a tier
+until the flag stops firing. The schema carries the shape and the argument.
 
 
 G7 is the rule with the least obvious justification and the clearest evidence
