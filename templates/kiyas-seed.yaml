@@ -194,35 +194,6 @@
 #
 # And the accepted warning is still printed, marked accepted. An exemption
 # that hid the thing it exempts would be worse than the halt it replaced.
-# These have legitimate exceptions, so the right response is to look, not to
-# be stopped. Making every flag blocking would teach authors to write batches
-# that avoid triggering rules — the same failure G6's design note describes.
-#
-# MIGRATION v1.3 -> v1.4: G12 adds the generation block. Batches written
-# against v1.3 fail it, and the fix is two lines (`seed: "fresh"` plus a
-# host). The failure is the point in the same way G7's was: a batch that
-# cannot say what drew it cannot be compared with a second run, and the
-# comparison is the only thing a non-reproducible generator can offer.
-#
-# MIGRATION v1.2 -> v1.3: G10 and G11 close the last two findings of
-# PROSE-SCHEMA-AUDIT.md. Both shipped batches passed unchanged; a batch that
-# fails G11 was not consulting a refuted-patterns export and not saying so.
-#
-# MIGRATION v1.1 -> v1.2: G8 and G9 close two places where the schema allowed
-# what the prose forbids outright (see PROSE-SCHEMA-AUDIT.md). A batch whose
-# H-aday seeds already carry a test and a prior-art search is unaffected; both
-# shipped examples passed unchanged.
-#
-# MIGRATION v1.0 -> v1.1: batches written against v1.0 now fail G7. The fix
-# is two lines (`discards: []` plus a discards_note) and the failure is the
-# point: a batch that cannot say what it refused cannot show it weighed
-# anything. Recovering discards after the fact is usually impossible, and
-# admitting that is a better record than a reconstructed one — see the note
-# in examples/kiyas-seed.example.yaml, which is exactly this case.
-#
-# Tiers: S (speculative) | H-aday (hypothesis candidate, Mizan-ready)
-#        NK (notation-suspect) | GB (fed-back from a refuted pattern)
-# =====================================================================
 
 batch:
   schema_version: "1.6"            # 1.5+ activates G13 (the pair pass);
