@@ -153,7 +153,10 @@
 #       gate, so a seed declaring claims_superiority: false could reach
 #       H-aday having searched nothing.
 #
-# WARNINGS (W1..W6) — checked but NOT blocking, unless --strict:
+#   G15. an entry in batch.accepted_warnings with no reason — an acceptance
+#        with no stated reason is indistinguishable from silence.
+#
+# WARNINGS (W1..W7) — checked but NOT blocking, unless --strict:
 #   W1. a numeric threshold_proposal on a seed whose arbiter is author/none.
 #   W2. every seed in a batch of 2+ landing at H-aday.
 #   W3. batch.symmetry_check naming no seed id from the batch.
@@ -163,6 +166,29 @@
 #   W6. a refuted-patterns export that declares `partial: true` (generated
 #       from a registry excerpt) — an AD4 sweep against it may record "no
 #       match found", never "clear".
+#   W7. an entry in batch.accepted_warnings whose warning did not fire — an
+#       acceptance that outlives its condition is a standing exemption
+#       nobody re-examined.
+#
+# ACCEPTED WARNINGS — batch.accepted_warnings (optional)
+# ------------------------------------------------------
+# The W channel says "look, not halt"; CI runs --strict, which turns every
+# look into a halt. That gap is where an author quietly edits a tier to
+# silence a flag: writing around the rule rather than writing a better
+# batch, which is the failure G6's design note names. So a batch may accept
+# a warning IN THE DATA and --strict then leaves that one alone:
+#
+#   accepted_warnings:
+#     - code: "W2"
+#       reason: >
+#         why this warning is right about what it points at, and why the
+#         batch is nonetheless correct as written.
+#
+# Two guards, because an exemption channel with no guards is just a mute
+# button. G15 blocks an acceptance with no reason. W7 flags an acceptance
+# whose warning did not fire -- an exemption that outlives its condition.
+# And the accepted warning is still PRINTED, marked accepted: an exemption
+# that hides the thing it exempts is worse than the halt it replaced.
 # These have legitimate exceptions, so the right response is to look, not to
 # be stopped. Making every flag blocking would teach authors to write batches
 # that avoid triggering rules — the same failure G6's design note describes.

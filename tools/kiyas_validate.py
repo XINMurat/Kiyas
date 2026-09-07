@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kıyas seed validator — LLM-free static enforcement of hard rules G1–G14.
+Kıyas seed validator — LLM-free static enforcement of hard rules G1–G15.
 
 SCOPE, stated plainly because the methodology demands it: this tool is a
 `runtime` arbiter for CONTRACT COMPLETENESS only. It checks that the illet
@@ -19,7 +19,7 @@ question. The same logic applies to this tool. A single blocking channel
 pushes authors to write batches that do not trigger rules, which is not the
 same as writing better batches. So:
 
-  * VIOLATIONS (G1–G14) block. They mark a contract that is incomplete in a way
+  * VIOLATIONS (G1–G15) block. They mark a contract that is incomplete in a way
     the prose forbids outright.
   * WARNINGS (W1–W5) do not block by default. They mark shapes that are
     usually wrong but have legitimate exceptions, so the right response is to
@@ -365,6 +365,22 @@ MSG = {
         "W3: batch.symmetry_check bu partideki hiçbir tohum id'sini anmıyor — şema, mevcut tezi "
         "kesen tohumun adlandırılmasını ister ki iddia bir tohuma karşı kontrol edilebilsin.",
     ),
+    "G15_acceptance_without_reason": (
+        "G15: batch.accepted_warnings accepts {code} with no reason — an acceptance with no "
+        "stated reason is indistinguishable from silence, and silence is what --strict exists "
+        "to break. Say why this warning is right for this batch, or remove the acceptance.",
+        "G15: batch.accepted_warnings {code} uyarısını gerekçesiz kabul ediyor — gerekçesiz bir "
+        "kabul sessizlikten ayırt edilemez, ve --strict tam olarak sessizliği kırmak için var. "
+        "Bu uyarının bu parti için neden doğru olduğunu yaz, ya da kabulü kaldır.",
+    ),
+    "W7_acceptance_did_not_fire": (
+        "W7: batch.accepted_warnings accepts {code} but {code} did not fire — an acceptance that "
+        "outlives the condition it was written for is a standing exemption nobody re-examined. "
+        "Remove it, or say why it is being kept.",
+        "W7: batch.accepted_warnings {code} uyarısını kabul ediyor ama {code} tetiklenmedi — "
+        "yazıldığı koşuldan uzun yaşayan bir kabul, kimsenin yeniden bakmadığı kalıcı bir "
+        "muafiyettir. Kaldır, ya da neden tutulduğunu söyle.",
+    ),
     "W6_refuted_export_partial": (
         "W6: the refuted-patterns export declares itself PARTIAL (`partial: true`) — it was "
         "generated from a registry excerpt, so it is not the full set of negative constraints. "
@@ -379,9 +395,13 @@ MSG = {
         "W4: {id} tohumu O5 (ölçek transferi) kullanıyor ama scope_caveat yok — bir rejimdeki "
         "bulgu, yeniden ifade edilerek başka bir rejim hakkında iddiaya dönüşmez.",
     ),
+    "accepted_suffix": (
+        "  [ACCEPTED in batch.accepted_warnings — printed, not promoted by --strict]",
+        "  [batch.accepted_warnings içinde KABUL EDİLDİ — yazdırılır, --strict yükseltmez]",
+    ),
     "clean": (
-        "OK — {n} seed(s) checked, no G1–G14 violations.",
-        "OK — {n} tohum kontrol edildi, G1–G14 ihlali yok.",
+        "OK — {n} seed(s) checked, no G1–G15 violations.",
+        "OK — {n} tohum kontrol edildi, G1–G15 ihlali yok.",
     ),
     "warn_header": (
         "{n} warning(s) — not blocking; re-run with --strict to treat them as failures.",
@@ -498,6 +518,34 @@ def _is_placeholder(text: str) -> bool:
 
 def _flagged(value: str) -> bool:
     return _s(value).lower().startswith("flagged")
+
+
+def _warn_code(msg: str) -> str:
+    """The catalog writes every warning as '<code>: ...' in both languages."""
+    head = msg.split(":", 1)[0].strip()
+    return head if head[:1] == "W" and head[1:].isdigit() else ""
+
+
+def _check_accepted_warnings(batch: dict, warns: list[str], lang: str):
+    """Return (violations, warnings, accepted_codes) for batch.accepted_warnings."""
+    errs: list[str] = []
+    extra: list[str] = []
+    accepted: set[str] = set()
+    fired = {_warn_code(w) for w in warns} - {""}
+
+    for row in (batch.get("accepted_warnings") or []):
+        if not isinstance(row, dict):
+            continue
+        code = _s(row.get("code")).upper()
+        if not code:
+            continue
+        if not _s(row.get("reason")):
+            errs.append(m("G15_acceptance_without_reason", lang, code=code))
+            continue
+        accepted.add(code)
+        if code not in fired:
+            extra.append(m("W7_acceptance_did_not_fire", lang, code=code))
+    return errs, extra, accepted
 
 
 def check(data: dict, lang: str,
@@ -620,7 +668,21 @@ def check(data: dict, lang: str,
 
     errs += _check_discards(data, batch, lang)
 
+    # Accepted warnings. The W channel says "look, not halt" and CI runs
+    # --strict, which turns every look into a halt. That gap is where an
+    # author quietly edits a tier to silence a flag -- writing around the
+    # rule instead of writing a better batch, which is the failure G6's
+    # design note names. So a batch may accept a warning IN THE DATA, with a
+    # reason, and --strict then leaves that one alone. The warning still
+    # prints, marked accepted: an exemption that hides the thing it exempts
+    # would be worse than the halt it replaces.
+    accept_errs, accept_warns, accepted = _check_accepted_warnings(batch, warns, lang)
+    errs += accept_errs
+    warns = [w + m("accepted_suffix", lang) if _warn_code(w) in accepted else w for w in warns]
+    warns += accept_warns
+
     check.n_seeds = len(seeds)  # type: ignore[attr-defined]
+    check.accepted = accepted  # type: ignore[attr-defined]
     return errs, warns
 
 
@@ -947,13 +1009,13 @@ def _check_refuted_relatives(s: dict, sid: Any, tier: str,
 
 
 def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(description="Kıyas seed G1–G14 validator")
+    ap = argparse.ArgumentParser(description="Kıyas seed G1–G15 validator")
     ap.add_argument("seeds", help="path to a kiyas-seed.yaml")
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
     ap.add_argument("--refuted", metavar="PATH",
                     help="refuted-patterns.yaml exported from a Mizan registry (AD4 check)")
     ap.add_argument("--strict", action="store_true",
-                    help="treat W1-W5 warnings as violations (CI runs strict; local runs do not)")
+                    help="treat W1-W7 warnings as violations, except those the batch accepts with a reason (CI runs strict; local runs do not)")
     args = ap.parse_args(argv)
 
     # The catalog carries Turkish text and a ✗ glyph; ensure UTF-8 output even
@@ -977,7 +1039,9 @@ def main(argv: list[str]) -> int:
     n = getattr(check, "n_seeds", 0)
 
     if args.strict and warns:
-        errs = errs + warns
+        # An accepted warning is not promoted. Everything else still is.
+        accepted = getattr(check, "accepted", set())
+        errs = errs + [w for w in warns if _warn_code(w) not in accepted]
 
     if errs:
         for e in errs:

@@ -140,6 +140,66 @@ ledger:
 # ---------------------------------------------------------------------
 
 seeds:
+  # -------------------------------------------------------------------
+  # 2026-09-07 — ikinci parti: ledger/kiyas-seed.llm-reward.yaml
+  # Bunlar KAYITLI: besi de bir Mizan registry'sine girdi (YZ-00x), yani
+  # alti J-space tohumundan farkli olarak final_tier alanlari doldurulabilir.
+  # Bugun bos, cunku hicbiri kosulmadi -- ve bos kalmalari onlarin
+  # kosulmadigini gorunur kilan sey.
+  # Kontrol kolu icin UYGUN DEGILLER: hakemleri saatler icinde donmez
+  # (K-03 disinda hepsi GPU-gunu ister). Yukaridaki revize onkayit bunu
+  # ayrica soyluyor; buraya sag-kalim kaydi olarak giriyorlar, kontrol
+  # kolu hedefi olarak degil.
+  # -------------------------------------------------------------------
+  - id: "K-01"
+    batch: "ledger/kiyas-seed.llm-reward.yaml"
+    problem: "Alti degerli kanit katmani eslemesi, egitim sinyali olarak ikili yargidan fazlasini veriyor mu?"
+    operator: "O4"
+    registered_as: "YZ-002 (mizan-product-registry.yaml)"
+    final_tier: ""
+    control: false
+    date: "2026-09-06"
+  - id: "K-02"
+    batch: "ledger/kiyas-seed.llm-reward.yaml"
+    problem: "Adimin degeri yerine adimin katmanini dogru etiketlemeyi odullendirmek halusinasyonu dusurur mu?"
+    operator: "O2"
+    registered_as: "YZ-005 (mizan-product-registry.yaml)"
+    final_tier: ""
+    control: false
+    date: "2026-09-06"
+  - id: "K-03"
+    batch: "ledger/kiyas-seed.llm-reward.yaml"
+    problem: "Cift pasi loss yerine cikarimda calistirilirsa hakem problemi cozulur mu?"
+    operator: "O7"
+    registered_as: "YZ-006 (mizan-product-registry.yaml)"
+    final_tier: ""
+    control: false
+    date: "2026-09-06"
+    note: >
+      Partinin GPU-egitimi gerektirmeyen tek tohumu; sirada once bu var.
+  - id: "K-04"
+    batch: "ledger/kiyas-seed.llm-reward.yaml"
+    problem: "Kanit-kapili dongunun degeri, gecmis hipotezlerin korlenmis yeniden siralanmasiyla olculebilir mi?"
+    operator: "O3"
+    registered_as: "YZ-001 (mizan-product-registry.yaml)"
+    final_tier: ""
+    control: false
+    date: "2026-09-06"
+    note: >
+      AD6 bayrakli: onkosulu >=30 kesinlesmis girdi ve bugun yok. Bekleyen
+      degil, ONKOSULU SAGLANMAMIS. Sonucu "hucre kapandi" olarak yazilir.
+  - id: "K-05"
+    batch: "ledger/kiyas-seed.llm-reward.yaml"
+    problem: "Onerilen sabit kumesi ([S]=0.0) bir odul-hackleme siginagi aciyor mu?"
+    operator: "O2"
+    registered_as: "YZ-002 (mizan-product-registry.yaml)"
+    final_tier: ""
+    control: false
+    date: "2026-09-06"
+    note: >
+      Partinin simetri tohumu: dogrularsa YZ-002 ONERILDIGI HALIYLE curur.
+      K-01'in kosumundan sifir ek maliyetle okunur.
+
   - id: "KS-J006"
     batch: "examples/kiyas-seed.jspace.example.yaml"
     problem: "Is a corpus-averaged Jacobian readout intrinsic model structure or an artifact of the instrument that defines it?"

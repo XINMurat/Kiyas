@@ -28,7 +28,7 @@ more analogies.
 the same contract, tiered, flagged, and ordered by criticality ×
 (information value / cost).
 
-## 3. Hard rules (summary — G1–G14 in the schema)
+## 3. Hard rules (summary — G1–G15 in the schema)
 
 1. Illet non-empty. An idea whose illet cannot be named was not generated.
 2. Breaking point present before an idea can be a hypothesis candidate.

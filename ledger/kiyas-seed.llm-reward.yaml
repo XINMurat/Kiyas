@@ -1,0 +1,510 @@
+# Kiyas partisi — YZ-002 (kanit katmani -> odul eslemesi) ve YZ-001
+# (kanit-kapili dongu) tikanmasina karsi. 2026-09-06.
+batch:
+  schema_version: "1.5"
+  problem: >
+    Mizan kanit katmanlarinin ([K]/[H]/[S]/[KKE]/[R]/[Y]) LLM egitiminde odul
+    sinyaline cevrilmesi iddiasi (YZ-002) su an [S]: onerilen sabitler
+    turetilmemis, iki farkli YZ ciktisi ayni esleme icin iki farkli sabit
+    kumesi verdi, ve onerilen bilesimsel ceza teriminin Conflict() hakemi
+    tanimsiz. Ust iddia YZ-001 (kanit-kapili dongu serbest donguden daha cok
+    dogrulanabilir kesif uretir) kontrol kolsuz oldugu icin olculemiyor.
+    Ihtiyac: bu uzayda en ucuz curutmesi olan, Mizan registry'sine dogrudan
+    girebilecek adaylar.
+  date: "2026-09-06"
+  operators_used: ["O4", "O2", "O7", "O3"]
+  symmetry_check: >
+    K-05 tezi kesiyor: onerilen sabit kumesinin kendisi bir odul-hackleme
+    kapisi aciyor ([S] = 0.0 serbest eylem). Bu seed dogrulanirsa YZ-002
+    onerildigi haliyle [R] olur. Dort YZ ciktisinin hicbiri bu mekanizmayi
+    gormedi.
+  refuted_patterns_source: "C:/TRAE/Kiyas/refuted-patterns.yaml (okundu 2026-09-06; 6 girdi)"
+  discards_note: >
+    Uc aday elendi, asagida discards blogunda gerekceleriyle.
+  accepted_warnings:
+    - code: "W2"
+      reason: >
+        Bes tohumun besi de [H-aday]. W2'nin tesbiti dogru ve suphesi
+        yerinde: boyle bir parti genellikle supurgeyi atlamis partidir.
+        Burada atlanmadi ve kaniti dosyanin icinde: uc aday `discards`
+        blogunda gerekceleriyle elendi (ikisi [GB], reddedilmis desenlerin
+        akrabasi), ve K-05 partinin tezini kesen simetri tohumu olarak
+        duruyor. Alt katmanli tohum yok cunku AD1/AD2/AD4'ten hicbiri bir
+        tohumu [NK] veya [S]'ye zorlamadi; K-04'un AD6 bayragi ise semaya
+        gore tier degil serh dogurur ve serh yazildi.
+        KABULUN GEREKCESI, uyarinin yanlis olmasi DEGIL: uyari dogru bir
+        seye bakmayi soyluyor, bakildi. CI --strict kosuyor ve her bakmayi
+        durmaya cevirdigi icin, buradaki tek alternatif bir tohumun
+        tier'ini asagi cekip bayragi susturmakti -- ki bu tam olarak G6'nin
+        tasarim notunun uyardigi sey: kuralin etrafindan yazmak, daha iyi
+        tohum yazmak degil. Kabul bu yuzden veriye yazildi; uyari yine
+        basiliyor.
+  generation:
+    seed: "fresh"
+    host: "claude-opus-5"
+    inputs_digest: "d006adbd5be46e24"
+  pair_pass:
+    pairs:
+      - a: "K-01"
+        b: "K-05"
+        relation: "same_test"
+        note: >
+          Ikisi de ayni iki-kollu kosumdan okunur: K-01 binary-vs-6katman
+          farkini, K-05 ayni kosumda [S] etiketli adim oraninin egitim
+          boyunca seyrini olcer. Ayri deney yazmak parayi iki kere odemektir.
+        discriminating_test: ""
+      - a: "K-01"
+        b: "K-02"
+        relation: "shared_illet"
+        note: >
+          Ikisi de "katman etiketi ikili yargidan FAZLA bilgi tasir"
+          onculune dayaniyor. Ayri iki bahis gibi duruyorlar; degiller.
+          K-01 bu onculu dogrudan test ettigi icin once kosulmali.
+        discriminating_test: >
+          K-01'in ikili kolu 6-katman kolunu esitlerse K-02'nin gerekcesi
+          coker; K-02 yine de kalibrasyon iddiasi olarak ayakta kalabilir mi,
+          onu K-02'nin kendi ECE olcumu soyler.
+      - a: "K-02"
+        b: "K-05"
+        relation: "depends_on"
+        direction: "K-02"
+        note: >
+          K-02 (kendi katmanini dogru etiketlemeyi odullendir) esasen K-05'in
+          tarif ettigi guvenli-liman hackinin panzehiri. K-05 curutulurse
+          K-02'nin motivasyonu zayiflar; sirasi K-05 sonrasi.
+        discriminating_test: ""
+      - a: "K-03"
+        b: "K-01"
+        relation: "independent"
+        note: "Farkli substrat: K-03 cikarim aninda, K-01 egitim aninda."
+        discriminating_test: ""
+      - a: "K-03"
+        b: "K-02"
+        relation: "independent"
+        note: "Ortak oncul yok."
+        discriminating_test: ""
+      - a: "K-03"
+        b: "K-05"
+        relation: "independent"
+        note: "Ortak oncul yok."
+        discriminating_test: ""
+      - a: "K-04"
+        b: "K-01"
+        relation: "independent"
+        note: "K-04 YZ-001'i, digerleri YZ-002'yi hedefliyor."
+        discriminating_test: ""
+      - a: "K-04"
+        b: "K-02"
+        relation: "independent"
+        note: "Farkli ust iddia."
+        discriminating_test: ""
+      - a: "K-04"
+        b: "K-03"
+        relation: "independent"
+        note: "Farkli ust iddia."
+        discriminating_test: ""
+      - a: "K-04"
+        b: "K-05"
+        relation: "independent"
+        note: "Farkli ust iddia."
+        discriminating_test: ""
+
+seeds:
+  - id: "K-01"
+    tier: "H-aday"
+    claim: >
+      Alti degerli kanit katmani eslemesi, egitim sinyali olarak ikili
+      {dogrulandi / dogrulanmadi} eslemesinden daha fazlasini vermez.
+    operator: "O4"
+    illet: >
+      RLVR'de kazanci tasiyan sey DIS YARGININ VARLIGI'dir, etiketin
+      granulerligi degil. Limite it: alti katmani ikiye indir. Kalan sey
+      cekirdek mekanizmadir. Fark kalmiyorsa katman uzayi egitim acisindan
+      anotasyon semasidir, semantik durum uzayi degil -- ve bu, kullanicinin
+      kendi acik sorusunun tam cevabi.
+    breaking_point: >
+      Ikili esleme negatif tarafi ayirt edemez: [R] (curutulmus) ile [Y]
+      (uydurma) ayni kovaya duser. Eger kazanc yalnizca NEGATIF tarafin
+      ayrismasindan geliyorsa limit testi bunu "fark yok" diye okuyabilir.
+      Bu yuzden ucuncu bir kol gerekir: ikili + ayrisik negatif (3 degerli).
+    cheapest_refutation:
+      test: >
+        Tek alan (matematik veya kod), kucuk model, esit veri ve esit compute
+        ile uc kol: (a) ikili odul, (b) uc degerli (dogru / yanlis / uydurma),
+        (c) alti katman. Adim-duzeyi hata orani ve nihai dogrulukta
+        (c)-(a) farki gurultunun icindeyse alti katmanli esleme egitim icin
+        dekoratiftir -> YZ-002 [R].
+      adds_capacity: false
+      matched_budget_control: >
+        Kapasite eklenmiyor (yalnizca odul etiketi degisiyor), ama compute
+        esitlenmeli: uc kol ayni token ve ayni kosum sayisini gorur. Esitsiz
+        compute bu deneyde kapasite-confound'un yerine gecer.
+    arbiter:
+      class: "runtime"
+      who: "deterministik dogrulayici (birim test kosumu / Lean / Z3) + sabit tohum kumesi"
+      independent_of_author: true
+      latency: "saatler"
+      calibration: >
+        Esik bu kosum hattinin kendi tohum-arasi yayilimindan turetilir;
+        PRM literaturunun bildirdigi marjlardan devralinmaz (A3).
+    prior_art:
+      searched: true
+      relatives:
+        - "Lightman et al. 2023 — process reward models (ince taneli adim skoru)"
+        - "DeepSeek-R1 2025 — kural tabanli ikili odul (RLVR)"
+        - "Uesato et al. 2022 — outcome vs process supervision"
+      strongest_relative: >
+        DeepSeek-R1'in ikili kural tabanli odulu. Iddia "dis hakem ise yarar"
+        degil -- o zaten kanitli; iddia "GRANULERLIK ise yarar".
+      discrimination_test: >
+        Ayirt edici olan tam olarak (a) kolu: ikili RLVR. O kol yoksa
+        deney hicbir seyi ayirt etmez.
+    claims_superiority: true
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear — illet yapisal (yargi varligi vs etiket granulerligi)"
+      AD3_confirmation_bias: "clear — K-05 tezi kesiyor"
+      AD4_refuted_relative: "clear — refuted-patterns.yaml'da eslesme yok"
+      AD5_scale_leak: "flagged: kucuk model, tek alan; buyuk olcege genelleme ayri seed"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Tek alan ve kucuk model. Formalize edilemeyen alanlara (dunya bilgisi,
+      yaratici yazim) tasima bu seedin icine katlanamaz.
+    trace_base_rate: ""
+    threshold_proposal: >
+      (c) kolu (a) kolunu adim-hata oraninda >= %15 goreli iyilestirirse
+      destek; <= %5 ise [R]; arasi guc yetersiz, tek yeniden kosum.
+    cost: "~1-2 GPU-gunu, uc kol"
+    preregistered_prediction: >
+      Yazar (a) ile (c) arasinda anlamli fark BEKLEMIYOR; (b) kolunun (a)'yi
+      gecmesini bekliyor -- yani kazancin negatif tarafin ayrismasindan
+      gelecegini. Bu tahmin kayda geciyor ki sonucu sonradan yorumlanamasin.
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: "YZ-002"
+      registry: "mizan-product-registry.yaml"
+
+  - id: "K-02"
+    tier: "H-aday"
+    claim: >
+      Modeli adiminin DEGERI icin degil, adiminin katmanini DOGRU
+      ETIKETLEMESI icin odullendirmek (yardimci kalibrasyon basligi),
+      halusinasyon oranini katman-degeri odulunden daha cok dusurur.
+    operator: "O2"
+    illet: >
+      Ok tersine cevriliyor: "dogru ol" yerine "ne bildigini bil". Tasinan
+      yapisal ozdeslik kalibrasyon: bir iddianin dogrulugu ile o iddiaya
+      atfedilen guvenin dogrulugu AYRI olculebilir niceliklerdir, ve Mizan'in
+      butun degeri ikincisinde. Odul de oraya tasinmali.
+    breaking_point: >
+      Kalibrasyon ile gorev basarisi ayrisabilir: model "bilmiyorum" demeyi
+      ogrenip gorevde geriler. Ayrica etiket hedefi dis hakemin GECIKMELI
+      verdiginden geliyor; hakemin ulasamadigi adimlarda hedef yok, yani
+      egitim sinyali seyrek. Seyreklik belli bir esigin altina inerse baslik
+      ogrenmez ve deney onkosul-basarisizligiyla kapanir.
+    cheapest_refutation:
+      test: >
+        Ayni gorev, iki kol: (a) katman-degeri odulu, (b) yardimci
+        katman-tahmini basligi (etiket = dis hakemin sonraki verdikti).
+        Olculen: tutulan kumede halusinasyon orani + ECE. (b) ECE'yi
+        iyilestirip halusinasyon oranini oynatmiyorsa yardimci gorev atildir
+        -> [R].
+      adds_capacity: true
+      matched_budget_control: >
+        ZORUNLU: (c) kolu ayni parametre butcesini GENERIK bir yardimci
+        basliga verir (or. adim uzunlugu / zorluk tahmini). (b)-(c) farki
+        esigin altindaysa kazanc generik kapasitedendir, kalibrasyondan
+        degil. (HG28-b dersi.)
+    arbiter:
+      class: "instrument"
+      who: "ECE hesabi + dis dogrulayicidan gelen halusinasyon sayimi"
+      independent_of_author: true
+      latency: "saatler"
+      calibration: >
+        ECE esigi bu harness'in kendi baseline yayilimindan; PRM
+        calismalarindan devralinmaz.
+    prior_art:
+      searched: true
+      relatives:
+        - "Kadavath et al. 2022 — language models (mostly) know what they know"
+        - "Lin et al. 2022 — teaching models to express uncertainty in words"
+        - "Lightman et al. 2023 — PRM"
+      strongest_relative: >
+        Kadavath 2022: model kendi dogrulugunu zaten belli olcude tahmin
+        edebiliyor. Iddianin ayirt edici kismi, hedefin MODELIN OZ-BEYANI
+        DEGIL DIS HAKEMIN VERDIKTI olmasi.
+      discrimination_test: >
+        Dorduncu kol: hedef olarak modelin kendi guven skoru (oz-beyan).
+        Dis-hakem hedefi bunu gecmiyorsa iddia Kadavath'in yeniden
+        uygulamasidir.
+    claims_superiority: true
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: "clear"
+      AD4_refuted_relative: "clear"
+      AD5_scale_leak: "flagged: kucuk model"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Yalnizca dis hakemin ulasabildigi adimlar icin. Hakemsiz alanlarda bu
+      seed anlamsizdir ve oraya tasinamaz.
+    trace_base_rate: ""
+    threshold_proposal: >
+      (b) kolu (c) kapasite-esli koluna gore halusinasyon oranini >= %10
+      goreli dusururse destek; <= %3 ise [R].
+    cost: "~2 GPU-gunu, dort kol"
+    preregistered_prediction: >
+      Yazar ECE'de iyilesme, halusinasyonda esik alti (~%5) etki bekliyor --
+      yani curutulmeyi bekliyor.
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: "mizan-product-registry.yaml"
+
+  - id: "K-03"
+    tier: "H-aday"
+    claim: >
+      Bilesimsel tutarlilik ("cift pasi") loss terimi olarak degil, CIKARIM
+      aninda aday-eleme filtresi olarak calistirilirsa hakem problemi cozulur
+      ve oz-celiski orani duser.
+    operator: "O7"
+    illet: >
+      Fonksiyon sabit (iddia ciftleri arasinda garanti cokmesi ariyoruz),
+      substrat degisiyor: gradyan -> cozum uzayinda eleme. Cift pasinin
+      ihtiyaci HAKEM'dir, TUREV degil; ve turevlenemez sembolik hakem cikarim
+      aninda kullanilabilir, loss'ta kullanilamaz. Olu fikri canlandirmanin
+      en yaygin yolu substrat degisimidir.
+    breaking_point: >
+      Eleme yalnizca URETILEN adaylar arasindan secebilir. Modelin butun
+      adaylari ayni celiskiyi tasiyorsa filtre bos doner; o durumda problem
+      cikarimda degil egitimdedir ve substrat degisimi kazanc getirmez.
+    cheapest_refutation:
+      test: >
+        Sabit compute butcesi altinda iki kol: (a) best-of-n ornekleme
+        (n adet aday, gorev-oduluyle secim), (b) ayni n aday + cift pasi
+        celiski filtresi. Olculen: oz-celiski orani ve gorev dogrulugu.
+        (b) (a)'yi gecmiyorsa cift pasi cikarimda da dekoratiftir -> [R].
+      adds_capacity: true
+      matched_budget_control: >
+        Kritik ve sik atlanan nokta: kontrol GREEDY DEKODLAMA DEGIL, esit
+        compute'lu best-of-n olmalidir. Greedy'ye karsi olculen her kazanc
+        yalnizca ornekleme sayisinin kazancidir.
+    arbiter:
+      class: "runtime"
+      who: "sembolik celiski denetleyicisi (kod/matematik icin AST + cozucu)"
+      independent_of_author: true
+      latency: "dakikalar"
+      calibration: >
+        Celiski orani esigi ayni denetleyicinin baseline ciktilarindaki
+        yanlis-pozitif oranindan turetilir.
+    prior_art:
+      searched: true
+      relatives:
+        - "Wang et al. 2023 — self-consistency decoding"
+        - "Cobbe et al. 2021 — verifier-reranked sampling"
+        - "Weng et al. 2023 — self-verification"
+      strongest_relative: >
+        Cobbe 2021 dogrulayici-yeniden-siralama. Ayirt edici kisim:
+        dogrulayici NIHAI cevabi degil, adimlar arasi CIFTI denetliyor.
+      discrimination_test: >
+        Ucuncu kol: nihai-cevap dogrulayicisiyla yeniden siralama. Cift
+        filtresi bunu gecmiyorsa iddia Cobbe'nin yeniden uygulamasidir.
+    claims_superiority: true
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: "clear"
+      AD4_refuted_relative: "clear"
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Yalnizca celiskisi mekanik denetlenebilen alanlar (kod, matematik).
+      Serbest metne tasinmasi ayri bir seeddir.
+    trace_base_rate: ""
+    threshold_proposal: >
+      (b), esit compute'lu (a)'ya gore oz-celiski oranini >= %25 goreli
+      dusurur ve gorev dogrulugunu dusurmezse destek; <= %8 ise [R].
+    cost: "GPU egitimi yok; yalnizca cikarim -- bu partinin en ucuzu"
+    preregistered_prediction: >
+      Yazar kod alaninda destek, matematikte esik alti etki bekliyor.
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: ""
+      registry: "mizan-product-registry.yaml"
+
+  - id: "K-04"
+    tier: "H-aday"
+    claim: >
+      Kanit-kapili dongunun degeri, iki paralel arastirma programi
+      kosulmadan, GECMIS hipotezlerin sonucu gizlenmis olarak yeniden
+      siralanmasiyla olculebilir.
+    operator: "O3"
+    illet: >
+      Kisit su: "YZ-001'i test etmek icin iki tam arastirma programi gerek".
+      Kisit gevsetiliyor: kapinin iddiasi URETIM degil FILTRELEME'dir, ve
+      filtreleme, boru hattini yeniden kosmadan etiketli bir kume uzerinde
+      olculebilir. Kisitin var olma sebebi -- nedensellik -- gevsetince
+      kayboluyor; bedeli budur ve asagida yaziliyor.
+    breaking_point: >
+      Sonuclar zaten biliniyor: bu geriye donuk bir olcumdur, HARKing riski
+      yapisaldir. Ancak siralayici sonuclari GORMEDEN calisirsa (korlenmis
+      girdi), tahmin gucu yine de olculebilir. Korleme sizarsa (hipotez
+      metninde sonucun izi varsa) test hicbir sey olcmez.
+    cheapest_refutation:
+      test: >
+        Mizan/Kiyas registry'lerinden sonucu KESINLESMIS >= 30 hipotez al,
+        sonuc alanlarini sil, uc siralayiciya ver: (a) rastgele, (b) yalnizca
+        makullugu soran LLM, (c) Kiyas cikti sozlesmesi + Mizan on-kayit
+        kapisi. Olculen: sag kalimi tahmin etmede AUC. (c) (b)'yi gecmiyorsa
+        kapinin filtreleme degeri yok -> YZ-001 [R].
+      adds_capacity: false
+      matched_budget_control: >
+        (b) kolu kapasite kontrolu gorevini goruyor: ayni model, ayni
+        baglam uzunlugu, yalnizca disiplin yok. Fark disiplinden gelmeli.
+    arbiter:
+      class: "third_party"
+      who: "sonuclari bilen ama siralamayi gormeyen ucuncu kisi; AUC hesabi otomatik"
+      independent_of_author: true
+      latency: "gunler"
+      calibration: >
+        AUC esigi (a) rastgele kolunun kendi orneklem yayilimindan.
+    prior_art:
+      searched: true
+      relatives:
+        - "Replication Markets / DARPA SCORE — replikasyon tahmini calismalari"
+        - "Open Science Framework — onkayit sonuc calismalari"
+      strongest_relative: >
+        Replication Markets: uzman ve kalabalik tahminleri replikasyonu
+        sans ustunde ongorebiliyor. Yani "yapilandirilmis yargi tahmin eder"
+        zaten kanitli; ayirt edici kisim Kiyas/Mizan SOZLESMESININ
+        ciplak makullugu gecip gecmedigi.
+      discrimination_test: >
+        (b) kolu tam olarak bu ayirimi yapiyor. O kol yoksa deney
+        Replication Markets'in kucuk bir tekrari olur.
+    claims_superiority: true
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: "clear"
+      AD4_refuted_relative: >
+        dikkat: D-M004/D-M001 sinifi "kill-condition'siz vizyon buyutme".
+        Bu seed o sinifa girmiyor cunku kill-condition ve null-alternatif
+        ((a) rastgele kol) acikca yazili.
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: >
+        flagged: bu depolarin registry'lerinde sonucu KESINLESMIS girdi sayisi
+        su an 30'un cok altinda (Kiyas ledger'inda 6 girdi, hicbiri
+        puanlanmamis). Yani deney BUGUN kosulamaz; onkosulu veri birikimi.
+        Bu, seedin en onemli serhi ve gizlenmemeli.
+    scope_caveat: >
+      Geriye donuk olcum. Destek cikarsa iddia "kapi sag kalimi ONGORUR"
+      olur; "kapi sag kalima NEDEN OLUR" olmaz. Bu iki cumle karistirilirsa
+      seed kendi kirmizi cizgisini asar.
+    trace_base_rate: >
+      Bu ailenin kendi izi: Kiyas ledger'i 6 tohum tasiyor, sag kalim orani
+      TANIMSIZ. Onkayitli beklenti buna gore yazilmali, sifira degil.
+    threshold_proposal: >
+      AUC(c) - AUC(b) >= 0.10 destek; <= 0.03 ise [R]; arasi guc yetersiz.
+    cost: "GPU yok; veri birikimi + bir siralama turu -- ama >= 30 kesinlesmis girdi bekler"
+    preregistered_prediction: >
+      Yazar (c)-(b) farkinin 0.03-0.10 araliginda, yani guc yetersiz
+      bolgesinde cikmasini bekliyor.
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: "YZ-001"
+      registry: "mizan-product-registry.yaml"
+
+  - id: "K-05"
+    tier: "H-aday"
+    claim: >
+      Onerilen sabit kumesi ([S] = 0.0, [KKE]/[R]/[Y] negatif) modelde bir
+      GUVENLI LIMAN yaratir: spekulatif adim uretmek cezasiz oldugu icin
+      model taahhutten kacinmaya yakinsar ve [S] etiketli adim orani egitim
+      boyunca monoton artar.
+    operator: "O2"
+    illet: >
+      Asimetrik ceza tabani olan her odul semasi, sifir-maliyetli bir eylem
+      birakirsa o eylem bir siginaga doner. Bu yapi rastgele degil, dogrudan
+      onerilen sabit kumesinden turuyor: alti degerden yalnizca biri hem
+      cezasiz hem her zaman uretilebilir.
+    breaking_point: >
+      Gorev odulu (R_task) yeterince baskinsa taahhutten kacinma nihai
+      cevabi da oldurur ve model kacamaz. Yani liman ancak R_task'in
+      seyrek/gecikmeli oldugu rejimde acilir; yogun gorev odulunde iddia
+      kirilir.
+    cheapest_refutation:
+      test: >
+        K-01'in (c) kolunda ek olcum: egitim adimlarina karsi [S] etiketli
+        adim orani ve nihai-cevap taahhut orani. [S] orani duz kalir veya
+        duserse -> [R]. Monoton artar ve gorev dogrulugu duz kalirsa iddia
+        desteklenir ve YZ-002 onerildigi haliyle curur.
+      adds_capacity: false
+      matched_budget_control: >
+        Ayni kosumun ikili odullu (a) kolu kontroldur: orada [S] kategorisi
+        yoktur, dolayisiyla liman da yoktur. Iki koldaki taahhut oranlarinin
+        farki mekanizmayi izole eder.
+    arbiter:
+      class: "runtime"
+      who: "etiketleyici + kosum loglari; oran sayimi otomatik"
+      independent_of_author: true
+      latency: "kosumla ayni"
+      calibration: >
+        'Monoton artis' esigi baseline kosumdaki [S] orani dalgalanmasindan
+        turetilir; gozle bakip karar verilmez.
+    prior_art:
+      searched: true
+      relatives:
+        - "Amodei et al. 2016 — concrete problems in AI safety (reward hacking)"
+        - "Skalse et al. 2022 — reward gaming / proxy misalignment"
+        - "Perez et al. 2022 — RLHF sycophancy ve kacamak yanit egilimi"
+      strongest_relative: >
+        Skalse 2022'nin proxy-oyunlama analizi. Ayirt edici kisim: burada
+        oyunlanan proxy EPISTEMIK bir etiket, ve hack tam olarak
+        durustluk gibi gorunuyor -- tespiti bu yuzden zor.
+      discrimination_test: >
+        Genel odul-hacklemeden ayirmak icin: hack yalnizca [S] kategorisi
+        varken ortaya cikmali. Ikili kolda da taahhut dususe geciyorsa
+        neden katman semasi degil, genel RL baskisi.
+    claims_superiority: false
+    antipattern_sweep:
+      AD1_notation_coincidence: "clear"
+      AD2_surface_resonance: "clear"
+      AD3_confirmation_bias: >
+        bu SEEDIN KENDISI simetri kontrolu; parti tezi kesen adayini burada
+        tasiyor.
+      AD4_refuted_relative: "clear"
+      AD5_scale_leak: "clear"
+      AD6_trace_base_rate: "clear"
+    scope_caveat: >
+      Iddia onerilen SABIT KUMESINE ozgudur, katman fikrine degil. [S]'e
+      kucuk bir negatif deger verilmesi limani kapatabilir; o ayri bir seed.
+    trace_base_rate: ""
+    threshold_proposal: >
+      [S] oraninda egitim boyunca >= %50 goreli artis + gorev dogrulugunda
+      <= %2 degisim -> destek. Artis <= %10 -> [R].
+    cost: "sifir ek kosum -- K-01'in kolundan okunur"
+    preregistered_prediction: >
+      Yazar limanin ACILACAGINI bekliyor; bu, partinin yazarin tezini kesen
+      ve yine de yuksek beklentiyle kaydedilen tek seedi.
+    handoff:
+      status: "pending"
+      mizan_hypothesis_id: "YZ-002"
+      registry: "mizan-product-registry.yaml"
+
+discards:
+  - claim: "Mizan hata taksonomisinden hedefli mufredat (failure-driven curriculum)"
+    reason: >
+      Illet, siradan hata-sinifi mufredatindan (hard example mining,
+      curriculum learning) ayirt edilemedi. Mizan'a ozgu olan tek sey
+      taksonominin kendisi ve onun degeri K-01 tarafindan zaten test
+      ediliyor. Kota doldurmak icin eklenmedi.
+  - claim: "Mizan'i ajan cikarimlarinda kalici bir 'epistemik gardiyan' katmani olarak urunlestirmek"
+    reason: >
+      [GB] — D-M003 ('Epistemic Dashboard', koltuk-bazli SaaS) ile ayni
+      sinif: problem-iddiasi kanitlanmamis, null alternatifi yok. Reddedilmis
+      bir kaliba akraba; yeniden uretmedim.
+  - claim: "Mizan-yerlisi bir temel model egitmek (tier-aware pretraining)"
+    reason: >
+      [GB] — D-M004 (Research-OS evrim merdiveni) sinifi: kill-condition'siz,
+      null-alternatifsiz olcek buyutme. Onkayitli esik gecmeden bu merdiven
+      girisleri otomatik discard.

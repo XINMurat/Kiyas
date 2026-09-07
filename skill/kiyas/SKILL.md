@@ -193,7 +193,7 @@ examples + anti-pattern sweep). Then:
 ## The runtime arbiter — what the validator does and does not judge
 
 The output contract has a machine-readable form (`schemas/kiyas-seed.yaml`)
-and a checker (`tools/kiyas_validate.py`, rules G1–G14). Write seeds as YAML
+and a checker (`tools/kiyas_validate.py`, rules G1–G15). Write seeds as YAML
 when the batch is going into a project; prose is fine for a chat reply.
 
 What it enforces: illet non-empty (G1); breaking point present for `[H-aday]`
@@ -254,7 +254,7 @@ Against a partial export the second is all anyone can honestly write, so the
 consumer is told. Producing that flag and never reading it would leave the
 sweep exactly as unverifiable as it was before G11.
 
-**Two channels, and the reason there are two.** G1–G14 block. W1–W6 do not:
+**Two channels, and the reason there are two.** G1–G15 block. W1–W7 do not:
 a numeric threshold with an author/none arbiter, a batch where every seed
 lands at `[H-aday]`, a symmetry check naming no seed, an O5 transfer with no
 scope caveat, a pinned seed with no inputs digest, a partial refuted export.
@@ -264,6 +264,17 @@ not halt. `--strict` promotes them; CI runs strict, local runs do not. The
 reasoning is G6's, turned on the tool itself: if every flag blocked, authors
 would learn to write around the flags, which is not the same as writing
 better seeds.
+**A batch may accept a warning, in the data, with a reason.** The W channel
+says look rather than halt, and CI runs `--strict`, which turns every look
+into a halt. That gap is where a tier gets quietly edited to silence a flag —
+writing around the rule instead of writing a better batch, which is G6's own
+failure mode. `batch.accepted_warnings` closes it: a `code` and a `reason`,
+and `--strict` leaves that one warning alone. Two guards keep it from being a
+mute button — G15 blocks an acceptance with no reason, W7 flags an acceptance
+whose warning did not fire — and the accepted warning is still printed, marked
+accepted. An exemption that hides what it exempts is worse than the halt it
+replaced.
+
 
 G7 is the rule with the least obvious justification and the clearest evidence
 behind it. The discard list is the section that disappears first — measured,
@@ -429,6 +440,6 @@ or not anything was ruled out.
   how, and a worked example from the project; then the output contract
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
-- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G14 and
-  warnings W1–W6), with
+- `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G15 and
+  warnings W1–W7), with
   the arbiter block shared with Mizan R8.
