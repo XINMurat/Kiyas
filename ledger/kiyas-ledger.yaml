@@ -46,6 +46,57 @@ ledger:
     field honest is why the rate is undefined rather than flattering.
 
 # ---------------------------------------------------------------------
+# 2026-09-07 — BULGU: yukaridaki alti tohum PUANLANAMAZ, gecikmiyor.
+#
+# Duzeltme, kendi onerimedir. Dun bu dosyaya "ayni probleme kontrol kolu
+# ekle" diye onkayit yazildi. O onkayit OLU BIR HEDEFE nisan aliyordu ve
+# bunu fark etmemis olmasi, kendi kuralinin ihlaliydi: bir testin onkosulu
+# saglanamiyorsa sonuc "[R]" degil, "hucre kapandi"dir -- ve bu, testi
+# yazarken sorulacak sorudur, sonrasinda degil.
+#
+# Alti tohumun tamami tek bir hedefe bagli: bir dis raporda anlatilan,
+# Jacobian-tabanli bir yorumlanabilirlik yontemi. Uretici partinin KENDI
+# baslgi bunu zaten yaziyor: o rapora, koduna ve replikasyonlarina
+# bagimsiz olarak ULASILAMIYOR. Yani bu tohumlarin hicbiri bu projede
+# kosulamaz; final_tier alanlari bos degil, DOLDURULAMAZ.
+#
+# Sonuc: sag-kalim orani "henuz olculmedi" degil, bu hedef uzerinden
+# "olculemez". Beklemek bir plan degil.
+#
+# Tohumlar silinmiyor (R4). Kayitta kalmalarinin degeri hala var: bir
+# uretim partisinin nasil gorundugunu ve bir illetin nasil dustugunu
+# (KS-J006) gosteriyorlar. Yalnizca sag-kalim paydasinda sayilamazlar.
+#
+# ---------------------------------------------------------------------
+# KONTROL KOLU — REVIZE ONKAYIT, 2026-09-07 (asagidaki 2026-09-06
+# tasarimi silinmedi; esik/durdurma/dislama kurallari aynen gecerli,
+# degisen tek sey HEDEF PROBLEM SINIFI).
+#
+# Kontrol kolunun kosulabilmesi icin problem sinifinin tek bir ozelligi
+# olmasi gerekiyor ve dun bu yazilmamisti:
+#
+#     HAKEMI `runtime` OLMALI VE VERDIKTI SAATLER ICINDE DONMELI.
+#
+# Aylar suren ya da ulasilamayan bir hedefte iki kol da puanlanamaz; kol
+# sayisini artirmak bunu cozmez.
+#
+# UYGUN HEDEF SINIFI (bugun mevcut): bu dort deponun KENDISI.
+#   Problem ifadesi ornegi: "X deposunda, testlerin sessiz kaldigi bir
+#   kusur adayi uret." Iki kol ayni ifadeyi alir; tohumlar ayni Mizan
+#   registry'sine kor girer; hakem kusurun GERCEKTEN yeniden uretilip
+#   uretilmedigidir -- calisan bir betik, bir test, bir dogrulayici.
+#   Verdikt saatler icinde doner ve yazarin gorusune bagli degildir.
+#
+# UYGUN OLMAYAN (ve bu yuzden kontrol koluna alinmaz): dis raporlar,
+# baskasinin deposu, GPU-gunu isteyen egitim deneyleri, ve sonucu
+# aylara yayilan her sey. Bunlar mesru arastirma hedefleridir; kontrol
+# kolu hedefi degildirler.
+#
+# ONKAYITLI TAHMIN degismedi: yazar farkin guc-yetersiz bandinda
+# (0.05-0.20) cikmasini bekliyor.
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
 # KONTROL KOLU — onkayit, 2026-09-06. Sonuc YOK; bu blok bir plandir.
 #
 # Bu dosyanin yukarisi iki yildir ayni seyi soyluyor: kontrol kolu olmadan
