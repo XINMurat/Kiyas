@@ -153,13 +153,16 @@
 #       gate, so a seed declaring claims_superiority: false could reach
 #       H-aday having searched nothing.
 #
-# WARNINGS (W1..W4) — checked but NOT blocking, unless --strict:
+# WARNINGS (W1..W6) — checked but NOT blocking, unless --strict:
 #   W1. a numeric threshold_proposal on a seed whose arbiter is author/none.
 #   W2. every seed in a batch of 2+ landing at H-aday.
 #   W3. batch.symmetry_check naming no seed id from the batch.
 #   W4. operator O5 (scale transfer) with no scope_caveat.
 #   W5. a pinned (non-"fresh") generation.seed with no inputs_digest — a seed
 #       with no record of the inputs it was applied to identifies nothing.
+#   W6. a refuted-patterns export that declares `partial: true` (generated
+#       from a registry excerpt) — an AD4 sweep against it may record "no
+#       match found", never "clear".
 # These have legitimate exceptions, so the right response is to look, not to
 # be stopped. Making every flag blocking would teach authors to write batches
 # that avoid triggering rules — the same failure G6's design note describes.

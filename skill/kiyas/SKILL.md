@@ -247,10 +247,18 @@ verified would be the same error the skill audits for everywhere else.
 W5 catches the half-record: a pinned seed with no `inputs_digest`. A seed with
 no record of the inputs it was applied to identifies nothing.
 
-**Two channels, and the reason there are two.** G1–G14 block. W1–W5 do not:
+W6 catches the half-sweep. A refuted-patterns export generated from a registry
+*excerpt* declares itself `partial: true`, and the AD4 vocabulary distinguishes
+"clear" from "no match found" — only the first is a claim about coverage.
+Against a partial export the second is all anyone can honestly write, so the
+consumer is told. Producing that flag and never reading it would leave the
+sweep exactly as unverifiable as it was before G11.
+
+**Two channels, and the reason there are two.** G1–G14 block. W1–W6 do not:
 a numeric threshold with an author/none arbiter, a batch where every seed
 lands at `[H-aday]`, a symmetry check naming no seed, an O5 transfer with no
-scope caveat, a pinned seed with no inputs digest. Each of those is usually wrong and legitimately right often
+scope caveat, a pinned seed with no inputs digest, a partial refuted export.
+Each of those is usually wrong and legitimately right often
 enough that stopping on it would be false precision — so the tool says look,
 not halt. `--strict` promotes them; CI runs strict, local runs do not. The
 reasoning is G6's, turned on the tool itself: if every flag blocked, authors
@@ -422,5 +430,5 @@ or not anything was ruled out.
   (including prior art), the anti-pattern sweep list (AD1–AD6), and the Mizan
   preregistration-seed template. Read before the first generation.
 - `schemas/kiyas-seed.yaml` — the output contract as data (rules G1–G14 and
-  warnings W1–W5), with
+  warnings W1–W6), with
   the arbiter block shared with Mizan R8.

@@ -365,6 +365,14 @@ MSG = {
         "W3: batch.symmetry_check bu partideki hiçbir tohum id'sini anmıyor — şema, mevcut tezi "
         "kesen tohumun adlandırılmasını ister ki iddia bir tohuma karşı kontrol edilebilsin.",
     ),
+    "W6_refuted_export_partial": (
+        "W6: the refuted-patterns export declares itself PARTIAL (`partial: true`) — it was "
+        "generated from a registry excerpt, so it is not the full set of negative constraints. "
+        "An AD4 sweep against it may record 'no match found'; it may not record 'clear'.",
+        "W6: çürütülmüş-desen ihracı kendini KISMİ ilan ediyor (`partial: true`) — bir registry "
+        "alıntısından üretilmiş, yani negatif kısıtların tamamı değil. Buna karşı yapılan AD4 "
+        "taraması 'eşleşme bulunamadı' yazabilir; 'temiz' yazamaz.",
+    ),
     "W4_O5_no_scope": (
         "W4: seed {id} uses operator O5 (scale transfer) without a scope_caveat — a finding at "
         "one regime does not become a claim about another by being restated.",
@@ -453,6 +461,24 @@ def refuted_blob(path: str | None, source: str) -> bytes | None:
         return None
 
 
+def refuted_is_partial(path: str | None) -> bool:
+    """True when the export says it came from an excerpt rather than a whole registry.
+
+    The AD4 sweep's vocabulary distinguishes "clear" from "no match found", and
+    only the first is a claim about coverage. Against a partial export the
+    second is all anyone can honestly write -- so the consumer has to know the
+    export is partial. Producing that flag and never reading it would leave the
+    sweep exactly as unverifiable as it was before G11.
+    """
+    if not path:
+        return False
+    try:
+        data = yaml.safe_load(open(path, "r", encoding="utf-8"))
+    except Exception:
+        return False
+    return bool((data or {}).get("partial"))
+
+
 def load_refuted(path: str | None) -> list[dict]:
     """Negative constraints exported from a Mizan registry (AD4 feedback loop)."""
     if not path:
@@ -476,7 +502,8 @@ def _flagged(value: str) -> bool:
 
 def check(data: dict, lang: str,
           refuted: list[dict] | None = None,
-          refuted_bytes: bytes | None = None) -> tuple[list[str], list[str]]:
+          refuted_bytes: bytes | None = None,
+          refuted_partial: bool = False) -> tuple[list[str], list[str]]:
     """Return (violations, warnings). See the module docstring for why two."""
     errs: list[str] = []
     warns: list[str] = []
@@ -495,6 +522,8 @@ def check(data: dict, lang: str,
     # honest answer, an absent field is not an answer at all.
     if not _s(batch.get("refuted_patterns_source")):
         errs.append(m("G11_no_refuted_source", lang))
+    if refuted_partial:
+        warns.append(m("W6_refuted_export_partial", lang))
 
     # G12 — generation conditions. A pinned seed does NOT make an LLM draw
     # reproducible, and this rule deliberately does not pretend otherwise: it
@@ -943,7 +972,8 @@ def main(argv: list[str]) -> int:
 
     errs, warns = check(
         data, args.lang, load_refuted(args.refuted),
-        refuted_blob(args.refuted, (data.get("batch") or {}).get("refuted_patterns_source") or ""))
+        refuted_blob(args.refuted, (data.get("batch") or {}).get("refuted_patterns_source") or ""),
+        refuted_is_partial(args.refuted))
     n = getattr(check, "n_seeds", 0)
 
     if args.strict and warns:

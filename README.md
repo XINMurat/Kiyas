@@ -65,9 +65,9 @@ equivalent of type-checking: elimination before execution.
 | `skill/kiyas/SKILL.md` | The skill itself — modes, procedure, tiers, anti-patterns |
 | `skill/kiyas/references/operators.md` | Seven generative operators, the anti-pattern sweep (AD1–AD6), the Mizan seed template |
 | `skill/kiyas/references/recovery.md` | Recovery ramps (RR-00…RR-13) for when a run stops behaving, plus the closing scorecard |
-| `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G14, warnings W1–W5) |
+| `skill/kiyas/schemas/kiyas-seed.yaml` | The output contract as data (rules G1–G14, warnings W1–W6) |
 | `kiyas.skill` | One-file package for installing the skill |
-| `tools/kiyas_validate.py` | LLM-free G1–G14 checker; `--strict` also fails on W1–W5 |
+| `tools/kiyas_validate.py` | LLM-free G1–G14 checker; `--strict` also fails on W1–W6 |
 | `tools/kiyas_ledger.py` | Survival-rate reporter for generated seeds |
 | `examples/` | Two worked batches that CI validates (one single-domain, one cross-domain transfer whose illet fails), a distillation-mode pass, the portability runs, and a sample refuted-patterns export |
 | `ledger/` | Where the survival record accumulates |
@@ -209,7 +209,7 @@ it; that is exactly why the outside signal needed a row and a ramp. Seed schema
 ([`PROSE-SCHEMA-AUDIT.md`](PROSE-SCHEMA-AUDIT.md)): the discard list, a
 cheapest refutation and a prior-art search on every `[H-aday]`, a
 self-consistent arbiter, a stated refuted-patterns source. Adds a
-non-blocking warning channel (W1–W5, `--strict` in CI), a second worked batch
+non-blocking warning channel (W1–W6, `--strict` in CI), a second worked batch
 (a cross-domain transfer whose illet fails), the first distillation-mode
 example, and the first survival-ledger entries.
 
@@ -283,9 +283,9 @@ derleyici bedavaya eler; kod dışında eleme pahalıdır, o yüzden filtre üre
 | `skill/kiyas/SKILL.md` | Skill'in kendisi — modlar, prosedür, tier'lar, anti-desenler |
 | `skill/kiyas/references/operators.md` | Yedi üretici operatör, anti-desen taraması (AD1–AD6), Mizan tohum şablonu |
 | `skill/kiyas/references/recovery.md` | Kurtarma rampaları (RR-00…RR-13) ve kapanış çizelgesi · TR: `docs/tr/kurtarma.md` |
-| `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G14 kuralları, W1–W5 uyarıları) |
+| `skill/kiyas/schemas/kiyas-seed.yaml` | Çıktı sözleşmesinin veri hâli (G1–G14 kuralları, W1–W6 uyarıları) |
 | `kiyas.skill` | Skill'i kurmak için tek-dosya paket |
-| `tools/kiyas_validate.py` | LLM'siz G1–G14 denetleyici; `--strict` W1–W5'te de düşer |
+| `tools/kiyas_validate.py` | LLM'siz G1–G14 denetleyici; `--strict` W1–W6'da da düşer |
 | `tools/kiyas_ledger.py` | Üretilen tohumların sağ-kalım oranı raporlayıcısı |
 | `examples/` | CI'ın doğruladığı iki çalışılmış parti (biri tek-alan, biri illeti düşen alanlar-arası taşıma), bir damıtma-modu koşusu, taşınabilirlik koşuları ve örnek çürütülmüş-desen dosyası |
 | `ledger/` | Sağ-kalım kaydının biriktiği yer |
@@ -388,7 +388,7 @@ budur. Tohum şeması 1.4.
 ([`PROSE-SCHEMA-AUDIT.md`](PROSE-SCHEMA-AUDIT.md)): reddedilenler listesi, her
 `[H-aday]` için en ucuz çürütme ve prior-art araması, kendisiyle çelişmeyen
 hakem, beyan edilmiş çürütülmüş-desen kaynağı. Bloke etmeyen uyarı kanalı
-(W1–W5, CI'da `--strict`), ikinci çalışılmış parti (illeti düşen alanlar-arası
+(W1–W6, CI'da `--strict`), ikinci çalışılmış parti (illeti düşen alanlar-arası
 bir taşıma), ilk damıtma-modu örneği ve sağ-kalım defterinin ilk girdileri.
 
 **v1.0** — yedi operatör + AD1–AD6 taraması + A1–A4 önkayıt hijyeni + G1–G6
