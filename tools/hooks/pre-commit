@@ -50,9 +50,9 @@ for f in "${files[@]}"; do
   # AD4 negative-constraint check runs at commit time too.
   refuted="$here/refuted-patterns.yaml"
   if [ -f "$refuted" ]; then
-    "$PYTHON" "$validator" --lang "$LANG_OPT" --refuted "$refuted" "$here/$f" || fail=1
+    "$PYTHON" "$validator" --lang "$LANG_OPT" --refuted "$refuted" "$here/$f" || { fail=1; "$PYTHON" "$here/tools/rule_hits.py" log "$validator" "$here/$f" || true; }
   else
-    "$PYTHON" "$validator" --lang "$LANG_OPT" "$here/$f" || fail=1
+    "$PYTHON" "$validator" --lang "$LANG_OPT" "$here/$f" || { fail=1; "$PYTHON" "$here/tools/rule_hits.py" log "$validator" "$here/$f" || true; }
   fi
 done
 
