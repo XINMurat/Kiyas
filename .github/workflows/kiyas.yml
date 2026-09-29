@@ -32,13 +32,47 @@ jobs:
           while IFS= read -r f; do
             found=1
             echo "::group::$f"
-            python tools/kiyas_validate.py --strict "$f"
+            python tools/kiyas_validate.py --strict --format github "$f"
             echo "::endgroup::"
           done < <(find examples ledger -name '*kiyas-seed*.y*ml' -print 2>/dev/null)
           if [ "$found" -eq 0 ]; then
             echo "No seed batches found to validate." >&2
             exit 1
           fi
+
+      - name: Self-test — the output format never changes the verdict
+        run: |
+          set -e
+          # --format github turns findings into PR annotations; it must not
+          # turn a failing file into a passing one, or the reverse.
+          tmp="$(mktemp --suffix=.yaml)"
+          printf 'batch: {}\nseeds: []\n' > "$tmp"
+          for fmt in text json github; do
+            set +e; python tools/kiyas_validate.py --format $fmt "$tmp" > /tmp/out.$fmt; rc=$?; set -e
+            [ "$rc" -eq 1 ] || { echo "FAIL: --format $fmt exited $rc on a failing file" >&2; exit 1; }
+          done
+          python -c "import json; d=json.load(open('/tmp/out.json')); assert not d['clean'] and d['violations'], d"
+          grep -q '^::error file=' /tmp/out.github || { echo "FAIL: no annotation emitted" >&2; exit 1; }
+          echo "OK: text, json and github agree on the verdict."
+
+      - name: Self-test — a malformed batch is refused, not passed
+        run: |
+          set -e
+          # The rules drop seeds that are not mappings and read `batch` as
+          # one, so `seeds: [null]` passed with the seed uncounted and
+          # `batch: 5` crashed with exit 1 (the violations code). Both must be
+          # a parse error: exit 2, no traceback.
+          tmp="$(mktemp --suffix=.yaml)"
+          expect2() {
+            set +e; out="$(python tools/kiyas_validate.py "$tmp" 2>&1)"; rc=$?; set -e
+            echo "$out"
+            [ "$rc" -eq 2 ] || { echo "FAIL ($1): exit $rc, expected 2" >&2; exit 1; }
+            if echo "$out" | grep -q Traceback; then echo "FAIL ($1): crashed" >&2; exit 1; fi
+          }
+          printf 'batch: 5\nseeds: []\ndiscards: []\n'   > "$tmp"; expect2 "batch not a mapping"
+          printf 'batch: {}\nseeds: 3\ndiscards: []\n'   > "$tmp"; expect2 "seeds not a list"
+          printf 'batch: {}\nseeds:\n  - null\ndiscards: []\n' > "$tmp"; expect2 "seed not a mapping"
+          echo "OK: malformed batches are refused with exit 2."
 
       - name: Self-test — the unfilled template must be REJECTED
         run: |
@@ -454,6 +488,28 @@ jobs:
           fi
           echo "OK: G14 waits for seed schema 1.6."
 
+      - name: Every stated version agrees with the skill's own
+        run: |
+          set -e
+          # The site's release table said v1.4.0 while this README's version
+          # section still ended a release earlier; nothing pinned either. The
+          # README's "Current version" line is now pinned to metadata.version in
+          # SKILL.md (same script as Mizan/ux-mizan, map in tools/version-pin.json).
+          pip install --quiet pyyaml   # the host job does not always install it
+          python tools/check_version_pin.py
+
+      - name: Self-test — the version pin actually fails on a stale line
+        run: |
+          set -e
+          cp README.md /tmp/version-backup
+          sed -i 's/Current version: v[0-9][0-9]*\.[0-9][0-9]*/Current version: v0.1/' README.md
+          if python tools/check_version_pin.py; then
+            cp /tmp/version-backup README.md
+            echo "FAIL: a stale version went unnoticed" >&2; exit 1
+          fi
+          cp /tmp/version-backup README.md
+          echo "ok -- a stale version is caught"
+
       - name: Every menu entry can keep the promise its language makes
         run: |
           set -e
@@ -502,6 +558,26 @@ jobs:
             echo "FAIL: drift went unnoticed" >&2; exit 1
           fi
           cp /tmp/mirror-backup "docs/en/$f"
+          echo "ok -- drift is caught"
+
+      - name: Shared tools are still the shared copy
+        run: |
+          set -e
+          # Seven tools are copied, not imported, into the four repositories;
+          # a copy edited alone is how the CRLF-blind package check survived.
+          # Manifest and reasoning: tools/check_shared_tools.py.
+          python tools/check_shared_tools.py
+
+      - name: Self-test — a shared tool edited alone is caught
+        run: |
+          set -e
+          cp tools/token_budget.py /tmp/shared-backup
+          echo "# edited in one repository only" >> tools/token_budget.py
+          if python tools/check_shared_tools.py; then
+            cp /tmp/shared-backup tools/token_budget.py
+            echo "FAIL: a drifted shared tool went unnoticed" >&2; exit 1
+          fi
+          cp /tmp/shared-backup tools/token_budget.py
           echo "ok -- drift is caught"
 
       - name: The context budget holds (T0/T1 and the per-run sets)
@@ -716,7 +792,11 @@ jobs:
           # different code, so a clean tree does not prove a clean kiyas.skill.
           # A hit prints the file, the line and the term's index -- never the
           # term, because this log is public.
-          python tools/leak_check.py --package kiyas.skill
+          # --require: an empty secret must fail here, not print the same green
+          # line as a clean tree. Fork PRs get no secrets, so they are exempt.
+          req="--require"
+          if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then req=""; fi
+          python tools/leak_check.py $req --package kiyas.skill
 
   skill-package-in-sync:
     runs-on: ubuntu-latest
@@ -725,40 +805,11 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - name: kiyas.skill must match skill/kiyas/ contents
-        run: |
-          python - <<'PY'
-          import zipfile, os, sys
-          def norm(b): return b.replace(b"\r\n", b"\n")
-          z = zipfile.ZipFile("kiyas.skill")
-          names = set(z.namelist())
-          bad = []
-          # every packaged file must match its source
-          for name in names:
-              src = os.path.join("skill", name)   # arcname is kiyas/... ; source is skill/kiyas/...
-              if not os.path.exists(src):
-                  bad.append(f"{name}: packaged but missing from source"); continue
-              if norm(z.read(name)) != norm(open(src, "rb").read()):
-                  bad.append(f"{name}: content differs from skill/{name}")
-          # every source file must be packaged
-          for root, dirs, files in os.walk("skill/kiyas"):
-              # Build artifacts are not source. Iskele's CI went red on
-              # 2026-08-11 because a local __pycache__ reached the package;
-              # the guard it grew then belongs in all four repos, not one.
-              dirs[:] = [d for d in dirs if d != "__pycache__"]
-              for f in files:
-                  if f.endswith(".pyc"):
-                      continue
-                  rel = os.path.relpath(os.path.join(root, f), "skill").replace(os.sep, "/")
-                  if rel not in names:
-                      bad.append(f"{rel}: in source but not packaged")
-          if bad:
-              print("kiyas.skill is OUT OF SYNC with skill/kiyas/:")
-              for b in bad: print("  -", b)
-              print("\nRebuild it (see CONTRIBUTING.md) and commit.")
-              sys.exit(1)
-          print("kiyas.skill is in sync with skill/kiyas/.")
-          PY
+      - name: kiyas.skill must match skill/kiyas/ byte for byte (LF, no CRLF)
+        # tools/build_skill.py is shared by the four repositories. The inline
+        # check it replaces normalised CRLF on both sides, so a package
+        # built on Windows -- CRLF shebangs included -- passed as in sync.
+        run: python tools/build_skill.py --check
 
   skill-scan:
     # A skill is code plus instructions that load into an agent's context and

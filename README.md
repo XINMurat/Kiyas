@@ -181,6 +181,27 @@ produces.
 
 ### Version
 
+Current version: v1.4
+
+**Unreleased (on `main`, after v1.4.0)** — **W6**: a refuted-patterns export
+marked `partial: true` makes the sweep say so, because against a partial list
+"no match found" is honest and "clear" is not. **G15/W7**: a batch may accept a
+warning in the data (`batch.accepted_warnings`, a code and a reason) so that
+`--strict` stops turning every look into a halt; G15 blocks an acceptance with
+no reason, W7 flags an acceptance whose warning did not fire. Tooling:
+`kiyas_validate.py` refuses a malformed batch (a `batch` or seed that is not a
+mapping) with exit 2 instead of crashing or skipping it; `tools/build_skill.py`
+checks the package byte for byte; `leak_check.py --require` makes an empty CI
+secret fail.
+
+**v1.4** — G14: the batch records what it cost (`batch.cost_actual`:
+instrument, window, attribution, comparison arm; `none` is legal and forbids
+presenting the batch as evidence that generating this way is cheaper). Cost
+per SEED is deliberately not made easy — it improves fastest by generating
+more and thinking less; the denominator worth having is survival, decided
+later in a Mizan registry by an arbiter that is not the generator. Seed schema
+1.6; batches below it are unenforced.
+
 **v1.3** — G13, the pair pass: a batch is marked pair by pair, not only seed
 by seed. Every other rule judges ONE seed, so a property living BETWEEN two of
 them was invisible by construction — and it is the property that says what the
@@ -359,6 +380,27 @@ metodolojinin ayakta kalmak için kurulduğu sonuç, ve kendi yaptığın bir
 örneğin asla üretmediği sonuç.
 
 ### Sürüm
+
+Şu anki sürüm: v1.4
+
+**Yayımlanmadı (`main` üzerinde, v1.4.0'dan sonra)** — **W6**:
+`partial: true` işaretli bir refuted-patterns dökümü taramaya bunu söyletir;
+kısmi bir listeye karşı "eşleşme bulunmadı" dürüsttür, "temiz" değildir.
+**G15/W7**: bir parti bir uyarıyı veride kabul edebilir
+(`batch.accepted_warnings`, kod ve gerekçe), böylece `--strict` her bakışı bir
+durdurmaya çevirmeyi bırakır; G15 gerekçesiz kabulü engeller, W7 uyarısı hiç
+tetiklenmemiş bir kabulü işaretler. Araçlar: `kiyas_validate.py` bozuk bir
+partiyi (mapping olmayan `batch` ya da tohum) çökmek ya da atlamak yerine
+çıkış 2 ile reddeder; `tools/build_skill.py` paketi bayt bayt denetler;
+`leak_check.py --require` boş bir CI secret'ını düşürür.
+
+**v1.4** — G14: parti ne harcadığını kaydeder (`batch.cost_actual`: alet,
+pencere, atıf, karşılaştırma kolu; `none` meşrudur ve partinin "bu şekilde
+üretmek daha ucuz" kanıtı olarak sunulmasını yasaklar). Tohum BAŞINA maliyet
+bilerek kolaylaştırılmaz — en hızlı daha çok üreterek, daha az düşünerek
+iyileşir; sahip olmaya değer payda hayatta kalmadır, sonradan bir Mizan
+registry'sinde üretici olmayan bir hakem tarafından belirlenir. Tohum şeması
+1.6; altındaki partiler uygulanmadan kalır.
 
 **v1.3** — G13, çift pası: bir parti artık yalnız tohum tohum değil, çift çift
 işaretlenir. Buradaki diğer her kural TEK tohum yargılar; iki tohumun ARASINDA
