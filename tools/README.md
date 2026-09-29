@@ -6,7 +6,8 @@ completeness**, never for idea quality — see `skill/kiyas/SKILL.md`
 
 | Tool | What it does |
 |---|---|
-| `kiyas_validate.py` | Enforces G1–G15 on a seed batch. `--lang tr\|en`, `--refuted <file>` for the AD4 negative-constraint check. Exit 0 clean / 1 violations / 2 usage. |
+| `kiyas_validate.py` | Enforces G1–G15 on a seed batch. `--lang tr\|en`, `--refuted <file>` for the AD4 negative-constraint check. Exit 0 clean / 1 violations / 2 usage or malformed input (a `batch` that is not a mapping, a seed that is not one — refused, never skipped). |
+| `build_skill.py` | Builds `kiyas.skill` from `skill/kiyas/` (LF, fixed timestamp, sorted); `--check` fails on any byte difference, CRLF included. Same file in all four repositories. |
 | `kiyas_ledger.py` | Reports the survival rate of generated seeds from `ledger/kiyas-ledger.yaml`. Prints a permanent `[KKE]` while no control arm exists. |
 | `hooks/pre-commit` | Runs the validator on staged `*kiyas-seed*.yaml`. Install with `git config core.hooksPath tools/hooks`. |
 
@@ -25,7 +26,8 @@ fikir kalitesi için değil — bkz. `skill/kiyas/SKILL.md`.
 
 | Araç | Ne yapar |
 |---|---|
-| `kiyas_validate.py` | Bir tohum partisinde G1–G15'yı uygular. `--lang tr\|en`, AD4 negatif-kısıt kontrolü için `--refuted <dosya>`. Çıkış 0 temiz / 1 ihlal / 2 kullanım. |
+| `kiyas_validate.py` | Bir tohum partisinde G1–G15'yı uygular. `--lang tr\|en`, AD4 negatif-kısıt kontrolü için `--refuted <dosya>`. Çıkış 0 temiz / 1 ihlal / 2 kullanım veya bozuk girdi (mapping olmayan `batch`, mapping olmayan tohum — atlanmaz, reddedilir). |
+| `build_skill.py` | `skill/kiyas/`'tan `kiyas.skill` üretir (LF, sabit zaman damgası, sıralı); `--check` her bayt farkında düşer, CRLF dahil. Dört repoda aynı dosya. |
 | `kiyas_ledger.py` | `ledger/kiyas-ledger.yaml`'dan üretilen tohumların sağ-kalım oranını raporlar. Kontrol kolu yokken kalıcı `[KKE]` basar. |
 | `hooks/pre-commit` | Hazırlanmış `*kiyas-seed*.yaml` dosyalarında doğrulayıcıyı koşar. `git config core.hooksPath tools/hooks` ile kur. |
 

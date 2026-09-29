@@ -50,15 +50,7 @@ python tools/kiyas_validate.py skill/kiyas/schemas/kiyas-seed.yaml && echo "BROK
 python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
 
 # 4. the packaged skill must match its source:
-python - <<'PY'
-import zipfile, os, sys
-n = lambda b: b.replace(b"\r\n", b"\n"); z = zipfile.ZipFile("kiyas.skill")
-bad = [k for k in z.namelist()
-       if not os.path.exists(os.path.join("skill", k))
-       or n(z.read(k)) != n(open(os.path.join("skill", k), "rb").read())]
-print("skill in sync" if not bad else "OUT OF SYNC: " + ", ".join(bad))
-sys.exit(1 if bad else 0)
-PY
+python tools/build_skill.py --check   # byte for byte: a CRLF inside fails
 ```
 
 Install the pre-commit hook so staged seed batches are checked automatically:
@@ -73,18 +65,15 @@ If you change **any** file under `skill/kiyas/`, rebuild the one-file package
 so it stays in sync (the shipped `kiyas.skill` embeds those files):
 
 ```bash
-python - <<'PY'
-import zipfile, os
-with zipfile.ZipFile("kiyas.skill", "w", zipfile.ZIP_DEFLATED) as z:
-    for root, dirs, files in os.walk("skill/kiyas"):
-        dirs[:] = [d for d in dirs if d != "__pycache__"]   # build artifacts are not source
-        for f in files:
-            if f.endswith(".pyc"):
-                continue
-            p = os.path.join(root, f)
-            z.write(p, os.path.relpath(p, "skill").replace(os.sep, "/"))
-PY
+python tools/build_skill.py           # writes kiyas.skill
+python tools/build_skill.py --check   # what CI runs
 ```
+
+The builder is the same file in all four repositories. It writes LF line
+endings whatever the checkout has, a fixed timestamp and a sorted file list,
+and skips `__pycache__`/`*.pyc`. A package zipped by hand on Windows once
+shipped `#!/usr/bin/env python3\r` shebangs, and the old check normalised
+CRLF on both sides, so it passed as in sync.
 
 CI checks this. A stale package is not a cosmetic problem: users install the
 package, not the source, so a drifted `kiyas.skill` means the documented
@@ -148,7 +137,8 @@ git config core.hooksPath tools/hooks
 ```
 
 `skill/kiyas/` altında **herhangi bir** dosyayı değiştirdiysen tek-dosya paketi
-yeniden üret (İngilizce bölümdeki script). CI bunu kontrol eder. Bayat paket
+yeniden üret: `python tools/build_skill.py` (CI `--check` ile koşar; paketin
+içinde CRLF varsa düşer — paketleyici dört repoda aynı dosyadır). CI bunu kontrol eder. Bayat paket
 kozmetik bir sorun değildir: kullanıcı kaynağı değil paketi kurar, yani kaymış
 bir `kiyas.skill` belgelenen davranışla dağıtılan davranışın çelişmesi demektir.
 

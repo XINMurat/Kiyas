@@ -432,6 +432,20 @@ def load(path: str) -> dict:
         data = yaml.safe_load(fh)
     if not isinstance(data, dict):
         raise ValueError("top-level YAML is not a mapping")
+    # The rules read `batch` as a mapping and drop seeds that are not one, so
+    # a wrong type crashed (exit 1, the violations code) or passed with fewer
+    # seeds than were written. Refused here as a parse error instead.
+    batch = data.get("batch")
+    if batch is not None and not isinstance(batch, dict):
+        raise ValueError("'batch' must be a mapping, got %s" % type(batch).__name__)
+    seeds = data.get("seeds")
+    if seeds is not None:
+        if not isinstance(seeds, list):
+            raise ValueError("'seeds' must be a list, got %s" % type(seeds).__name__)
+        for i, s in enumerate(seeds):
+            if not isinstance(s, dict):
+                raise ValueError("'seeds'[%d] must be a mapping, got %s"
+                                 % (i, type(s).__name__))
     return data
 
 
