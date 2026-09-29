@@ -72,6 +72,7 @@ jobs:
           printf 'batch: 5\nseeds: []\ndiscards: []\n'   > "$tmp"; expect2 "batch not a mapping"
           printf 'batch: {}\nseeds: 3\ndiscards: []\n'   > "$tmp"; expect2 "seeds not a list"
           printf 'batch: {}\nseeds:\n  - null\ndiscards: []\n' > "$tmp"; expect2 "seed not a mapping"
+          printf 'registry: {project: P}\nhypotheses: []\n' > "$tmp"; expect2 "a Mizan registry, not a batch"
           echo "OK: malformed batches are refused with exit 2."
 
       - name: Self-test — the unfilled template must be REJECTED

@@ -432,6 +432,11 @@ def load(path: str) -> dict:
         data = yaml.safe_load(fh)
     if not isinstance(data, dict):
         raise ValueError("top-level YAML is not a mapping")
+    # A file with none of the batch's sections is not a batch -- a Mizan or
+    # ux-mizan registry passed by mistake used to be reported as G7/G11
+    # violations (exit 1), as if it were a batch with problems.
+    if not any(k in data for k in ("batch", "seeds", "discards")):
+        raise ValueError("does not look like a Kiyas seed batch (none of: batch, seeds, discards)")
     # The rules read `batch` as a mapping and drop seeds that are not one, so
     # a wrong type crashed (exit 1, the violations code) or passed with fewer
     # seeds than were written. Refused here as a parse error instead.

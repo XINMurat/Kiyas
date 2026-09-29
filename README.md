@@ -190,7 +190,8 @@ warning in the data (`batch.accepted_warnings`, a code and a reason) so that
 `--strict` stops turning every look into a halt; G15 blocks an acceptance with
 no reason, W7 flags an acceptance whose warning did not fire. Tooling:
 `kiyas_validate.py` refuses a malformed batch (a `batch` or seed that is not a
-mapping) with exit 2 instead of crashing or skipping it; `tools/build_skill.py`
+mapping, or a file that is not a batch at all) with exit 2 instead of crashing
+or skipping it; `tools/build_skill.py`
 checks the package byte for byte; `leak_check.py --require` makes an empty CI
 secret fail.
 
@@ -390,7 +391,8 @@ kısmi bir listeye karşı "eşleşme bulunmadı" dürüsttür, "temiz" değildi
 (`batch.accepted_warnings`, kod ve gerekçe), böylece `--strict` her bakışı bir
 durdurmaya çevirmeyi bırakır; G15 gerekçesiz kabulü engeller, W7 uyarısı hiç
 tetiklenmemiş bir kabulü işaretler. Araçlar: `kiyas_validate.py` bozuk bir
-partiyi (mapping olmayan `batch` ya da tohum) çökmek ya da atlamak yerine
+partiyi (mapping olmayan `batch` ya da tohum, ya da hiç parti olmayan bir
+dosyayı) çökmek ya da atlamak yerine
 çıkış 2 ile reddeder; `tools/build_skill.py` paketi bayt bayt denetler;
 `leak_check.py --require` boş bir CI secret'ını düşürür.
 
