@@ -670,7 +670,11 @@ def check(data: dict, lang: str,
         # W1 — a precise-looking threshold with no judge behind it.
         arb_cls = _s(((s.get("arbiter") or {}) if isinstance(s.get("arbiter"), dict)
                       else {}).get("class")).lower()
-        if arb_cls in {"author", "none"} and NUMERIC_THRESHOLD.search(
+        # A 'none' arbiter above S is already blocked by G5_none_leaves_S;
+        # warning about its threshold too made one defect two findings
+        # (rule_pairs). W1 keeps the cases G5 lets through.
+        g5_blocks = arb_cls == "none" and tier not in {"", "S"}
+        if arb_cls in {"author", "none"} and not g5_blocks and NUMERIC_THRESHOLD.search(
                 _s(s.get("threshold_proposal"))):
             warns.append(m("W1_threshold_without_judge", lang, id=sid, cls=arb_cls))
 

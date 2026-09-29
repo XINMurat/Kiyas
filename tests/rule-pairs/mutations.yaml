@@ -1,0 +1,83 @@
+# Rule-pair fixtures for tools/rule_pairs.py (shared with Mizan and ux-mizan).
+#
+# base + base_ops must be CLEAN under every rule. That is the conflict test:
+# every rule exercised below can be satisfied at once. Each mutation breaks
+# ONE thing and names the catalog code it expects; anything else it fires is
+# an overlap. GB_known_refuted is reported as AD4 but keyed GB_, hence the
+# second alternative in `codes`.
+validator: tools/kiyas_validate.py
+args: ["{file}", "--strict"]
+codes: "^(G|W|AD)\\d+_|^GB_"
+base: examples/kiyas-seed.example.yaml
+base_ops:
+  - { path: batch.schema_version, set: "1.6" }
+  - path: batch.cost_actual
+    set:
+      instrument: "GPU-hour ledger"
+      window: { from: "2026-07-23", to: "2026-07-30" }
+      attribution: "batch tag"
+      baseline: { kind: "internal-batch", note: "the previous batch on the same problem" }
+
+mutations:
+  # --- batch level
+  - { id: g7-no-discards, target: G7_no_discards, ops: [ { path: discards, delete: true } ] }
+  - { id: g7-empty-no-note, target: G7_empty_without_note, ops: [ { path: batch.discards_note, delete: true } ] }
+  - { id: g7-discard-half, target: G7_discard_incomplete, ops: [ { path: discards, set: [ { claim: "coupling via attention" } ] } ] }
+  - { id: g11-no-source, target: G11_no_refuted_source, ops: [ { path: batch.refuted_patterns_source, delete: true } ] }
+  - { id: g12-no-generation, target: G12_no_generation, ops: [ { path: batch.generation, delete: true } ] }
+  - { id: g12-no-host, target: G12_no_field, ops: [ { path: batch.generation.host, delete: true } ] }
+  - { id: g12-digest, target: G12_digest_mismatch, args: ["--refuted", "examples/refuted-patterns.example.yaml"], ops: [ { path: batch.generation.inputs_digest, set: "sha256:0000" } ] }
+  - { id: g14-no-window, target: G14_missing_field, ops: [ { path: batch.cost_actual.window, delete: true } ] }
+  - { id: g14-bad-baseline, target: G14_bad_baseline, ops: [ { path: batch.cost_actual.baseline.kind, set: "vibes" } ] }
+  - { id: g14-no-note, target: G14_no_baseline_note, ops: [ { path: batch.cost_actual.baseline.note, delete: true } ] }
+  - { id: g15-no-reason, target: G15_acceptance_without_reason, ops: [ { path: batch.accepted_warnings, set: [ { code: "W3" } ] } ] }
+
+  # --- G13 pair pass (KS-001 and KS-003 are the two H-aday seeds)
+  - { id: g13-no-pass, target: G13_no_pair_pass, ops: [ { path: batch.pair_pass, delete: true } ] }
+  # with only two H-aday seeds a missing pair is an empty pass (G13_no_pair_pass),
+  # so a third is promoted: KS-002 joins and its two pairs are absent
+  - { id: g13-missing, target: G13_pair_missing, ops: [ { path: seeds.1.tier, set: "H-aday" }, { path: seeds.1.prior_art.searched, set: true }, { path: seeds.1.antipattern_sweep.AD1_notation_coincidence, set: "clear" } ] }
+  - { id: g13-same-seed, target: G13_same_seed, ops: [ { path: batch.pair_pass.pairs, append: { a: "KS-001", b: "KS-001", relation: "independent" } } ] }
+  - { id: g13-duplicate, target: G13_pair_duplicate, ops: [ { path: batch.pair_pass.pairs, append: { a: "KS-003", b: "KS-001", relation: "independent" } } ] }
+  - { id: g13-unknown, target: G13_pair_unknown, ops: [ { path: batch.pair_pass.pairs, append: { a: "KS-001", b: "KS-009", relation: "independent" } } ] }
+  - { id: g13-bad-relation, target: G13_bad_relation, ops: [ { path: batch.pair_pass.pairs.0.relation, set: "cousins" } ] }
+  - { id: g13-no-note, target: G13_no_note, ops: [ { path: batch.pair_pass.pairs.0.note, delete: true } ] }
+  - { id: g13-no-discriminator, target: G13_no_discriminator, ops: [ { path: batch.pair_pass.pairs.0.relation, set: "contradicts" } ] }
+  - { id: g13-no-direction, target: G13_no_direction, ops: [ { path: batch.pair_pass.pairs.0.direction, delete: true } ] }
+  - { id: g13-bad-direction, target: G13_bad_direction, ops: [ { path: batch.pair_pass.pairs.0.direction, set: "KS-002" } ] }
+
+  # --- seed level (KS-001: H-aday, superiority claimed, capacity added)
+  - { id: g1-no-illet, target: G1_no_illet, ops: [ { path: seeds.1.illet, delete: true } ] }
+  - { id: g2-no-breaking, target: G2_no_breaking_point, ops: [ { path: seeds.0.breaking_point, delete: true } ] }
+  - { id: g3-no-search, target: G3_superiority_without_prior_art, ops: [ { path: seeds.3.claims_superiority, set: true }, { path: seeds.3.tier, set: "NK" }, { path: seeds.3.prior_art, set: { searched: false, strongest_relative: "S4 (Gu et al. 2022)", discrimination_test: "same sweep under S4" } } ] }
+  - { id: g3-no-strongest, target: G3_no_strongest_relative, ops: [ { path: seeds.0.prior_art.strongest_relative, delete: true } ] }
+  - { id: g3-no-discrimination, target: G3_no_discrimination_test, ops: [ { path: seeds.0.prior_art.discrimination_test, delete: true } ] }
+  - { id: g4-no-control, target: G4_capacity_no_control, ops: [ { path: seeds.0.cheapest_refutation.matched_budget_control, set: "not applicable" } ] }
+  - { id: g5-no-arbiter, target: G5_no_arbiter, ops: [ { path: seeds.1.arbiter, delete: true } ] }
+  - { id: g5-bad-class, target: G5_bad_class, ops: [ { path: seeds.1.arbiter.class, set: "oracle" } ] }
+  - { id: g5-no-who, target: G5_no_who, ops: [ { path: seeds.1.arbiter.who, delete: true } ] }
+  - { id: g5-none-not-S, target: G5_none_leaves_S, ops: [ { path: seeds.1.arbiter, set: { class: "none", who: "nobody", independent_of_author: false } } ] }
+  - { id: g5-no-calibration, target: G5_no_calibration, ops: [ { path: seeds.1.arbiter, set: { class: "instrument", who: "probe script", independent_of_author: true } } ] }
+  - { id: g10-independence, target: G10_independence_contradiction, ops: [ { path: seeds.3.arbiter.independent_of_author, set: true } ] }
+  - { id: g6-no-sweep, target: G6_sweep_missing, ops: [ { path: seeds.1.antipattern_sweep, delete: true } ] }
+  - { id: g6-sweep-half, target: G6_sweep_incomplete, ops: [ { path: seeds.1.antipattern_sweep.AD3_confirmation_bias, delete: true } ] }
+  - { id: g6-ad1-needs-NK, target: G6_AD1_requires_NK, ops: [ { path: seeds.2.antipattern_sweep.AD1_notation_coincidence, set: "flagged: the two quantities share a symbol only" } ] }
+  - { id: g6-ad2-needs-S, target: G6_AD2_requires_S, ops: [ { path: seeds.1.antipattern_sweep.AD2_surface_resonance, set: "flagged: resonance only" } ] }
+  - { id: g6-ad4-needs-GB, target: G6_AD4_requires_GB, ops: [ { path: seeds.1.antipattern_sweep.AD4_refuted_relative, set: "flagged: relative of HG28" } ] }
+  - { id: g6-ad5-no-scope, target: G6_AD5_no_scope, ops: [ { path: seeds.0.scope_caveat, delete: true } ] }
+  - { id: ad6-no-base-rate, target: AD6_no_base_rate, ops: [ { path: seeds.1.antipattern_sweep.AD6_trace_base_rate, set: "flagged: seen in one trace" } ] }
+  - { id: g8-no-test, target: G8_no_test, ops: [ { path: seeds.2.cheapest_refutation.test, delete: true } ] }
+  - { id: g9-no-search, target: G9_no_prior_art_search, ops: [ { path: seeds.2.prior_art.searched, set: false } ] }
+  - { id: gb-known-refuted, target: GB_known_refuted, args: ["--refuted", "examples/refuted-patterns.example.yaml"], ops: [ { path: seeds.1.claim, set: "An input-dependent phase gives a selective alignment that the cap forbids." } ] }
+
+  # --- warnings
+  - { id: w1-threshold-no-judge, target: W1_threshold_without_judge, ops: [ { path: seeds.3.threshold_proposal, set: "supports at >= 3% preference" } ] }
+  - { id: w2-all-haday, target: W2_all_haday, ops: [ { path: seeds.3, delete: true }, { path: seeds.1, delete: true } ] }
+  - { id: w3-symmetry-unknown, target: W3_symmetry_id_unknown, ops: [ { path: batch.symmetry_check, set: "The breaking seed argues coupling is irrelevant." } ] }
+  - { id: w4-O5-no-scope, target: W4_O5_no_scope, ops: [ { path: seeds.1.operator, set: "O5" } ] }
+  - { id: w5-pinned-no-digest, target: W5_pinned_seed_no_digest, ops: [ { path: batch.generation.seed, set: "42" } ] }
+  - { id: w6-partial-export, target: W6_refuted_export_partial, args: ["--refuted", "tests/rule-pairs/refuted-partial.yaml"], ops: [] }
+  - { id: w7-accept-unfired, target: W7_acceptance_did_not_fire, ops: [ { path: batch.accepted_warnings, set: [ { code: "W3", reason: "the symmetry seed is named in prose" } ] } ] }
+
+# A code with no mutation must say why here, or the run fails.
+uncovered: {}

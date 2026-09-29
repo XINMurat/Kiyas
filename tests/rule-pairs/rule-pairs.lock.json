@@ -1,0 +1,155 @@
+{
+ "base_fired": [],
+ "mutations": {
+  "ad6-no-base-rate": [
+   "AD6_no_base_rate"
+  ],
+  "g1-no-illet": [
+   "G1_no_illet"
+  ],
+  "g10-independence": [
+   "G10_independence_contradiction"
+  ],
+  "g11-no-source": [
+   "G11_no_refuted_source"
+  ],
+  "g12-digest": [
+   "G12_digest_mismatch"
+  ],
+  "g12-no-generation": [
+   "G12_no_generation"
+  ],
+  "g12-no-host": [
+   "G12_no_field"
+  ],
+  "g13-bad-direction": [
+   "G13_bad_direction"
+  ],
+  "g13-bad-relation": [
+   "G13_bad_relation"
+  ],
+  "g13-duplicate": [
+   "G13_pair_duplicate"
+  ],
+  "g13-missing": [
+   "G13_pair_missing"
+  ],
+  "g13-no-direction": [
+   "G13_no_direction"
+  ],
+  "g13-no-discriminator": [
+   "G13_no_discriminator"
+  ],
+  "g13-no-note": [
+   "G13_no_note"
+  ],
+  "g13-no-pass": [
+   "G13_no_pair_pass"
+  ],
+  "g13-same-seed": [
+   "G13_same_seed"
+  ],
+  "g13-unknown": [
+   "G13_pair_unknown"
+  ],
+  "g14-bad-baseline": [
+   "G14_bad_baseline"
+  ],
+  "g14-no-note": [
+   "G14_no_baseline_note"
+  ],
+  "g14-no-window": [
+   "G14_missing_field"
+  ],
+  "g15-no-reason": [
+   "G15_acceptance_without_reason"
+  ],
+  "g2-no-breaking": [
+   "G2_no_breaking_point"
+  ],
+  "g3-no-discrimination": [
+   "G3_no_discrimination_test"
+  ],
+  "g3-no-search": [
+   "G3_superiority_without_prior_art"
+  ],
+  "g3-no-strongest": [
+   "G3_no_strongest_relative"
+  ],
+  "g4-no-control": [
+   "G4_capacity_no_control"
+  ],
+  "g5-bad-class": [
+   "G5_bad_class"
+  ],
+  "g5-no-arbiter": [
+   "G5_no_arbiter"
+  ],
+  "g5-no-calibration": [
+   "G5_no_calibration"
+  ],
+  "g5-no-who": [
+   "G5_no_who"
+  ],
+  "g5-none-not-S": [
+   "G5_none_leaves_S"
+  ],
+  "g6-ad1-needs-NK": [
+   "G6_AD1_requires_NK"
+  ],
+  "g6-ad2-needs-S": [
+   "G6_AD2_requires_S"
+  ],
+  "g6-ad4-needs-GB": [
+   "G6_AD4_requires_GB"
+  ],
+  "g6-ad5-no-scope": [
+   "G6_AD5_no_scope"
+  ],
+  "g6-no-sweep": [
+   "G6_sweep_missing"
+  ],
+  "g6-sweep-half": [
+   "G6_sweep_incomplete"
+  ],
+  "g7-discard-half": [
+   "G7_discard_incomplete"
+  ],
+  "g7-empty-no-note": [
+   "G7_empty_without_note"
+  ],
+  "g7-no-discards": [
+   "G7_no_discards"
+  ],
+  "g8-no-test": [
+   "G8_no_test"
+  ],
+  "g9-no-search": [
+   "G9_no_prior_art_search"
+  ],
+  "gb-known-refuted": [
+   "GB_known_refuted"
+  ],
+  "w1-threshold-no-judge": [
+   "W1_threshold_without_judge"
+  ],
+  "w2-all-haday": [
+   "W2_all_haday"
+  ],
+  "w3-symmetry-unknown": [
+   "W3_symmetry_id_unknown"
+  ],
+  "w4-O5-no-scope": [
+   "W4_O5_no_scope"
+  ],
+  "w5-pinned-no-digest": [
+   "W5_pinned_seed_no_digest"
+  ],
+  "w6-partial-export": [
+   "W6_refuted_export_partial"
+  ],
+  "w7-accept-unfired": [
+   "W7_acceptance_did_not_fire"
+  ]
+ }
+}

@@ -1,0 +1,3 @@
+# A refuted-patterns export that declares itself partial (fixture for W6).
+partial: true
+refuted_patterns: []
