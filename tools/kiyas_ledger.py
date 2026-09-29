@@ -19,6 +19,12 @@ An arm marked `control: true` in the ledger activates the comparison.
 
 Usage:
     python tools/kiyas_ledger.py ledger/kiyas-ledger.yaml
+    python tools/kiyas_ledger.py --sync mizan-results.yaml ledger/kiyas-ledger.yaml
+
+--sync reads the output of Mizan's `mizan_export_results.py` and fills an
+EMPTY final_tier whose `registered_as` id is listed there as decided. It
+never overwrites a filled tier: a disagreement is printed and exits 1, since
+either the ledger or the registry is wrong and only a person can say which.
     python tools/kiyas_ledger.py --lang tr ledger/kiyas-ledger.yaml
 
 Exit code 0 always (this is a reporter, not a gate) unless the file cannot
@@ -134,11 +140,57 @@ def report(data: dict, lang: str) -> None:
     print(t("compare", lang, a=a["rate"], b=b["rate"], na=a["n"], nb=b["n"]))
 
 
+def sync(ledger_path: str, results_path: str) -> int:
+    import re
+    res = yaml.safe_load(open(results_path, "r", encoding="utf-8")) or {}
+    if not isinstance(res, dict) or "decided" not in res:
+        sys.stderr.write(f"{results_path}: not a mizan_export_results.py output\n")
+        return 2
+    decided = {str(d.get("id")): d for d in res.get("decided") or [] if isinstance(d, dict)}
+    text = open(ledger_path, "r", encoding="utf-8").read()
+    data = yaml.safe_load(text) or {}
+    filled, conflicts = [], []
+    for e in data.get("seeds") or []:
+        if not isinstance(e, dict):
+            continue
+        m = re.match(r"\s*([A-Za-z0-9_.-]+)", str(e.get("registered_as") or ""))
+        d = decided.get(m.group(1)) if m else None
+        if not d:
+            continue
+        have, new = _tier(e), str(d.get("tier") or "").upper()
+        if not have:
+            filled.append((e.get("id"), new, d))
+        elif have != new:
+            conflicts.append(f"{e.get('id')}: ledger {have}, registry {new} ({d.get('result')})")
+    # Edit the text, not a re-dump: the ledger's comments ARE its record.
+    for sid, tier, d in filled:
+        pat = re.compile(r'(- id: "' + re.escape(str(sid)) + r'"\n(?:(?!  - id:).*\n)*?\s+final_tier: )""')
+        text, n = pat.subn(r'\g<1>"' + tier + '"', text, count=1)
+        if n != 1:
+            conflicts.append(f"{sid}: final_tier line not found, not filled")
+        else:
+            print(f"  {sid} -> {tier}  ({d.get('result')}, confirmed by {d.get('confirmed_by')})")
+    if filled:
+        open(ledger_path, "w", encoding="utf-8").write(text)
+    print(f"sync: {len(filled)} filled, {len(conflicts)} conflict(s)")
+    for c in conflicts:
+        print(f"  CONFLICT {c}", file=sys.stderr)
+    return 1 if conflicts else 0
+
+
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(description="Kıyas seed survival-rate reporter")
     ap.add_argument("ledger", help="path to kiyas-ledger.yaml")
     ap.add_argument("--lang", choices=["en", "tr"], default="en")
+    ap.add_argument("--sync", metavar="RESULTS",
+                    help="fill empty final_tier values from mizan_export_results.py output")
     args = ap.parse_args(argv)
+    if args.sync:
+        try:
+            return sync(args.ledger, args.sync)
+        except (OSError, yaml.YAMLError) as exc:
+            sys.stderr.write(f"parse error: {exc}\n")
+            return 2
 
     for stream in (sys.stdout, sys.stderr):
         try:

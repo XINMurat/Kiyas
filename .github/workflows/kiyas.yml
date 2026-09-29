@@ -55,6 +55,25 @@ jobs:
           grep -q '^::error file=' /tmp/out.github || { echo "FAIL: no annotation emitted" >&2; exit 1; }
           echo "OK: text, json and github agree on the verdict."
 
+      - name: Self-test — ledger sync fills empty tiers and never overwrites
+        run: |
+          set -e
+          cp ledger/kiyas-ledger.yaml /tmp/L.yaml
+          printf 'mizan_results: {}\ndecided:\n  - {id: YZ-002, tier: R, result: RES-1, confirmed_by: o}\npending: []\n' > /tmp/ok.yaml
+          python tools/kiyas_ledger.py --sync /tmp/ok.yaml /tmp/L.yaml
+          python - <<'PY'
+          import sys, yaml
+          seeds = {e["id"]: e for e in yaml.safe_load(open("/tmp/L.yaml"))["seeds"]}
+          if seeds["K-01"]["final_tier"] != "R" or seeds["K-02"]["final_tier"] != "":
+              print("FAIL: sync filled the wrong seed"); sys.exit(1)
+          PY
+          grep -q "BULGU" /tmp/L.yaml || { echo "FAIL: sync dropped the ledger's comments" >&2; exit 1; }
+          # K-03 is already R: a registry saying K is a conflict, not an update.
+          printf 'mizan_results: {}\ndecided:\n  - {id: YZ-006, tier: K, result: RES-3, confirmed_by: o}\npending: []\n' > /tmp/bad.yaml
+          set +e; python tools/kiyas_ledger.py --sync /tmp/bad.yaml /tmp/L.yaml; rc=$?; set -e
+          [ "$rc" -eq 1 ] || { echo "FAIL: a conflict exited $rc, expected 1" >&2; exit 1; }
+          grep -A12 'id: "K-03"' /tmp/L.yaml | grep -q 'final_tier: "R"' || { echo "FAIL: overwritten" >&2; exit 1; }
+
       - name: Self-test — a malformed batch is refused, not passed
         run: |
           set -e
