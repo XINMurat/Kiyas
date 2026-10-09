@@ -58,6 +58,24 @@ sloppy because the compiler filters for free; off code, filtering is expensive,
 so the filter moves **into** generation. The illet requirement is the analogical
 equivalent of type-checking: elimination before execution.
 
+## What it looks like
+
+A user brings an intuition they care about (full run:
+[`examples/distillation-user-analogy.md`](examples/distillation-user-analogy.md)):
+
+> *"Computing weights over tokens produces, as a side effect, a window onto a
+> semantic layer — the way churning milk separates a thin cream layer."*
+
+Kıyas splits the sentence into two claims and judges them separately:
+
+| Claim | Outcome |
+|---|---|
+| **Separation** — a thin distinct stratum forms | The physical illet fails (no force, no vessel) → `[S]`; replaced by one that carries — communication cost — and that becomes a testable `[H-aday]` seed |
+| **By-product** — the stratum is not used | Does not carry: the source's own interventions show it **is** read downstream. Not cream, not a window — a shared writing surface |
+
+One replacement, one refutation, five discards — and the discards are listed,
+not hidden. The half that failed was the half the user was relying on.
+
 ## What is in here
 
 | Path | What it is |
@@ -299,6 +317,25 @@ Kıyas aynı problemin öbür ucunu tutar. Kodda üretim savruk olabilir, çünk
 derleyici bedavaya eler; kod dışında eleme pahalıdır, o yüzden filtre üretimin
 **içine** taşınır. İllet zorunluluğu, analojinin tip denetimi karşılığıdır:
 çalıştırmadan önce eleme.
+
+## Nasıl görünür
+
+Kullanıcı önem verdiği bir sezgiyle gelir (tam koşu:
+[`examples/distillation-user-analogy.md`](examples/distillation-user-analogy.md)):
+
+> *"Token'lar üzerinde ağırlık hesaplamak, yan ürün olarak anlamsal bir
+> katmana açılan bir pencere üretir — sütü çalkalayınca ince bir kaymak
+> tabakasının ayrılması gibi."*
+
+Kıyas cümleyi iki iddiaya böler ve ayrı ayrı tartar:
+
+| İddia | Sonuç |
+|---|---|
+| **Ayrışma** — ince, ayrı bir tabaka oluşur | Fiziksel illet tutmaz (kuvvet yok, kap yok) → `[S]`; yerine yük taşıyan bir illet konur — iletişim maliyeti — ve test edilebilir bir `[H-aday]` tohumu olur |
+| **Yan ürün** — tabaka kullanılmaz | Tutmaz: kaynağın kendi müdahale deneyleri tabakanın aşağıda **okunduğunu** gösteriyor. Kaymak da değil, pencere de değil — ortak bir yazı yüzeyi |
+
+Bir ikame, bir çürütme, beş eleme — ve elemeler gizlenmez, listelenir.
+Tutmayan yarı, kullanıcının dayandığı yarıydı.
 
 ## Depoda ne var
 
