@@ -181,9 +181,9 @@ produces.
 
 ### Version
 
-Current version: v1.4
+Current version: v1.5
 
-**Unreleased (on `main`, after v1.4.0)** — **W6**: a refuted-patterns export
+**v1.5** — **W6**: a refuted-patterns export
 marked `partial: true` makes the sweep say so, because against a partial list
 "no match found" is honest and "clear" is not. **G15/W7**: a batch may accept a
 warning in the data (`batch.accepted_warnings`, a code and a reason) so that
@@ -193,7 +193,9 @@ no reason, W7 flags an acceptance whose warning did not fire. Tooling:
 mapping, or a file that is not a batch at all) with exit 2 instead of crashing
 or skipping it; `tools/build_skill.py`
 checks the package byte for byte; `leak_check.py --require` makes an empty CI
-secret fail.
+secret fail. Rule pairs: one single-defect mutation per G/W/AD code, all 50
+isolated in CI — W1 no longer repeats what G5 already blocks. The usage guides
+teach G1–G15 one item per rule, and a check counts them.
 
 **v1.4** — G14: the batch records what it cost (`batch.cost_actual`:
 instrument, window, attribution, comparison arm; `none` is legal and forbids
@@ -382,9 +384,9 @@ metodolojinin ayakta kalmak için kurulduğu sonuç, ve kendi yaptığın bir
 
 ### Sürüm
 
-Şu anki sürüm: v1.4
+Şu anki sürüm: v1.5
 
-**Yayımlanmadı (`main` üzerinde, v1.4.0'dan sonra)** — **W6**:
+**v1.5** — **W6**:
 `partial: true` işaretli bir refuted-patterns dökümü taramaya bunu söyletir;
 kısmi bir listeye karşı "eşleşme bulunmadı" dürüsttür, "temiz" değildir.
 **G15/W7**: bir parti bir uyarıyı veride kabul edebilir
@@ -394,7 +396,10 @@ tetiklenmemiş bir kabulü işaretler. Araçlar: `kiyas_validate.py` bozuk bir
 partiyi (mapping olmayan `batch` ya da tohum, ya da hiç parti olmayan bir
 dosyayı) çökmek ya da atlamak yerine
 çıkış 2 ile reddeder; `tools/build_skill.py` paketi bayt bayt denetler;
-`leak_check.py --require` boş bir CI secret'ını düşürür.
+`leak_check.py --require` boş bir CI secret'ını düşürür. Kural çiftleri: her
+G/W/AD kodu için tek kusurlu bir mutasyon, 50'sinin hepsi CI'da ayrışıyor —
+W1 artık G5'in zaten engellediğini tekrarlamıyor. Kullanım kılavuzları G1–G15'i
+kural başına bir maddeyle anlatıyor ve bir kontrol bunları sayıyor.
 
 **v1.4** — G14: parti ne harcadığını kaydeder (`batch.cost_actual`: alet,
 pencere, atıf, karşılaştırma kolu; `none` meşrudur ve partinin "bu şekilde
