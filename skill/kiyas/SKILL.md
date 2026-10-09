@@ -4,7 +4,7 @@ description: Disciplined ideation and analogical inference for research that is 
 license: MIT
 metadata:
   author: XINMurat
-  version: "1.4"
+  version: "1.5"
   schema_version: "1.6"   # pinned to the schema banner by CI
 ---
 
