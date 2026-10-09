@@ -71,10 +71,30 @@ the same contract, tiered, flagged, and ordered by criticality ×
     with six faces. The number that follows is printed with the verdict:
     *N candidates, K independent bets*. Batches declaring seed schema 1.5+.
 
-Five further checks **warn without blocking** (`--strict` makes them fail): a
+14. The batch may record **what it cost** (`batch.cost_actual`), and if it
+    does, it names the instrument that produced the numbers ("the model
+    estimated it" is not one), the window, the attribution and a baseline
+    kind — `none` is honest and forbids presenting the batch as evidence that
+    generating this way is cheaper. The ratio it refuses is cost per *seed*:
+    that pays for quota filling, and the cheapest way to improve it is to
+    generate more and think less. Divide by seeds that **survived** testing in
+    a Mizan registry instead — a denominator the generator cannot inflate.
+    Seed schema 1.6+.
+
+15. A warning the batch **accepts** (`batch.accepted_warnings`) states why:
+    why the warning is right about what it points at, and why the batch is
+    still correct as written. An acceptance with no reason is
+    indistinguishable from silence. The accepted warning is still printed,
+    marked accepted — an exemption that hid what it exempts would be worse
+    than the halt it replaced.
+
+Seven further checks **warn without blocking** (`--strict` makes them fail): a
 numeric threshold with no judge behind it, a batch where every seed is a
 hypothesis candidate, a symmetry check naming no seed, a scale transfer
-with no scope caveat, and a pinned seed with no inputs digest. Each has legitimate exceptions, so the tool says look,
+with no scope caveat, a pinned seed with no inputs digest, a sweep run against
+a *partial* refuted-patterns export (it may say "no match found", never
+"clear"), and an accepted warning that no longer fires (an exemption that
+outlived its condition). Each has legitimate exceptions, so the tool says look,
 not halt — a single blocking channel teaches you to write around the rules.
 
 ## 4. Reading the tiers

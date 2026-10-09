@@ -69,10 +69,29 @@ sırasına dizilir.
     olan tek bahistir. Ardından gelen sayı hükümle birlikte basılır:
     *N aday, K bağımsız bahis*. Tohum şeması 1.5+ beyan eden partilerde.
 
-Beş kontrol daha **bloke etmeden uyarır** (`--strict` ile düşerler): hakemi
+14. Parti **neye mal olduğunu** kaydedebilir (`batch.cost_actual`); kaydederse
+    sayıları üreten enstrümanı ("model tahmin etti" enstrüman değildir),
+    pencereyi, atfı ve bir karşılaştırma türünü adlandırır — `none` dürüsttür
+    ve partinin "bu yolla üretmek daha ucuz" kanıtı olarak sunulmasını
+    yasaklar. Reddettiği oran *tohum başına* maliyettir: bu oran kota
+    doldurmayı ödüllendirir ve onu iyileştirmenin en ucuz yolu daha çok üretip
+    daha az düşünmektir. Bunun yerine bir Mizan registry'sinde testten **sağ
+    çıkan** tohumlara böl — üretecin içeriden şişiremeyeceği bir payda. Tohum
+    şeması 1.6+.
+
+15. Partinin **kabul ettiği** bir uyarı (`batch.accepted_warnings`) gerekçesini
+    söyler: uyarının işaret ettiği şeyde neden haklı olduğunu ve partinin yine
+    de neden yazıldığı gibi doğru olduğunu. Gerekçesiz bir kabul sessizlikten
+    ayırt edilemez. Kabul edilen uyarı yine basılır, kabul edildi diye
+    işaretlenir — muaf tuttuğu şeyi gizleyen bir muafiyet, yerine geçtiği
+    durdurmadan daha kötü olurdu.
+
+Yedi kontrol daha **bloke etmeden uyarır** (`--strict` ile düşerler): hakemi
 olmayan sayısal eşik, her tohumu hipotez adayı olan parti, hiçbir tohumu
-adlandırmayan simetri kontrolü, şerhsiz ölçek transferi, ve girdi özeti
-olmayan sabitlenmiş tohum. Her birinin meşru
+adlandırmayan simetri kontrolü, şerhsiz ölçek transferi, girdi özeti
+olmayan sabitlenmiş tohum, *kısmi* bir çürütülmüş-desen ihracına karşı yapılan
+tarama ("eşleşme bulunmadı" diyebilir, asla "temiz" diyemez), ve artık
+ateşlenmeyen kabul edilmiş bir uyarı (koşulunu aşmış bir muafiyet). Her birinin meşru
 istisnası var; o yüzden araç "dur" değil "bak" der — tek bir bloke eden kanal,
 kuralların etrafından yazmayı öğretir.
 
