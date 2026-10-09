@@ -561,6 +561,26 @@ jobs:
           cp /tmp/parity-backup docs/QUICKSTART.md
           echo "ok -- a one-language menu entry is caught"
 
+      - name: The usage guides teach every G rule the schema defines
+        run: |
+          set -e
+          # Both guides said "G1–G15" and taught thirteen; G14 and G15 were
+          # enforced and never explained. Reasoning in the script's docstring.
+          python tools/check_guide_coverage.py
+
+      - name: Self-test — the guide check fails on a dropped rule
+        run: |
+          set -e
+          # A gate that cannot fail is decoration. Drop item 15 of the guide.
+          cp docs/en/usage-guide.md /tmp/guide-backup
+          sed -i 's/^15\. /    /' docs/en/usage-guide.md
+          if python tools/check_guide_coverage.py; then
+            cp /tmp/guide-backup docs/en/usage-guide.md
+            echo "FAIL: a dropped rule went unnoticed" >&2; exit 1
+          fi
+          cp /tmp/guide-backup docs/en/usage-guide.md
+          echo "ok -- a dropped rule is caught"
+
       - name: The published English pages still match the skill package
         run: |
           set -e
